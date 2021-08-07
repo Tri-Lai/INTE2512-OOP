@@ -1,0 +1,2 @@
+# INTE2512-OOP
+This repository is used for Final Project of course INTE2512 - Object Oriented Programming
