@@ -9,9 +9,6 @@ public class ScrapZing {
     public static void main(String[] args) throws IOException {
         StopWatch clock = new StopWatch();
 
-        //Scanner scan = new Scanner(System.in);
-
-        //System.out.print("Enter Zing's news url: ");
         clock.start();
 
         String url = "https://zingnews.vn/pho-thu-tuong-lay-nhiem-qua-he-thong-phan-phoi-rat-dang-bao-dong-post1246882.html";
