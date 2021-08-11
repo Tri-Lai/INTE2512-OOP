@@ -23,11 +23,11 @@ public class Article {
 
     private static String[] title = {"h1.the-article-title", "h1.title-detail", "h1.details__headline"};
 
-    private static String[] author = {"div.the-article-credit p", "p.author_mail"};
+    private static String[] author = {"div.the-article-credit p", "p.author_mail", "div.details__author__meta "};
 
-    private static String[] pubDay = {"li.the-article-publish", "span.date"};
+    private static String[] pubDay = {"li.the-article-publish", "span.date", "time"};
 
-    private static String[] sum = {"p.the-article-summary", "p.description"};
+    private static String[] sum = {"p.the-article-summary", "p.description", "div.sapo"};
 
     private static String[] body = {"div.the-article-body", "article.fck_detail"};
 
@@ -36,16 +36,17 @@ public class Article {
         int id = 0;
 
         //Zing
-        if (url.contains("zingnews")) {
+        if (url.contains("zingnews.vn")) {
             id = 0;
         }
-        //VNEpress
-        else if (url.contains("vnexpress")) {
+
+        //VNExpress
+        else if (url.contains("vnexpress.net")) {
             id = 1;
         }
 
         //Thanh Nien
-        else if ( url.contains("thanhnien") ) {
+        else if ( url.contains("thanhnien.vn") ) {
             id = 2;
         }
 
@@ -64,6 +65,7 @@ public class Article {
 
     //Get Published Day
     public String getPubDay() {
+        // d/m/y
         return doc.select(pubDay[id]).text();
     }
 
@@ -71,14 +73,25 @@ public class Article {
     public String getAuthor() {
         String name = "";
 
-        if (id == 0) {
-            name = doc.select(author[id]).text();
-        } else if (id == 1) {
+        //Zing
+        if (id == 0  || id == 2) {
+            name = doc.selectFirst(author[id]).text();
+        }
+
+        //VNExpress
+        else if (id == 1) {
             if (doc.select(author[id]).text().isEmpty()) {
                 name = doc.getElementsByAttributeValueMatching("style", "text-align:right;").text();
 
             } else {
                 name = doc.select(author[id]).text();
+            }
+        }
+
+        //Thanh Nien if more than 1 author
+        if (doc.select("div.details__author__meta ").size() > 1 ) {
+            for (int i = 1; i < doc.select("div.details__author__meta ").size(); i++) {
+                name += " & " + doc.select(author[id]).get(i).selectFirst("h4 > a").text();
             }
         }
 
@@ -97,11 +110,14 @@ public class Article {
         Elements b;
 
         switch (id) {
+            //Zing
             case 0:
                 b = doc.selectFirst(body[id]).children();
 
                 bodyZing(b);
                 break;
+
+                //VNExpress
             case 1:
                 if (doc.select(author[id]).text().isEmpty()) {
                     //remove Author name
@@ -183,7 +199,7 @@ public class Article {
                 }
 
                 //Live Score - Match Events
-                else if (e.className().equals("live")) {
+                else if (e.attr("id").contains("livestream")) {
                     System.out.println("Match'events: " + "\n");
 
                     List<Element> events = e.select("li");
