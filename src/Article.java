@@ -88,7 +88,7 @@ public class Article {
             }
         }
 
-        //Thanh Nien if more than 1 author
+        //ThanhNien if more than 1 author
         if (doc.select("div.details__author__meta ").size() > 1 ) {
             for (int i = 1; i < doc.select("div.details__author__meta ").size(); i++) {
                 name += " & " + doc.select(author[id]).get(i).selectFirst("h4 > a").text();
