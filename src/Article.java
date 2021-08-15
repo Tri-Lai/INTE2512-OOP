@@ -29,7 +29,7 @@ public class Article {
 
     private static String[] sum = {"p.the-article-summary", "p.description", "div.sapo"};
 
-    private static String[] body = {"div.the-article-body", "article.fck_detail"};
+    private static String[] body = {"div.the-article-body", "article.fck_detail", "div#abody"};
 
     //Check Website through url
     public Integer checkWeb(String url) throws IOException {
@@ -46,7 +46,7 @@ public class Article {
         }
 
         //Thanh Nien
-        else if ( url.contains("thanhnien.vn") ) {
+        else if (url.contains("thanhnien.vn")) {
             id = 2;
         }
 
@@ -59,7 +59,7 @@ public class Article {
     }
 
     //Get Title
-    public  String getTitle() {
+    public String getTitle() {
         return doc.select(title[id]).text();
     }
 
@@ -74,7 +74,7 @@ public class Article {
         String name = "";
 
         //Zing
-        if (id == 0  || id == 2) {
+        if (id == 0 || id == 2) {
             name = doc.selectFirst(author[id]).text();
         }
 
@@ -89,7 +89,7 @@ public class Article {
         }
 
         //ThanhNien if more than 1 author
-        if (doc.select("div.details__author__meta ").size() > 1 ) {
+        if (doc.select("div.details__author__meta ").size() > 1) {
             for (int i = 1; i < doc.select("div.details__author__meta ").size(); i++) {
                 name += " & " + doc.select(author[id]).get(i).selectFirst("h4 > a").text();
             }
@@ -117,7 +117,7 @@ public class Article {
                 bodyZing(b);
                 break;
 
-                //VNExpress
+            //VNExpress
             case 1:
                 if (doc.select(author[id]).text().isEmpty()) {
                     //remove Author name
@@ -129,6 +129,13 @@ public class Article {
                     b = doc.selectFirst(body[id]).children();
                 }
                 bodyVNExpress(b);
+                break;
+
+                //Thanh Nien
+            case 2:
+                b = doc.selectFirst(body[id]).children();
+
+                bodyTN(b);
                 break;
         }
     }
@@ -155,12 +162,12 @@ public class Article {
                     //Elements rows = e.select("tbody > tr > td");
                     for (Element cell : e.select("tbody > tr > td")) {
                         //Link image
-                        if (cell.className().equals("pic") ) {
+                        if (cell.className().equals("pic")) {
                             System.out.println("Picture link: " + cell.select("img").attr("data-src"));
                         }
 
                         //Caption
-                        else if(cell.className().equals("pCaption caption") ) {
+                        else if (cell.className().equals("pCaption caption")) {
                             System.out.println("Caption: " + cell.text() + "\n");
                         }
                     }
@@ -283,7 +290,7 @@ public class Article {
                 for (Element e2 : e.children()) {
 
                     //Paragraph
-                    if (e2.tagName().equals("p") && e2.className().equals("Normal") ) {
+                    if (e2.tagName().equals("p") && e2.className().equals("Normal")) {
                         System.out.println(e2.select("p.Normal").text() + "\n");
                     }
 
@@ -306,7 +313,7 @@ public class Article {
                 }
 
                 //Video
-                else if (e.className().equals("item_slide_show clearfix") ) {
+                else if (e.className().equals("item_slide_show clearfix")) {
                     System.out.println("Link video: " + e.selectFirst("video").attr("src"));
 
                     System.out.println("Caption: " + e.selectFirst("p.Image").text() + "\n");
@@ -314,20 +321,83 @@ public class Article {
             }
 
             //Data Table
-            else if (e.tagName().equals("table") ) {
+            else if (e.tagName().equals("table")) {
                 System.out.println("\t [ There is a data tabe. Function hasn't dont yet ]" + "\n");
             }
 
             //List
-            else if ( e.tagName().equals("ul") ) {
+            else if (e.tagName().equals("ul")) {
                 //Each Item
-                for (Element item : e.select("li") ) {
+                for (Element item : e.select("li")) {
                     System.out.println("Related Article: ");
 
-                    System.out.println("Link: " + item.select("a").attr("href") );
+                    System.out.println("Link: " + item.select("a").attr("href"));
 
                     System.out.println("Title: " + item.select("a").attr("title") + "\n");
                 }
+            }
+        }
+    }
+
+    //Get Body Thanh Nien
+    public void bodyTN(Elements body) {
+        for (Element e : body) {
+
+            //System.out.println(e);
+            //Header
+            if (e.tagName().equals("h2")) {
+                System.out.println("\t" + e.text() + "\n");
+                continue;
+            }
+
+            //Part
+            if (e.tagName().equals("div")) {
+                //System.out.println(e);
+
+                //Has Children Element
+                if (e.childrenSize() > 0) {
+                    //Is Image
+                    if (e.child(0).tagName().equals("table") && e.child(0).className().equals("imagefull")) {
+                        System.out.println("Link Image: " + e.child(0).select("img").attr("data-src"));
+
+                        //Has Caption
+                        if (e.child(0).select("td > div").first().childrenSize() > 1) {
+                            System.out.println("Caption: " + e.child(0).selectFirst("div.imgcaption > p").text()
+                                    + ". Source: " + e.child(0).select("div.source > p").text());
+                        }
+                        System.out.println();
+                        continue;
+                    }
+
+                    else if( e.child(0).tagName().equals("div") ) {
+                        if (e.child(0).child(0).tagName().equals("table") && e.child(0).child(0).className().equals("video")) {
+                            System.out.println("Link Video: " + e.child(0).select("div.clearfix.cms-video").attr("data-video-src"));
+
+                            System.out.println("Caption: " + e.child(0).select("div.imgcaption").text() + "\n");
+                        }
+                        continue;
+                    }
+
+                    //Quote??
+                    else if ( e.child(0).className().contains("quote")) {
+                        System.out.println("Quote: ");
+                        bodyTN(e.selectFirst("div.quote__content").child(0).children());
+
+                        continue;
+                    }
+
+                    //Normal Paragraph with href
+                    else if ( e.child(0).tagName().equals("a") ) {
+                        System.out.println(e.text() + "a\n");
+                        continue;
+                    }
+                }
+
+                //Normal paragraph NO href
+                else {
+                    System.out.println(e.text() + "\n");
+                }
+
             }
         }
     }
