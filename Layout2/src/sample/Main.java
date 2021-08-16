@@ -7,6 +7,7 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -24,6 +25,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import java.awt.*;
+import java.io.FileInputStream;
 
 import static javafx.scene.layout.GridPane.*;
 
@@ -39,7 +41,13 @@ public class Main extends Application {
 
         String video = new String();
 
-        String newsImage = new String("");
+        //Test image in the content
+        String testImage = new String("https://znews-photo.zadn.vn/w1920/Uploaded/ovhpaob/2021_08_15/btr_long_11_16286781526312039640150.jpeg");
+        ImageView imageView = new ImageView(new Image(testImage));
+        imageView.setFitWidth(500);
+        imageView.setFitHeight(500);
+        imageView.setSmooth(true);
+        imageView.setPreserveRatio(true);
 
         String test = new String("TP HCM bắt đầu tiêm vaccine Sinopharm\n" +
                 "Toàn bộ vaccine được phân bổ đã dùng hết, TP HCM tiếp tục sử dụng nguồn một triệu liều Vero Cell đã qua Bộ Y tế kiểm định để tiêm cho người dân.\n" +
@@ -75,6 +83,7 @@ public class Main extends Application {
                 "\"Đây là các trường hợp cụ thể tại bệnh viện. Ngoài ra còn rất nhiều tài liệu khác cho thấy khi được tiêm vaccine, trong người sẽ có kháng thể làm diễn tiến bệnh rất nhẹ\", ông Châu nói và cho biết việc bao phủ tỷ lệ tiêm vaccine sẽ giúp giảm ca mắc mới và ca bệnh nặng, góp phần giảm tử vong.\n" +
                 "\n" +
                 "Tuy nhiên, người đã tiêm hai mũi vẫn phải thực hiện nghiêm quy định 5K, cách ly, tránh lây cho người khác nếu bị mắc Covid-19 vì vaccine giúp giảm bệnh nặng chứ không có khả năng ngăn virus lây nhiễm.");
+
         //Icon
         ImageView iv = new ImageView("https://previews.123rf.com/images/putracetol/putracetol1706/putracetol170603332/80692864-letter-k-icon-logo-design-element.jpg");
         iv.setFitWidth(70);
@@ -116,6 +125,12 @@ public class Main extends Application {
         Text text = new Text();
         text.setText(test);
 
+        //Pane for the content inside the newspaper
+        GridPane gridPane2 = new GridPane();
+        gridPane2.add(text,1,1);
+        gridPane2.add(imageView,1,2);
+        gridPane2.setVgap(30);
+
 
         //Scroll Pane for the newspaper content
         ScrollPane scrollPane = new ScrollPane();
@@ -123,7 +138,7 @@ public class Main extends Application {
         scrollPane.setFitToWidth(true);
         scrollPane.setPrefSize(500,600);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        scrollPane.setContent(text);
+        scrollPane.setContent(gridPane2);
 
         //Border
         BorderPane borderPane = new BorderPane();
