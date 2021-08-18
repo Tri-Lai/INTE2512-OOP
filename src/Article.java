@@ -8,28 +8,57 @@ import java.io.IOException;
 import java.util.List;
 
 public class Article {
+
     public Article(String url) throws IOException {
         doc = Jsoup.connect(url).get();
 
         id = checkWeb(url);
+
+        pubD = getPubDay();
     }
 
     Document doc;
 
     int id;
 
+    String pubD;
+
     //0.Zing    1.VNExpress
-    private static String[] category = {"p.the-article-category", "ul.breadcrumb > li:nth-child(1)", "div.breadcrumbs"};
+    private static String[] category = {"p.the-article-category"    //Zing
+            , "ul.breadcrumb > li:nth-child(1)"     //VNExpress
+            , "div.breadcrumbs"     //Thanh Nien
+            , "div.bread-crumbs.fl > ul > li.fl:nth-child(1)"        //Tuoi Tre
+            , "ul.uk-breadcrumb > li.bc-item:nth-child(1)"};        //Nhan Dan
 
-    private static String[] title = {"h1.the-article-title", "h1.title-detail", "h1.details__headline"};
+    private static String[] title = {"h1.the-article-title"     //Zing
+            , "h1.title-detail"     //VNExpress
+            , "h1.details__headline"        //Thanh Nien
+            , "h1.article-title"        //Tuoi Tre
+            , "h1.box-title-detail.entry-title"};       //Nhan Dan
 
-    private static String[] author = {"div.the-article-credit p", "p.author_mail", "div.details__author__meta "};
+    private static String[] author = {"div.the-article-credit p"    //Zing
+            , "p.author_mail"       //VNExpress
+            , "div.details__author__meta "      //Thanh Nien
+            , "div.author"      //Tuoi Tre
+            , "div.box-author.uk-text-right.uk-clearfix"};      //Nhan Dan
 
-    private static String[] pubDay = {"li.the-article-publish", "span.date", "time"};
+    private static String[] pubDay = {"li.the-article-publish"      //Zing
+            , "span.date"       //VNExpress
+            , "time"        //Thanh Nien
+            , "div.date-time"       //Tuoi Tre
+            , "div.box-date.pull-left"};        //Nhan Dan
 
-    private static String[] sum = {"p.the-article-summary", "p.description", "div.sapo"};
+    private static String[] sum = {"p.the-article-summary"      //Zing
+            , "p.description"       //VNExpress
+            , "div.sapo"        //Thanh Nien
+            , "h2.sapo"     //Tuoi Tre
+            , "div.box-des-detail.this-one"};       //Nhan Dan
 
-    private static String[] body = {"div.the-article-body", "article.fck_detail", "div#abody"};
+    private static String[] body = {"div.the-article-body"      //Zing
+            , "article.fck_detail"      //VNExpress
+            , "div#abody"       //Thanh Nien
+            , "div.content.fck"     //Tuoi Tre
+            , "div.detail-content-body "};      //Nhan Dan
 
     //Check Website through url
     public Integer checkWeb(String url) throws IOException {
@@ -50,17 +79,27 @@ public class Article {
             id = 2;
         }
 
+        //Tuoi Tre
+        else if (url.contains("tuoitre.vn") ) {
+            id = 3;
+        }
+
+        //Nhan Dan
+        else if (url.contains("nhandan.vn") ) {
+            id = 4;
+        }
+
         return id;
     }
 
     //Get Category
     public String getCate() {
-        return doc.select(category[id]).first().text();
+        return doc.selectFirst(category[id]).text();
     }
 
     //Get Title
     public String getTitle() {
-        return doc.select(title[id]).text();
+        return doc.selectFirst(title[id]).text();
     }
 
     //Get Published Day
@@ -73,13 +112,8 @@ public class Article {
     public String getAuthor() {
         String name = "";
 
-        //Zing
-        if (id == 0 || id == 2) {
-            name = doc.selectFirst(author[id]).text();
-        }
-
         //VNExpress
-        else if (id == 1) {
+        if (id == 1) {
             if (doc.select(author[id]).text().isEmpty()) {
                 name = doc.getElementsByAttributeValueMatching("style", "text-align:right;").text();
 
@@ -89,18 +123,32 @@ public class Article {
         }
 
         //ThanhNien if more than 1 author
-        if (doc.select("div.details__author__meta ").size() > 1) {
-            for (int i = 1; i < doc.select("div.details__author__meta ").size(); i++) {
+        else if (doc.select("div.details__author__meta ").size() > 1) {
+            for (int i = 0; i < doc.select("div.details__author__meta ").size(); i++) {
                 name += " & " + doc.select(author[id]).get(i).selectFirst("h4 > a").text();
             }
+        }
+        else {
+            name = doc.selectFirst(author[id]).text();
         }
 
         return name;
     }
 
     //Get Summary
-    public String getSum() {
-        return doc.select(sum[id]).text();
+    public void getSum() {
+        if ( id == 4 ) {
+            System.out.println("Avatar : " + doc.select("div.box-detail-thumb.uk-text-center > img").attr("src") );
+
+            if ( doc.selectFirst("div.box-detail-thumb.uk-text-center").childrenSize() > 1 ) {
+                System.out.println("Caption: " + doc.select("div.box-detail-thumb.uk-text-center > em").text());
+            }
+        }
+        System.out.println(doc.select(sum[id]).text());
+
+        if ( id == 2 ) {
+            System.out.println("Avatar: " + doc.selectFirst("div#contentAvatar").selectFirst("img").attr("src") );
+        }
     }
 
     //Check and run body methods
@@ -113,7 +161,6 @@ public class Article {
             //Zing
             case 0:
                 b = doc.selectFirst(body[id]).children();
-
                 bodyZing(b);
                 break;
 
@@ -134,8 +181,19 @@ public class Article {
                 //Thanh Nien
             case 2:
                 b = doc.selectFirst(body[id]).children();
-
                 bodyTN(b);
+                break;
+
+                //Tuoi Tre
+            case 3:
+                b = doc.selectFirst(body[id]).children();
+                bodyTT(b);
+                break;
+
+                //Nhan Dan
+            case 4:
+                b = doc.selectFirst(body[id]).children();
+                bodyND(b);
                 break;
         }
     }
@@ -351,7 +409,7 @@ public class Article {
             }
 
             //Part
-            if (e.tagName().equals("div")) {
+            else if (e.tagName().equals("div")) {
                 //System.out.println(e);
 
                 //Has Children Element
@@ -366,30 +424,28 @@ public class Article {
                                     + ". Source: " + e.child(0).select("div.source > p").text());
                         }
                         System.out.println();
-                        continue;
                     }
 
                     else if( e.child(0).tagName().equals("div") ) {
-                        if (e.child(0).child(0).tagName().equals("table") && e.child(0).child(0).className().equals("video")) {
-                            System.out.println("Link Video: " + e.child(0).select("div.clearfix.cms-video").attr("data-video-src"));
+                        if ( e.child(0).childrenSize() > 0 ) {
 
-                            System.out.println("Caption: " + e.child(0).select("div.imgcaption").text() + "\n");
+                            if (e.child(0).child(0).tagName().equals("table") && e.child(0).child(0).className().equals("video")) {
+                                System.out.println("Link Video: " + e.child(0).select("div.clearfix.cms-video").attr("data-video-src"));
+
+                                System.out.println("Caption: " + e.child(0).select("div.imgcaption").text() + "\n");
+                            }
                         }
-                        continue;
                     }
 
                     //Quote??
                     else if ( e.child(0).className().contains("quote")) {
                         System.out.println("Quote: ");
                         bodyTN(e.selectFirst("div.quote__content").child(0).children());
-
-                        continue;
                     }
 
                     //Normal Paragraph with href
                     else if ( e.child(0).tagName().equals("a") ) {
                         System.out.println(e.text() + "a\n");
-                        continue;
                     }
                 }
 
@@ -399,6 +455,77 @@ public class Article {
                 }
 
             }
+        }
+    }
+
+    //Get Body Tuoi Tre
+    public void bodyTT(Elements body) {
+        for (Element e : body) {
+
+            //Normal Paragraph
+            if (e.tagName().equals("p") ) {
+                if ( e.childrenSize() > 0 ) {
+                    for (Element e2 : e.children()) {
+                        //Bold Characters
+                        if (e2.tagName().equals("b")) {
+                            if ( e2.text().equals(e.text() ) ) {
+                                System.out.println("[" + e2.text() + "]" + "\n");
+                            }
+                            else {
+                                System.out.println(e.text() + "\n");
+                            }
+                            }
+                        }
+                }
+                else {
+                    System.out.println(e.text() + "\n");
+                }
+
+
+            }
+
+            //Part
+            else if ( e.tagName().equals("div") ) {
+
+                //Video
+                if ( e.attr("type").equals("VideoStream") ) {
+                    System.out.println("Link Video: " + e.attr("data-src"));
+
+                    System.out.println("Caption: " + e.select("div.VideoCMS_Caption").text() + "\n");
+                }
+
+                //Image
+                else if ( e.attr("type").equals("Photo") ) {
+                    System.out.println("Link Image: " + e.selectFirst("img").attr("src") );
+                    System.out.println("Caption: " + e.select("div.PhotoCMS_Caption").text() + "\n");
+                }
+
+                //Wrap note
+                else if ( e.attr("type").equals("wrapnote") ) {
+                    bodyTT(e.children());
+                }
+            }
+        }
+    }
+
+    //Get Body Nhan Dan
+    public void bodyND (Elements body) {
+        for (Element e : body ) {
+
+            //Normal Paragraph
+            if ( e.tagName().equals("p") ) {
+                System.out.println(e.text() + "\n");
+            }
+
+            else if ( e.tagName().equals("div") && e.className().equals("light-img") ) {
+                System.out.println("Link Image: " + e.select("img").attr("src") );
+
+                if ( e.selectFirst("figure").childrenSize() > 1) {
+                    System.out.println("Caption: " + e.select("figcaption.img-cap").text());
+                }
+                System.out.println();
+            }
+
         }
     }
 }
