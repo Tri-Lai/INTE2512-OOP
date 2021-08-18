@@ -23,7 +23,6 @@ public class Article {
 
     String pubD;
 
-    //0.Zing    1.VNExpress
     private static String[] category = {"p.the-article-category"    //Zing
             , "ul.breadcrumb > li:nth-child(1)"     //VNExpress
             , "div.breadcrumbs"     //Thanh Nien
@@ -468,14 +467,15 @@ public class Article {
                     for (Element e2 : e.children()) {
                         //Bold Characters
                         if (e2.tagName().equals("b")) {
-                            if ( e2.text().equals(e.text() ) ) {
+                            if (e2.text().equals(e.text())) {
                                 System.out.println("[" + e2.text() + "]" + "\n");
                             }
+                        }
                             else {
                                 System.out.println(e.text() + "\n");
                             }
                             }
-                        }
+
                 }
                 else {
                     System.out.println(e.text() + "\n");
