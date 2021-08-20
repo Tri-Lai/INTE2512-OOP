@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.List;
 
 public class Article {
-
     public Article(String url) throws IOException {
         doc = Jsoup.connect(url).get();
 
@@ -103,7 +102,7 @@ public class Article {
 
     //Get Published Day
     public String getPubDay() {
-        // d/m/y
+        // dd/mm
         return doc.select(pubDay[id]).text();
     }
 
