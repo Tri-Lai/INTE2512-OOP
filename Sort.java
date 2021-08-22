@@ -16,10 +16,16 @@
 
 package ultilities;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import article.Article;
 
@@ -32,6 +38,7 @@ public class Sort {
      * @param hourInput: the time with format "hh:mm"
      */
     public String getPostTime(String DateInput, String hourInput) {
+
         return getPostDay(DateInput, hourInput);
     }
 
@@ -135,7 +142,18 @@ public class Sort {
         return result;
     }
 
-    public ArrayList<Article> sortNewest(ArrayList<Article> article_list) {
+    public static void sortNewest(ArrayList<Article> articleList) {
+        Collections.sort(articleList, new Comparator<Article>() {
+            final DateFormat datePattern = new SimpleDateFormat("dd/MM/yyyy, hh:mm");
 
+            @Override
+            public int compare(Article d1, Article d2) {
+                try {
+                    return datePattern.parse(d1.getPubDay()).compareTo(datePattern.parse(d2.getPubDay()));
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        });
     }
 }
