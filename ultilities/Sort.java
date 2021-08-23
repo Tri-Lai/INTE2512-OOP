@@ -11,7 +11,7 @@
           Trinh Pham Hoang Long - s3879366
 
   Last modified date: dd/mm/yyyy
-  Acknowledgement: Canvas lecture slides, W3schools, mkyong
+  Acknowledgement: Canvas lecture slides, W3schools, mkyong, Geeksforgeeks
 */
 
 package ultilities;
@@ -25,7 +25,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import article.Article;
 
@@ -126,7 +125,7 @@ public class Sort {
          * If the published hour equals with current hour so move to check the elapsed minutes
          */
         int posted_hours;
-        String result = null;
+        String result;
 
         if (post_hour[0] == local_hour[0]) {
             if (post_hour[1] != local_hour[1]) {
@@ -142,17 +141,50 @@ public class Sort {
         return result;
     }
 
+    /**
+     * This method will sorts the article list in descending order.
+     * Acknowledgement: The source code is inspired by Geeksforgeeks.
+     *
+     * @param articleList: the compared Article list in ascending order
+     */
     public static void sortNewest(ArrayList<Article> articleList) {
         Collections.sort(articleList, new Comparator<Article>() {
+            // Set the date format to compare
             final DateFormat datePattern = new SimpleDateFormat("dd/MM/yyyy, hh:mm");
 
             @Override
+            // The method only works if dateTime is not null at the time of comparison
+            // so it's necessary to handle null as well to avoid NullPointerException.
             public int compare(Article d1, Article d2) {
                 try {
-                    return datePattern.parse(d1.getPubDay()).compareTo(datePattern.parse(d2.getPubDay()));
+                    if (d1.getPubDay() == null || d2.getPubDay() == null)
+                        return 0;
+                    else
+                        // Return the compared value of the Article object in ascending order.
+                        return datePattern.parse(d1.getPubDay()).compareTo(datePattern.parse(d2.getPubDay()));
                 } catch (ParseException e) {
                     throw new IllegalArgumentException(e);
                 }
+            }
+        });
+    }
+
+    /**
+     * This method will sorts the article list in descending order.
+     * Acknowledgement: The source code is inspired by Geeksforgeeks.
+     *
+     * @param articleList: the compared Article list in descending order
+     */
+    public static void sortOldest(ArrayList<Article> articleList) {
+        Collections.sort(articleList, (d1, d2) -> {
+            try {
+                // Check if published date of one of two article is null so that throw the NullPointerException
+                if (d1.getPubDay() == null || d2.getPubDay() == null)
+                    throw new Exception();
+                // Return the compared value of the Article object in descending order.
+                return d2.getPubDay().compareTo(d1.getPubDay());
+            } catch (Exception e) {
+                throw new NullPointerException("Date Error: Date is empty!");
             }
         });
     }
