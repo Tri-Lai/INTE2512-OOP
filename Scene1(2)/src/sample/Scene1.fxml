@@ -138,7 +138,7 @@
                                        <children>
                                           <ImageView fitHeight="28.0" fitWidth="158.0" pickOnBounds="true" smooth="false">
                                              <image>
-                                                <Image url="@logo_default.png" />
+                                                <Image url="https://s1.vnecdn.net/vnexpress/restruct/i/v415/logo_default.jpg" />
                                              </image>
                                           </ImageView>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
@@ -166,7 +166,7 @@
                                        <children>
                                           <ImageView fitHeight="28.0" fitWidth="158.0" pickOnBounds="true" smooth="false">
                                              <image>
-                                                <Image url="@logo_default.png" />
+                                                <Image url="https://s1.vnecdn.net/vnexpress/restruct/i/v415/logo_default.jpg" />
                                              </image>
                                           </ImageView>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
@@ -193,7 +193,7 @@
                                        <children>
                                           <ImageView fitHeight="28.0" fitWidth="158.0" pickOnBounds="true" smooth="false">
                                              <image>
-                                                <Image url="@logo_default.png" />
+                                                <Image url="https://s1.vnecdn.net/vnexpress/restruct/i/v415/logo_default.jpg" />
                                              </image>
                                           </ImageView>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
@@ -222,7 +222,7 @@
                                              <children>
                                                 <ImageView fitHeight="28.0" fitWidth="72.0" pickOnBounds="true" smooth="false">
                                                    <image>
-                                                      <Image url="@logo_default.png" />
+                                                      <Image url="https://s1.vnecdn.net/vnexpress/restruct/i/v415/logo_default.jpg" />
                                                    </image>
                                                 </ImageView>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
@@ -250,7 +250,7 @@
                                              <children>
                                                 <ImageView fitHeight="28.0" fitWidth="72.0" pickOnBounds="true" smooth="false">
                                                    <image>
-                                                      <Image url="@logo_default.png" />
+                                                      <Image url="https://s1.vnecdn.net/vnexpress/restruct/i/v415/logo_default.jpg" />
                                                    </image>
                                                 </ImageView>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
@@ -278,7 +278,7 @@
                                              <children>
                                                 <ImageView fitHeight="28.0" fitWidth="72.0" pickOnBounds="true" smooth="false">
                                                    <image>
-                                                      <Image url="@logo_default.png" />
+                                                      <Image url="https://s1.vnecdn.net/vnexpress/restruct/i/v415/logo_default.jpg" />
                                                    </image>
                                                 </ImageView>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
@@ -306,7 +306,7 @@
                                              <children>
                                                 <ImageView fitHeight="28.0" fitWidth="72.0" pickOnBounds="true" smooth="false">
                                                    <image>
-                                                      <Image url="@logo_default.png" />
+                                                      <Image url="https://s1.vnecdn.net/vnexpress/restruct/i/v415/logo_default.jpg" />
                                                    </image>
                                                 </ImageView>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
@@ -334,7 +334,7 @@
                                              <children>
                                                 <ImageView fitHeight="28.0" fitWidth="72.0" pickOnBounds="true" smooth="false">
                                                    <image>
-                                                      <Image url="@logo_default.png" />
+                                                      <Image url="https://s1.vnecdn.net/vnexpress/restruct/i/v415/logo_default.jpg" />
                                                    </image>
                                                 </ImageView>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
@@ -362,7 +362,7 @@
                                              <children>
                                                 <ImageView fitHeight="28.0" fitWidth="72.0" pickOnBounds="true" smooth="false">
                                                    <image>
-                                                      <Image url="@logo_default.png" />
+                                                      <Image url="https://s1.vnecdn.net/vnexpress/restruct/i/v415/logo_default.jpg" />
                                                    </image>
                                                 </ImageView>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
