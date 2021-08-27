@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="myStackPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="myStackPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
       <BorderPane fx:id="mainScreen" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="739.0" prefWidth="1248.0">
          <top>
@@ -64,13 +64,13 @@
          <bottom>
             <HBox alignment="CENTER" prefHeight="104.0" prefWidth="1248.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="prev" mnemonicParsing="false" onAction="#isClicked" prefWidth="60.0" text="PREV" />
-                  <Button fx:id="page1" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#isClicked" prefWidth="2.0" text="1" />
-                  <Button fx:id="page2" mnemonicParsing="false" onAction="#isClicked" text="2" />
-                  <Button fx:id="page3" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" text="3" />
-                  <Button fx:id="page4" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" text="4" />
-                  <Button fx:id="page5" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" text="5" />
-                  <Button fx:id="next" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" prefWidth="60.0" text="NEXT" />
+                  <Button fx:id="prev" mnemonicParsing="false" onAction="#pageClicked" prefWidth="60.0" text="PREV" />
+                  <Button fx:id="page1" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#pageClicked" prefWidth="2.0" text="1" />
+                  <Button fx:id="page2" mnemonicParsing="false" onAction="#pageClicked" text="2" />
+                  <Button fx:id="page3" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageClicked" text="3" />
+                  <Button fx:id="page4" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageClicked" text="4" />
+                  <Button fx:id="page5" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageClicked" text="5" />
+                  <Button fx:id="next" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageClicked" prefWidth="60.0" text="NEXT" />
                </children>
                <opaqueInsets>
                   <Insets />
@@ -90,16 +90,16 @@
                <children>
                   <HBox alignment="TOP_CENTER" prefHeight="120.0" prefWidth="1218.0" spacing="4.0">
                      <children>
-                        <Button fx:id="category1" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" prefHeight="26.0" prefWidth="120.0" text="HOT NEW" />
-                        <Button fx:id="category2" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" prefHeight="26.0" prefWidth="120.0" text="COVID19" />
-                        <Button fx:id="category3" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" prefWidth="120.0" text="POLITIC" />
-                        <Button fx:id="category4" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" prefWidth="120.0" text="BUSINESS" />
-                        <Button fx:id="category5" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" prefWidth="120.0" text="TECHNOLOGY" />
-                        <Button fx:id="category6" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" prefWidth="120.0" text="HEALTH" />
-                        <Button fx:id="category7" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" prefWidth="120.0" text="SPORTS" />
-                        <Button fx:id="category8" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" prefWidth="120.0" text="ENTERTAINMENT" />
-                        <Button fx:id="category9" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" prefWidth="120.0" text="WORLD" />
-                        <Button fx:id="category10" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" prefWidth="120.0" text="OTHER" />
+                        <Button fx:id="category1" minWidth="-Infinity" mnemonicParsing="false" onAction="#linkClicked" prefHeight="26.0" prefWidth="120.0" text="HOT NEW" />
+                        <Button fx:id="category2" minWidth="-Infinity" mnemonicParsing="false" onAction="#linkClicked" prefHeight="26.0" prefWidth="120.0" text="COVID19" />
+                        <Button fx:id="category3" minWidth="-Infinity" mnemonicParsing="false" onAction="#linkClicked" prefWidth="120.0" text="POLITIC" />
+                        <Button fx:id="category4" minWidth="-Infinity" mnemonicParsing="false" onAction="#linkClicked" prefWidth="120.0" text="BUSINESS" />
+                        <Button fx:id="category5" minWidth="-Infinity" mnemonicParsing="false" onAction="#linkClicked" prefWidth="120.0" text="TECHNOLOGY" />
+                        <Button fx:id="category6" minWidth="-Infinity" mnemonicParsing="false" onAction="#linkClicked" prefWidth="120.0" text="HEALTH" />
+                        <Button fx:id="category7" minWidth="-Infinity" mnemonicParsing="false" onAction="#linkClicked" prefWidth="120.0" text="SPORTS" />
+                        <Button fx:id="category8" minWidth="-Infinity" mnemonicParsing="false" onAction="#linkClicked" prefWidth="120.0" text="ENTERTAINMENT" />
+                        <Button fx:id="category9" minWidth="-Infinity" mnemonicParsing="false" onAction="#linkClicked" prefWidth="120.0" text="WORLD" />
+                        <Button fx:id="category10" minWidth="-Infinity" mnemonicParsing="false" onAction="#linkClicked" prefWidth="120.0" text="OTHER" />
                      </children>
                      <opaqueInsets>
                         <Insets />
@@ -112,7 +112,7 @@
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                  <children>
-                                    <Button fx:id="title" layoutX="315.0" layoutY="38.0" mnemonicParsing="false" onAction="#isClicked" text="title" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <Button fx:id="title" layoutX="315.0" layoutY="38.0" mnemonicParsing="false" onAction="#linkClicked" text="title" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets />
@@ -125,7 +125,7 @@
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="122.0" prefWidth="341.0" />
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="104.0" prefWidth="343.0">
                                  <children>
-                                    <Button fx:id="title1" layoutX="141.0" layoutY="18.0" mnemonicParsing="false" onAction="#isClicked" text="title1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <Button fx:id="title1" layoutX="141.0" layoutY="18.0" mnemonicParsing="false" onAction="#linkClicked" text="title1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </items>
@@ -135,7 +135,7 @@
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="66.0" prefWidth="278.0">
                                  <children>
-                                    <Button fx:id="title2" layoutX="142.0" layoutY="67.0" mnemonicParsing="false" onAction="#isClicked" text="title2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <Button fx:id="title2" layoutX="142.0" layoutY="67.0" mnemonicParsing="false" onAction="#linkClicked" text="title2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </items>
@@ -147,7 +147,7 @@
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                        <children>
-                                          <Button fx:id="title3" layoutX="26.0" layoutY="49.0" mnemonicParsing="false" onAction="#isClicked" text="title3" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                          <Button fx:id="title3" layoutX="26.0" layoutY="49.0" mnemonicParsing="false" onAction="#linkClicked" text="title3" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                  </items>
@@ -157,7 +157,7 @@
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="124.0" prefWidth="118.0">
                                        <children>
-                                          <Button fx:id="title4" layoutX="26.0" layoutY="49.0" mnemonicParsing="false" onAction="#isClicked" text="title4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                          <Button fx:id="title4" layoutX="26.0" layoutY="49.0" mnemonicParsing="false" onAction="#linkClicked" text="title4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                  </items>
@@ -167,7 +167,7 @@
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                        <children>
-                                          <Button fx:id="title5" layoutX="43.0" layoutY="27.0" mnemonicParsing="false" onAction="#isClicked" text="title5" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                          <Button fx:id="title5" layoutX="43.0" layoutY="27.0" mnemonicParsing="false" onAction="#linkClicked" text="title5" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                  </items>
@@ -177,7 +177,7 @@
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                        <children>
-                                          <Button fx:id="title6" layoutX="26.0" layoutY="50.0" mnemonicParsing="false" onAction="#isClicked" text="title6" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                          <Button fx:id="title6" layoutX="26.0" layoutY="50.0" mnemonicParsing="false" onAction="#linkClicked" text="title6" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                  </items>
@@ -187,7 +187,7 @@
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                        <children>
-                                          <Button fx:id="title7" layoutX="26.0" layoutY="50.0" mnemonicParsing="false" onAction="#isClicked" text="title7" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                          <Button fx:id="title7" layoutX="26.0" layoutY="50.0" mnemonicParsing="false" onAction="#linkClicked" text="title7" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                  </items>
@@ -197,7 +197,7 @@
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                        <children>
-                                          <Button fx:id="title8" layoutX="26.0" layoutY="50.0" mnemonicParsing="false" onAction="#isClicked" text="title8" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                          <Button fx:id="title8" layoutX="26.0" layoutY="50.0" mnemonicParsing="false" onAction="#linkClicked" text="title8" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                  </items>

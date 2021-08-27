@@ -55,13 +55,13 @@
          </top>
          <bottom>
             <GridPane vgap="10.0" BorderPane.alignment="CENTER">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="583.0" text="INTE2512 - Object Oriented Programming - Group Kingsman - Final Project: News aggregator" textAlignment="CENTER" translateX="350.0" GridPane.rowIndex="1">
                      <font>
@@ -73,13 +73,13 @@
                   </Label>
                   <HBox alignment="CENTER" prefHeight="104.0" prefWidth="1248.0" spacing="2.0">
                      <children>
-                        <Button fx:id="prev" mnemonicParsing="false" onAction="#isClicked" prefWidth="60.0" text="PREV" />
-                        <Button fx:id="page1" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#isClicked" prefWidth="2.0" text="1" />
-                        <Button fx:id="page2" mnemonicParsing="false" onAction="#isClicked" text="2" />
-                        <Button fx:id="page3" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" text="3" />
-                        <Button fx:id="page4" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" text="4" />
-                        <Button fx:id="page5" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" text="5" />
-                        <Button fx:id="next" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" prefWidth="60.0" text="NEXT" />
+                        <Button fx:id="prev" mnemonicParsing="false" onAction="#pageClicked" prefWidth="60.0" text="PREV" />
+                        <Button fx:id="page1" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#pageClicked" prefWidth="2.0" text="1" />
+                        <Button fx:id="page2" mnemonicParsing="false" onAction="#pageClicked" text="2" />
+                        <Button fx:id="page3" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageClicked" text="3" />
+                        <Button fx:id="page4" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageClicked" text="4" />
+                        <Button fx:id="page5" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageClicked" text="5" />
+                        <Button fx:id="next" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageClicked" prefWidth="60.0" text="NEXT" />
                      </children>
                      <opaqueInsets>
                         <Insets />
@@ -101,16 +101,16 @@
                <children>
                   <HBox alignment="TOP_CENTER" prefHeight="120.0" prefWidth="1218.0" spacing="10.0">
                      <children>
-                        <Button fx:id="category1" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" prefHeight="26.0" style="-fx-background-color: #8B0000 #8B0000;" text="HOT NEW" textFill="WHITE" />
-                        <Button fx:id="category2" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" prefHeight="26.0" style="-fx-background-color: #8B0000 #8B0000;" text="COVID19" textFill="WHITE" />
-                        <Button fx:id="category3" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" style="-fx-background-color: #8B0000 #8B0000;" text="POLITIC" textFill="WHITE" />
-                        <Button fx:id="category4" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" style="-fx-background-color: #8B0000 #8B0000;" text="BUSINESS" textFill="WHITE" />
-                        <Button fx:id="category5" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" style="-fx-background-color: #8B0000 #8B0000;" text="TECHNOLOGY" textFill="WHITE" />
-                        <Button fx:id="category6" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" style="-fx-background-color: #8B0000 #8B0000;" text="HEALTH" textFill="WHITE" />
-                        <Button fx:id="category7" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" style="-fx-background-color: #8B0000 #8B0000;" text="SPORTS" textFill="WHITE" />
-                        <Button fx:id="category8" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" style="-fx-background-color: #8B0000 #8B0000;" text="ENTERTAINMENT" textFill="WHITE" />
-                        <Button fx:id="category9" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" style="-fx-background-color: #8B0000 #8B0000;" text="WORLD" textFill="WHITE" />
-                        <Button fx:id="category10" minWidth="-Infinity" mnemonicParsing="false" onAction="#isClicked" style="-fx-background-color: #8B0000 #8B0000;" text="OTHER" textFill="WHITE" />
+                        <Button fx:id="category1" minWidth="-Infinity" mnemonicParsing="false" onAction="#linkClicked" prefHeight="26.0" style="-fx-background-color: #8B0000 #8B0000;" text="HOT NEW" textFill="WHITE" />
+                        <Button fx:id="category2" minWidth="-Infinity" mnemonicParsing="false" onAction="#linkClicked" prefHeight="26.0" style="-fx-background-color: #8B0000 #8B0000;" text="COVID19" textFill="WHITE" />
+                        <Button fx:id="category3" minWidth="-Infinity" mnemonicParsing="false" onAction="#linkClicked" style="-fx-background-color: #8B0000 #8B0000;" text="POLITIC" textFill="WHITE" />
+                        <Button fx:id="category4" minWidth="-Infinity" mnemonicParsing="false" onAction="#linkClicked" style="-fx-background-color: #8B0000 #8B0000;" text="BUSINESS" textFill="WHITE" />
+                        <Button fx:id="category5" minWidth="-Infinity" mnemonicParsing="false" onAction="#linkClicked" style="-fx-background-color: #8B0000 #8B0000;" text="TECHNOLOGY" textFill="WHITE" />
+                        <Button fx:id="category6" minWidth="-Infinity" mnemonicParsing="false" onAction="#linkClicked" style="-fx-background-color: #8B0000 #8B0000;" text="HEALTH" textFill="WHITE" />
+                        <Button fx:id="category7" minWidth="-Infinity" mnemonicParsing="false" onAction="#linkClicked" style="-fx-background-color: #8B0000 #8B0000;" text="SPORTS" textFill="WHITE" />
+                        <Button fx:id="category8" minWidth="-Infinity" mnemonicParsing="false" onAction="#linkClicked" style="-fx-background-color: #8B0000 #8B0000;" text="ENTERTAINMENT" textFill="WHITE" />
+                        <Button fx:id="category9" minWidth="-Infinity" mnemonicParsing="false" onAction="#linkClicked" style="-fx-background-color: #8B0000 #8B0000;" text="WORLD" textFill="WHITE" />
+                        <Button fx:id="category10" minWidth="-Infinity" mnemonicParsing="false" onAction="#linkClicked" style="-fx-background-color: #8B0000 #8B0000;" text="OTHER" textFill="WHITE" />
                      </children>
                      <opaqueInsets>
                         <Insets />
@@ -133,7 +133,7 @@
                                     <Insets />
                                  </opaqueInsets>
                                  <children>
-                                    <Hyperlink fx:id="title" alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="2.0" onAction="#isClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <Hyperlink fx:id="title" alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="2.0" onAction="#linkClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                     <HBox layoutX="1.0" layoutY="33.0" prefHeight="31.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
                                        <children>
                                           <ImageView fitHeight="28.0" fitWidth="158.0" pickOnBounds="true" smooth="false">
@@ -161,7 +161,7 @@
                               </AnchorPane>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="56.0" prefWidth="238.0">
                                  <children>
-                                    <Hyperlink fx:id="title1" alignment="CENTER" contentDisplay="CENTER" onAction="#isClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <Hyperlink fx:id="title1" alignment="CENTER" contentDisplay="CENTER" onAction="#linkClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                     <HBox prefHeight="31.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
                                        <children>
                                           <ImageView fitHeight="16.0" fitWidth="77.0" pickOnBounds="true" smooth="false">
@@ -190,7 +190,7 @@
                                        </children></AnchorPane>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                        <children>
-                                          <Hyperlink fx:id="title3" alignment="CENTER" contentDisplay="CENTER" onAction="#isClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                          <Hyperlink fx:id="title3" alignment="CENTER" contentDisplay="CENTER" onAction="#linkClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                           <HBox prefHeight="31.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
                                              <children>
                                                 <ImageView fitHeight="28.0" fitWidth="72.0" pickOnBounds="true" smooth="false">
@@ -221,7 +221,7 @@
                                     </AnchorPane>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                        <children>
-                                          <Hyperlink fx:id="title31" alignment="CENTER" contentDisplay="CENTER" onAction="#isClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                          <Hyperlink fx:id="title31" alignment="CENTER" contentDisplay="CENTER" onAction="#linkClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                           <HBox prefHeight="31.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
                                              <children>
                                                 <ImageView fitHeight="28.0" fitWidth="72.0" pickOnBounds="true" smooth="false">
@@ -252,7 +252,7 @@
                                     </AnchorPane>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                        <children>
-                                          <Hyperlink fx:id="title311" alignment="CENTER" contentDisplay="CENTER" onAction="#isClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                          <Hyperlink fx:id="title311" alignment="CENTER" contentDisplay="CENTER" onAction="#linkClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                           <HBox prefHeight="31.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
                                              <children>
                                                 <ImageView fitHeight="28.0" fitWidth="72.0" pickOnBounds="true" smooth="false">
@@ -283,7 +283,7 @@
                                     </AnchorPane>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                        <children>
-                                          <Hyperlink fx:id="title3111" alignment="CENTER" contentDisplay="CENTER" onAction="#isClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                          <Hyperlink fx:id="title3111" alignment="CENTER" contentDisplay="CENTER" onAction="#linkClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                           <HBox prefHeight="31.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
                                              <children>
                                                 <ImageView fitHeight="28.0" fitWidth="72.0" pickOnBounds="true" smooth="false">
@@ -314,7 +314,7 @@
                                     </AnchorPane>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                        <children>
-                                          <Hyperlink fx:id="title31111" alignment="CENTER" contentDisplay="CENTER" onAction="#isClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                          <Hyperlink fx:id="title31111" alignment="CENTER" contentDisplay="CENTER" onAction="#linkClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                           <HBox prefHeight="31.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
                                              <children>
                                                 <ImageView fitHeight="28.0" fitWidth="72.0" pickOnBounds="true" smooth="false">
@@ -345,7 +345,7 @@
                                     </AnchorPane>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                        <children>
-                                          <Hyperlink fx:id="title311111" alignment="CENTER" contentDisplay="CENTER" onAction="#isClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                          <Hyperlink fx:id="title311111" alignment="CENTER" contentDisplay="CENTER" onAction="#linkClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                           <HBox prefHeight="31.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
                                              <children>
                                                 <ImageView fitHeight="28.0" fitWidth="72.0" pickOnBounds="true" smooth="false">
@@ -378,7 +378,7 @@
                               </AnchorPane>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="56.0" prefWidth="238.0">
                                  <children>
-                                    <Hyperlink fx:id="title11" alignment="CENTER" contentDisplay="CENTER" onAction="#isClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <Hyperlink fx:id="title11" alignment="CENTER" contentDisplay="CENTER" onAction="#linkClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                     <HBox prefHeight="31.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
                                        <children>
                                           <ImageView fitHeight="15.0" fitWidth="77.0" pickOnBounds="true" smooth="false">
@@ -406,7 +406,7 @@
                               </AnchorPane>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="56.0" prefWidth="238.0">
                                  <children>
-                                    <Hyperlink fx:id="title12" alignment="CENTER" contentDisplay="CENTER" onAction="#isClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <Hyperlink fx:id="title12" alignment="CENTER" contentDisplay="CENTER" onAction="#linkClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                     <HBox prefHeight="31.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
                                        <children>
                                           <ImageView fitHeight="17.0" fitWidth="77.0" pickOnBounds="true" smooth="false">
