@@ -6,7 +6,7 @@ The project is aimed to design a JavaFX application - News aggregator, which wil
 * Here is all team members of group Kingsman *
 1. Lai Nghiep Tri - s3799602
 2. Thieu Tran Tri Thuc - s3870730
-3. Trinh Pham Hoang Long - s3879366
+3. Pham Trinh Hoang Long - s3879366
 4. Nguyen Hoang Long - s3878451
 
 * NOTE: Application source code is for internal use only *
