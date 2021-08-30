@@ -6,23 +6,28 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 
 import java.util.List;
+import java.util.Locale;
 
 public class Article {
-    public Article(String url) throws IOException {
+    public Article(String url, String avtUrl) throws IOException {
         doc = Jsoup.connect(url).get();
 
         id = checkWeb(url);
 
-        pubD = getPubDay();
+        pubD = setPubDay();
+
+        img = avtUrl;
     }
 
-    Document doc;
+    private String img;
 
-    int id;
+    private Document doc;
 
-    String pubD;
+    private int id;
 
-    private static String[] category = {"p.the-article-category"    //Zing
+    private String pubD;
+
+    private static String[] category = {"p[class*=cate]"    //Zing
             , "ul.breadcrumb > li:nth-child(1)"     //VNExpress
             , "div.breadcrumbs"     //Thanh Nien
             , "div.bread-crumbs.fl > ul > li.fl:nth-child(1)"        //Tuoi Tre
@@ -90,9 +95,26 @@ public class Article {
         return id;
     }
 
+    public String getAvt () {
+        return img;
+    }
+
     //Get Category
     public String getCate() {
-        return doc.selectFirst(category[id]).text();
+        //Get Keywords
+        String kw = doc.select("meta[name=keywords]").attr("content").toLowerCase();
+
+        //Get Description
+        kw += doc.select("meta[name=description]").attr("content").toLowerCase();
+
+        //Get tags
+        for (Element e : doc.select("meta[property=article:tag]") ) {
+            kw += e.attr("content");
+        }
+
+        //Get Inside Category
+        kw += doc.select(category[id]).text().toLowerCase();
+        return kw;
     }
 
     //Get Title
@@ -100,8 +122,8 @@ public class Article {
         return doc.selectFirst(title[id]).text();
     }
 
-    //Get Published Day
-    public String getPubDay() {
+    //Set Published Day
+    public String setPubDay() {
         // dd/mm
         return doc.select(pubDay[id]).text();
     }
