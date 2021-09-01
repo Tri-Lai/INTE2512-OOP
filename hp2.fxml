@@ -116,7 +116,7 @@
                   </HBox>
                </children>
             </VBox>
-            <BorderPane fx:id="articleContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+            <BorderPane fx:id="articleContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
                <center>
                   <GridPane hgap="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="470.0" prefWidth="792.0" vgap="10.0" BorderPane.alignment="CENTER">
                      <columnConstraints>
@@ -245,7 +245,7 @@
                <right>
                   <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0" BorderPane.alignment="CENTER">
                      <children>
-                        <SplitPane dividerPositions="0.5" prefWidth="386.0">
+                        <SplitPane dividerPositions="0.5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
                            <items>
                               <ImageView fitHeight="94.0" fitWidth="131.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -269,7 +269,7 @@
                               </VBox>
                            </items>
                         </SplitPane>
-                        <SplitPane dividerPositions="0.5" layoutX="10.0" layoutY="10.0" prefWidth="386.0">
+                        <SplitPane dividerPositions="0.5" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
                            <items>
                               <ImageView fitHeight="94.0" fitWidth="131.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -293,7 +293,7 @@
                               </VBox>
                            </items>
                         </SplitPane>
-                        <SplitPane dividerPositions="0.5" layoutX="10.0" layoutY="106.0" prefWidth="386.0">
+                        <SplitPane dividerPositions="0.5" layoutX="10.0" layoutY="106.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
                            <items>
                               <ImageView fitHeight="94.0" fitWidth="131.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -317,7 +317,7 @@
                               </VBox>
                            </items>
                         </SplitPane>
-                        <SplitPane dividerPositions="0.5" layoutX="10.0" layoutY="202.0" prefWidth="386.0">
+                        <SplitPane dividerPositions="0.5" layoutX="10.0" layoutY="202.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
                            <items>
                               <ImageView fitHeight="94.0" fitWidth="131.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -341,7 +341,7 @@
                               </VBox>
                            </items>
                         </SplitPane>
-                        <SplitPane dividerPositions="0.5" layoutX="10.0" layoutY="298.0" prefWidth="386.0">
+                        <SplitPane dividerPositions="0.5" layoutX="10.0" layoutY="298.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
                            <items>
                               <ImageView fitHeight="94.0" fitWidth="131.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -365,7 +365,7 @@
                               </VBox>
                            </items>
                         </SplitPane>
-                        <SplitPane dividerPositions="0.5" layoutX="10.0" layoutY="394.0" prefWidth="386.0">
+                        <SplitPane dividerPositions="0.5" layoutX="10.0" layoutY="394.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
                            <items>
                               <ImageView fitHeight="94.0" fitWidth="131.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
