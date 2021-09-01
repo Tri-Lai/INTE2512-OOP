@@ -46,10 +46,41 @@ public class Category {
             "https://vnexpress.net/"};
 
     public ArrayList<Article> getList(String name) {
-        if (name == "tech" ) {
-            return Tech;
+        ArrayList<Article> out = new ArrayList<Article>();
+
+        switch ( name ) {
+            case "covid":
+                out = Covid;
+                break;
+
+            case "pol":
+                out = Pol;
+                break;
+            case "tech":
+                out = Tech;
+            break;
+
+            case "health":
+                out =  Health;
+            break;
+
+            case "sport":
+                out =  Sport;
+            break;
+
+            case "Entertain":
+                out =  Entertain;
+            break;
+
+            case "world":
+                out = World;
+                break;
+
+            case "other":
+                out = Other;
+                break;
         }
-        return Tech;
+        return out;
     }
 
     public void getNum () {
