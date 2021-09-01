@@ -125,8 +125,8 @@
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="453.0" minWidth="10.0" prefWidth="244.0" />
                      </columnConstraints>
                      <rowConstraints>
-                        <RowConstraints maxHeight="373.77203369140625" minHeight="297.1522216796875" prefHeight="335.75091552734375" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="369.3477783203125" prefHeight="330.24908447265625" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="1.7976931348623157E308" vgrow="ALWAYS" />
+                        <RowConstraints maxHeight="1.7976931348623157E308" vgrow="ALWAYS" />
                      </rowConstraints>
                      <children>
                         <SplitPane dividerPositions="0.6339031339031339" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" GridPane.columnSpan="3">
@@ -136,14 +136,14 @@
                                     <Image url="@ptt-thanh-6533.png" />
                                  </image>
                               </ImageView>
-                              <VBox>
+                              <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                  <children>
-                                    <Hyperlink fx:id="title111" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="50.0" prefWidth="821.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER">
+                                    <Hyperlink fx:id="title111" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#articleClicked" prefHeight="50.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER">
                                        <font>
                                           <Font size="13.0" />
                                        </font>
                                     </Hyperlink>
-                                    <HBox>
+                                    <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
                                        <children>
                                           <ImageView fitHeight="37.0" fitWidth="122.0" pickOnBounds="true" smooth="false">
                                              <image>
@@ -171,7 +171,7 @@
                               <VBox minHeight="-Infinity">
                                  <children>
                                     <Hyperlink fx:id="title1222" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="50.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" />
-                                    <HBox prefHeight="37.0" prefWidth="269.0">
+                                    <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="37.0" VBox.vgrow="ALWAYS">
                                        <children>
                                           <ImageView fitHeight="26.0" fitWidth="70.0" pickOnBounds="true" smooth="false">
                                              <image>
@@ -195,7 +195,7 @@
                               <VBox>
                                  <children>
                                     <Hyperlink fx:id="title12221" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="50.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" />
-                                    <HBox prefHeight="37.0" prefWidth="269.0">
+                                    <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="37.0" VBox.vgrow="ALWAYS">
                                        <children>
                                           <ImageView fitHeight="26.0" fitWidth="70.0" pickOnBounds="true" smooth="false">
                                              <image>
@@ -219,7 +219,7 @@
                               <VBox>
                                  <children>
                                     <Hyperlink fx:id="title12222" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="50.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" />
-                                    <HBox prefHeight="37.0" prefWidth="269.0">
+                                    <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="37.0" VBox.vgrow="ALWAYS">
                                        <children>
                                           <ImageView fitHeight="26.0" fitWidth="70.0" pickOnBounds="true" smooth="false">
                                              <image>
