@@ -32,6 +32,6 @@ class StopWatch {
     }
 
     public long getElapsedTime() {
-        return e - s;
+        return  System.currentTimeMillis() - s;
     }
 }
