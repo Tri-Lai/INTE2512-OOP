@@ -1,4 +1,3 @@
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -7,8 +6,11 @@ import org.jsoup.select.Elements;
 import java.io.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Category {
     public Category() throws IOException {
@@ -45,17 +47,27 @@ public class Category {
             "https://nhandan.vn/",
             "https://vnexpress.net/"};
 
+    //Get the specified Category list
     public ArrayList<Article> getList(String name) {
         ArrayList<Article> out = new ArrayList<Article>();
 
         switch ( name ) {
+            case "new":
+                out = New;
+                break;
+
             case "covid":
                 out = Covid;
                 break;
 
-            case "pol":
+            case "politic":
                 out = Pol;
                 break;
+
+            case "business":
+                out = Busi;
+                break;
+
             case "tech":
                 out = Tech;
             break;
@@ -68,7 +80,7 @@ public class Category {
                 out =  Sport;
             break;
 
-            case "Entertain":
+            case "entertain":
                 out =  Entertain;
             break;
 
@@ -80,114 +92,180 @@ public class Category {
                 out = Other;
                 break;
         }
+
         return out;
     }
 
     public void getNum () {
         System.out.println("Covid: " + Covid.size() + " Politic: " + Pol.size()
                 + " Business: " + Busi.size() + " Tech: " + Tech.size() + " Health: " + Health.size()
-                + " Sport: " + Sport.size() + " Entertain: " + Entertain.size() + " World: " + World.size());
+                + " Sport: " + Sport.size() + " Entertain: " + Entertain.size() + " World: " + World.size()
+                + " Other: " + Other.size());
     }
 
+    //Scrap articles for specified Category
     public void setCate(String cate) throws IOException {
         StopWatch clock = new StopWatch();
         clock.start();
 
         ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
+        //Zing
         es.execute( () -> {
             try {
                 getFrom(10, cate, source[0], link[0]);
-            } catch (IOException e) {}
+            } catch (Exception e) {}
             System.out.println("Zing: " + clock.getElapsedTime());
         });
 
+        //Thanh Nien
         es.execute( () -> {
             try {
                 getFrom(10, cate, source[1], link[1]);
-            } catch (IOException e) {}
+            } catch (Exception e) {}
             System.out.println("Thanh Nien: " + clock.getElapsedTime());
         });
 
+        //Tuoi Tre
+        es.execute( () -> {
+            try {
+                getFrom(10, cate, source[2], link[2]);
+            } catch (Exception e) {}
+            System.out.println("Tuoi Tre: " + clock.getElapsedTime());
+        });
+
+        //Nhan Dan
         es.execute( () -> {
             try {
                 getFrom(10, cate, source[3], link[3]);
-            } catch (IOException e) {}
+            } catch (Exception e) {}
             System.out.println("Nhan Dan: " + clock.getElapsedTime());
         });
 
+        //VNExpress
         es.execute( () -> {
             try {
-                getFrom(5, cate, source[4], link[4]);
-            } catch (IOException e) {}
-            System.out.println("VNE: " + clock.getElapsedTime());
-        });
-
-        es.execute( () -> {
-            try {
-                getFrom(5, cate, source[4], link[4]);
-            } catch (IOException e) {}
+                getFrom(10, cate, source[4], link[4]);
+            } catch (Exception e) {}
             System.out.println("VNE: " + clock.getElapsedTime());
         });
 
         es.shutdown();
-        while(!es.isTerminated()) {};
+        while ( !es.isTerminated() ) {};
 
         System.out.print("\n" + "Time consume: " + clock.getElapsedTime() + " ms" + "\n");
     }
 
-    private void getFrom(int number, String cate, String src, String hpl) throws IOException {
+    //Get the Number of article of Cate from Src which have homepage link is hpl
+    private void getFrom(int number, String cate, String src, String hpl) throws IOException, InterruptedException {
+        ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
         File hP = new File("Downloads/" + src + ".html");
 
         Document doc = Jsoup.parse(hP, "UTF-8", hpl);
 
-        int count = 1;
-
         //Check and get URl of category
         String urlcate = getUrlCate(doc, cate, hpl);
 
+        System.out.println(urlcate);
+
+        //Get Category page
         doc = Jsoup.connect(urlcate).get();
 
-        //Get each Article
-        for (Element e : doc.select("article")) {
-            String avt = "";
+        int count = 1;
 
-            //Check and get Avatar Image Link
-            if (!(e.select("img").isEmpty())) {
-                avt = e.selectFirst("img").attr("src");
+        List<Element> list;
+        boolean isTuoiTre;
 
-                //Check image link
-                if (!(avt.contains("https:")) && !(avt.contains(".jpeg"))) {
-                    avt = e.selectFirst("img").attr("data-src");
+        //Vne, Zing, TN, ND
+        if ( !doc.select("article").isEmpty() ) {
+             list = doc.select("article");
+             isTuoiTre = false;
+        }
+
+        //Tuoi Tre
+        else {
+            if ( !doc.select("div.box-tournament.box-worldcup-2018").isEmpty() ) {
+                doc.select("div.box-tournament.box-worldcup-2018").remove();
+            }
+            list = doc.selectFirst("section[id*=content]").select("a[href*=/][title~=[a-z]]");
+            isTuoiTre = true;
+        }
+
+        for (int id = 0; id < 50; id++) {
+            Element e = list.get(id);
+
+            if ( !isTuoiTre ) {
+                //avoid the blank
+                if (e.child(0).tagName().equals("ins")) {
+                    continue;
                 }
             }
 
-            //Get Article Link
-            String url = e.selectFirst("a").attr("href");
-
-            //Check to complete url
-            if (!url.contains(hpl)) {
-                url = new StringBuffer(hpl).deleteCharAt(hpl.length() - 1) + url;
+            //Filter for tuoi tre
+            if (e.select("img").isEmpty() && isTuoiTre) {
+                continue;
             }
 
-            //Create Article from link
-            Article a = new Article(url, avt);
+                String avt = "";
 
-            //Check if it belongs to any other Cate and add
-            check2Add(a.getKWs().toLowerCase(), a);
+                //Check and get Avatar Image Link
+                if (!(e.select("img").isEmpty())) {
+                    avt = e.selectFirst("img").attr("src");
 
-            //System.out.printf("%d: %s%n%s%n%n", Tech.size(), url, a.getKWs());
+                    //Check image link
+                    if (!(avt.contains("https:")) && !(avt.contains(".jpeg"))) {
+                        avt = e.selectFirst("img").attr("data-src");
+                    }
+                }
+
+                //Get Article Link
+                String url = e.selectFirst("a").attr("href");
+
+                //Check to complete url
+                if (!url.contains(hpl)) {
+                    url = new StringBuffer(hpl).deleteCharAt(hpl.length() - 1) + url;
+                }
+
+            //dont get the special articles
+            if ( url.contains("https://special.nhandan.vn/") ) {
+                id++;
+                e = list.get(id);
+                //Check and get Avatar Image Link
+                if (!(e.select("img").isEmpty())) {
+                    avt = e.selectFirst("img").attr("src");
+
+                    //Check image link
+                    if (!(avt.contains("https:")) && !(avt.contains(".jpeg"))) {
+                        avt = e.selectFirst("img").attr("data-src");
+                    }
+                }
+            }
+
+            String finalUrl = url;
+            String finalAvt = avt;
+            es.execute( () -> {
+                try {
+                    Article a = new Article(finalUrl, finalAvt);
+
+                    //Check if it belongs to any other Cate and add
+                    check2Add(a.getKWs().toLowerCase(), a, cate);
+                } catch (IOException ex) {};
+            });
 
             //Stop when scraped 10 Article
             if (count == number) {
+                es.shutdown();
                 break;
             }
-
             count++;
         }
+
+        while ( !es.isTerminated() ) {};
     }
 
-    private String getUrlCate(Document doc, String cate, String hpl) throws IOException {
+    //Get url of page of specified category
+    private String getUrlCate(Document doc, String cate, String hpl) {
         String out = "";
 
         //Get category hyperlink
@@ -215,10 +293,35 @@ public class Category {
 
                 //Category Business
             case "business": {
-                if (!(doc.select("a[href*=kinh-doanh]").isEmpty())) {
-                    out = doc.selectFirst("a[href*=kinh-doanh]").attr("href");
-                } else if (!doc.select("a[href*=kinhdoanh]").isEmpty()) {
-                    out = doc.selectFirst("a[href*=kinhdoanh]").attr("href");
+                if (!doc.select("a[href*=kinh-doanh]").isEmpty()) {
+                    for (Element e : doc.select("a[href*=kinh-doanh]") ) {
+                        if (e.text().equalsIgnoreCase("kinh doanh") || e.text().equalsIgnoreCase("tài chính - kinh doanh")) {
+                            out = e.attr("href");
+
+                            if (out.contains(hpl) ) {
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (!(doc.select("a[href*=kinhdoanh]").isEmpty())) {
+                    for (Element e : doc.select("a[href*=kinhdoanh]") ) {
+                        if (e.text().equalsIgnoreCase("kinh doanh") || e.text().equalsIgnoreCase("tài chính - kinh doanh")) {
+                            out = e.attr("href");
+
+                            if (out.contains(hpl) ) {
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (out.isEmpty()) {
+                    if (!(doc.select("a[href*=kinhte]").isEmpty())) {
+                        out = doc.selectFirst("a[href*=kinhte]").attr("href");
+                    } else if (!doc.select("a[href*=kinh-te]").isEmpty()) {
+                        out = doc.selectFirst("a[href*=kinh-te]").attr("href");
+                    }
                 }
 
                 break;
@@ -226,12 +329,12 @@ public class Category {
 
             //Category Technology
             case "tech": {
-                if (!(doc.select("a[href*=cong-nghe]").isEmpty())) {
-                    out = doc.selectFirst("a[href*=cong-nghe]").attr("href");
-                } else if (!doc.select("a[href*=congnghe]").isEmpty()) {
+                if (!doc.select("a[href*=congnghe]").isEmpty()) {
                     out = doc.selectFirst("a[href*=congnghe]").attr("href");
                 }
-
+                else if (!(doc.select("a[href*=cong-nghe]").isEmpty())) {
+                    out = doc.selectFirst("a[href*=cong-nghe]").attr("href");
+                }
                 break;
             }
 
@@ -248,10 +351,10 @@ public class Category {
 
             //Category Sport
             case "sport": {
-                if (!(doc.select("a[href*=the-thao]").isEmpty())) {
-                    out = doc.selectFirst("a[href*=the-thao]").attr("href");
-                } else if (!doc.select("a[href*=thethao]").isEmpty()) {
+                if (!(doc.select("a[href*=thethao]").isEmpty())) {
                     out = doc.selectFirst("a[href*=thethao]").attr("href");
+                } else if (!doc.select("a[href*=the-thao]").isEmpty()) {
+                    out = doc.selectFirst("a[href*=the-thao]").attr("href");
                 }
 
                 break;
@@ -259,17 +362,52 @@ public class Category {
 
             //Entertainment
             case "entertain": {
-                if (!(doc.select("a[href*=giai-tri]").isEmpty())) {
-                    out = doc.selectFirst("a[href*=giai-tri]").attr("href");
-                } else if (!doc.select("a[href*=giaitri]").isEmpty()) {
-                    out = doc.selectFirst("a[href*=giaitri]").attr("href");
+                if (!doc.select("a[href*=giaitri]").isEmpty()) {
+                    for (Element e : doc.select("a[href*=giaitri]") ) {
+                        if (e.text().equalsIgnoreCase("giải trí")) {
+                            out = e.attr("href");
+
+                            if (!out.contains("video") ) {
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (!(doc.select("a[href*=giai-tri]").isEmpty())) {
+                    for (Element e : doc.select("a[href*=giai-tri]") ) {
+                        if (e.text().equalsIgnoreCase("giải trí")) {
+                            out = e.attr("href");
+
+                            if (!out.contains("video") ) {
+                                break;
+                            }
+                        }
+                    }
                 }
 
-                if (out.isEmpty()) {
-                    if (!(doc.select("a[href*=van-hoa]").isEmpty())) {
-                        out = doc.selectFirst("a[href*=van-hoa]").attr("href");
-                    } else if (!doc.select("a[href*=vanhoa]").isEmpty()) {
-                        out = doc.selectFirst("a[href*=vanhoa]").attr("href");
+                //Replace by Van Hoa
+                if ( out.isEmpty() ) {
+                    if (!(doc.select("a[href*=vanhoa]").isEmpty()) ) {
+                        for (Element e : doc.select("a[href*=vanhoa]")) {
+                            if (e.text().equalsIgnoreCase("văn hóa")) {
+                                out = e.attr("href");
+
+                                if (out.contains(hpl)) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else if (!(doc.select("a[href*=van-hoa]").isEmpty())) {
+                        for (Element e : doc.select("a[href*=van-hoa]")) {
+                            if (e.text().equalsIgnoreCase("văn hoá")) {
+                                out = e.attr("href");
+
+                                if (out.contains(hpl)) {
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -285,90 +423,214 @@ public class Category {
                         out = doc.selectFirst("a[href*=thegioi]").attr("href");
                     }
                 }
+                break;
             }
-        }
-
-        //Check to complete url
-        if (!out.contains(hpl)) {
-            out = new StringBuffer(hpl).deleteCharAt(hpl.length() - 1) + out;
         }
 
         return out;
     }
 
-    private void check2Add(String kw, Article article) {
-        byte sig = 0;
+    //Check Keywords: kw to add to List(s)
+    private void check2Add(String kw, Article article, String cate) {
+        boolean sig = false;
 
         //Check if Covid
         if (kw.contains("covid-19") || kw.contains("chống dịch") || kw.contains("vaccine") || kw.contains("f0")
-                || kw.contains("dịch bệnh") || kw.contains("ncov")) {
+                || kw.contains("dịch bệnh") || kw.contains("ncov")  || cate.equals("covid")) {
             if (Covid.size() < 50) {
                 Covid.add(article);
             }
-            sig = 1;
+            System.out.println("covid");
+            sig = true;
         }
 
         //Check if Politic
         if (kw.contains("chính trị") || kw.contains("đảng") || kw.contains("chính phủ") || kw.contains("quốc hội")
                 || kw.contains("thủ tướng") || kw.contains("chủ tịch") || kw.contains("bộ y tế")
-                || kw.contains("bộ công an")) {
+                || kw.contains("bộ công an") || cate.equals("politic")) {
             if (Pol.size() < 50) {
                 Pol.add(article);
             }
-            sig = 1;
+            System.out.println("pol");
+            sig = true;
         }
 
         //Check if Business
-        if (kw.contains("kinh doanh")) {
+        if (kw.contains("kinh doanh") || cate.equals("business")) {
             if (Busi.size() < 50) {
                 Busi.add(article);
             }
-            sig = 1;
+            System.out.println("busi");
+            sig = true;
         }
 
         //Check if Technology
-        if (kw.contains("công nghệ") || kw.contains("internet") || kw.contains("số hóa")) {
+        if (kw.contains("công nghệ") || kw.contains("internet") || kw.contains("số hóa") || cate.equals("tech")) {
             if (Tech.size() < 50) {
                 Tech.add(article);
             }
-            sig = 1;
+            System.out.println("tech");
+            sig = true;
         }
 
         //Check if Health
-        if (kw.contains("sức khỏe")) {
-            if (Health.size() < 10) {
+        if (kw.contains("sức khỏe") || cate.equals("health")) {
+            if (Health.size() < 50) {
                 Health.add(article);
             }
-            sig = 1;
+            System.out.println("health");
+            sig = true;
         }
 
         //Check if Sport
-        if (kw.contains("thể thao")) {
-            if (Sport.size() < 10) {
+        if (kw.contains("thể thao") || kw.contains("tuyển việt nam") || kw.contains("hlv") || kw.contains("cầu thủ")
+                || kw.contains("bóng đá") || cate.equals("sport")) {
+            if (Sport.size() < 50) {
                 Sport.add(article);
             }
-            sig = 1;
+            System.out.println("sport");
+            sig = true;
         }
 
         //Check if Entertainment
-        if (kw.contains("giải trí") || kw.contains("âm nhạc") || kw.contains("phim ảnh")) {
-            if (Entertain.size() < 10) {
+        if (kw.contains("giải trí") || kw.contains("âm nhạc") || kw.contains("phim ảnh") || cate.equals("entertain")) {
+            if (Entertain.size() < 50) {
                 Entertain.add(article);
             }
-            sig = 1;
+            System.out.println("enter");
+            sig = true;
         }
 
         //Check if World
-        if (kw.contains("thế giới")) {
-            if (World.size() < 10) {
+        if (kw.contains("thế giới") || cate.equals("world")) {
+            if (World.size() < 50) {
                 World.add(article);
             }
+            System.out.println("world");
         }
 
         //Check if article hasn't belong to any Cate
-        else if (sig == 0 && (Other.size() < 10)) {
+        else if (sig == false) {
+            if (Other.size() < 50) {
+            System.out.println("blue");
             Other.add(article);
+        }
         }
     }
 
+    public void setOther () throws IOException {
+        ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        Document doc = Jsoup.connect(link[1]).get();
+        String hpl = link[1],
+                cate = "other";
+
+        List<Element> list;
+        boolean isTuoiTre;
+        int count = 1;
+
+        //Vne, Zing, TN, ND
+        if ( !doc.select("article").isEmpty() ) {
+            System.out.println("blue");
+            list = doc.select("article");
+            isTuoiTre = false;
+        }
+
+        //Tuoi Tre
+        else {
+            if ( !doc.select("div.box-tournament.box-worldcup-2018").isEmpty() ) {
+                doc.select("div.box-tournament.box-worldcup-2018").remove();
+            }
+            list = doc.selectFirst("section[id*=content]").select("a[href*=/][title~=[a-z]]");
+            isTuoiTre = true;
+        }
+
+        for (int id = 0; id < list.size(); id++) {
+            Element e = list.get(id);
+
+            if ( !isTuoiTre ) {
+                //avoid the blank
+                if (e.child(0).tagName().equals("ins")) {
+                    continue;
+                }
+            }
+
+            //Filter for tuoi tre
+            if (e.select("img").isEmpty() && isTuoiTre) {
+                continue;
+            }
+
+            String avt = "";
+
+            //Check and get Avatar Image Link
+            if (!(e.select("img").isEmpty())) {
+                avt = e.selectFirst("img").attr("src");
+
+                //Check image link
+                if (!(avt.contains("https:")) && !(avt.contains(".jpeg"))) {
+                    avt = e.selectFirst("img").attr("data-src");
+                }
+            }
+
+            //Get Article Link
+            String url;
+            if ( !e.select("a").isEmpty() ) {
+                url = e.selectFirst("a").attr("href");
+            }
+            else {
+                url = e.parent().attr("href");
+            }
+
+            //Check to complete url
+            if (!url.contains(hpl)) {
+                url = new StringBuffer(hpl).deleteCharAt(hpl.length() - 1) + url;
+            }
+
+            //dont get the special articles
+            if ( url.contains("https://special.nhandan.vn/") ) {
+                id++;
+                e = list.get(id);
+                //Check and get Avatar Image Link
+                if (!(e.select("img").isEmpty())) {
+                    avt = e.selectFirst("img").attr("src");
+
+                    //Check image link
+                    if (!(avt.contains("https:")) && !(avt.contains(".jpeg"))) {
+                        avt = e.selectFirst("img").attr("data-src");
+                    }
+                }
+            }
+
+            //System.out.println(url + avt);
+
+            String finalUrl = url;
+            String finalAvt = avt;
+
+            es.execute( () -> {
+                try {
+                    Article a = new Article(finalUrl, finalAvt);
+
+                    //Check if it belongs to any other Cate and add
+                    check2Add(a.getKWs().toLowerCase(), a, cate);
+                    //System.out.println(finalAvt + "\n" + finalUrl + "\n" + a.getKWs() + "\n" + Other.size());
+                    System.out.println(Other.size());
+                    if (Other.size() > 10) {
+                        System.out.println("done");
+                        //es.shutdown();
+                    }
+                } catch (IOException ex) {};
+
+            });
+
+            //Stop when scraped 10 Article
+            if (count == list.size()) {
+                System.out.println("pop");
+                es.shutdown();
+                break;
+            }
+            count++;
+        }
+
+        while ( !es.isTerminated() ) {}
+    }
 }
