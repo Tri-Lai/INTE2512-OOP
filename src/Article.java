@@ -6,7 +6,6 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 
 import java.util.List;
-import java.util.Locale;
 
 public class Article {
     public Article(String url, String avtUrl) throws IOException {
@@ -23,55 +22,55 @@ public class Article {
 
     private String img, iurl;
 
-    public void getUrl() {
-        System.out.println(iurl);
+    public String getUrl() {
+        return (iurl);
     }
 
-    private Document doc;
+    private final Document doc;
 
-    private int id;
+    private final int id;
 
     private String pubD;
 
-    private static String[] category = {"p[class*=cate]"    //Zing
+    private static final String[] category = {"p[class*=cate]"    //Zing
             , "ul.breadcrumb > li:nth-child(1)"     //VNExpress
             , "div.breadcrumbs"     //Thanh Nien
             , "div.bread-crumbs.fl > ul > li.fl:nth-child(1)"        //Tuoi Tre
             , "ul.uk-breadcrumb > li.bc-item:nth-child(1)"};        //Nhan Dan
 
-    private static String[] title = {"h1.the-article-title"     //Zing
+    private static final String[] title = {"h1[class*=-title]"     //Zing
             , "h1.title-detail"     //VNExpress
             , "h1.details__headline"        //Thanh Nien
             , "h1.article-title"        //Tuoi Tre
-            , "h1.box-title-detail.entry-title"};       //Nhan Dan
+            , "h1[class*=box-title-detail]"};       //Nhan Dan
 
-    private static String[] author = {"div.the-article-credit p"    //Zing
+    private static final String[] author = {"div.the-article-credit p"    //Zing
             , "p.author_mail"       //VNExpress
             , "div.details__author__meta "      //Thanh Nien
             , "div.author"      //Tuoi Tre
             , "div.box-author.uk-text-right.uk-clearfix"};      //Nhan Dan
 
-    private static String[] pubDay = {"li.the-article-publish"      //Zing
+    private static final String[] pubDay = {"li.the-article-publish"      //Zing
             , "span.date"       //VNExpress
             , "time"        //Thanh Nien
             , "div.date-time"       //Tuoi Tre
             , "div.box-date.pull-left"};        //Nhan Dan
 
-    private static String[] sum = {"p.the-article-summary"      //Zing
+    private static final String[] sum = {"p.the-article-summary"      //Zing
             , "p.description"       //VNExpress
             , "div.sapo"        //Thanh Nien
             , "h2.sapo"     //Tuoi Tre
             , "div.box-des-detail.this-one"};       //Nhan Dan
 
-    private static String[] body = {"div.the-article-body"      //Zing
+    private static final String[] body = {"div.the-article-body"      //Zing
             , "article.fck_detail"      //VNExpress
             , "div#abody"       //Thanh Nien
             , "div.content.fck"     //Tuoi Tre
             , "div.detail-content-body "};      //Nhan Dan
 
     //Check Website through url
-    public Integer checkWeb(String url) throws IOException {
-        int id = 0;
+    public Integer checkWeb(String url) {
+        int id;
 
         //Zing
         if (url.contains("zingnews.vn")) {
@@ -94,7 +93,7 @@ public class Article {
         }
 
         //Nhan Dan
-        else if (url.contains("nhandan.vn") ) {
+        else  {
             id = 4;
         }
 
@@ -128,10 +127,21 @@ public class Article {
 
     //Get Title
     public String getTitle() {
-        String out = doc.selectFirst(title[id]).text();
+        String out;
+
+        if (id == 1 && doc.select(title[id]).isEmpty() ) {
+            out = doc.selectFirst("title").text();
+        }
+        else if (id == 2 && doc.select(title[id]).isEmpty() ) {
+            out = doc.selectFirst("div.container").selectFirst("img").attr("src");
+        }
+        else {
+            out = doc.selectFirst(title[id]).text();
+        }
+
 
         //Check if there is label text
-        if (id == 2) {
+        if (id == 2 && !doc.select(title[id]).isEmpty()) {
             if ( !doc.selectFirst(title[id]).select("label").isEmpty() ){
                 out = out.replace(doc.selectFirst(title[id]).select("label").text()+" ", "");
             }
