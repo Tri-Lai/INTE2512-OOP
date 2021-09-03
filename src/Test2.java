@@ -20,25 +20,25 @@ public class Test2 {
 
         Category c1 = new Category();
 
-        Thread t1 = new Thread( () -> {
+        //Thread t1 = new Thread( () -> {
             try {
-                c1.setOther();
-                //c1.setCate("world");
+                //c1.setOther();
+                c1.setCate("tech");
             } catch (IOException e) {}
 
-        });
-        t1.start();
+        //});
+        //t1.start();
 
-        t1.join();
+        //t1.join();
 
-        Thread t2 = new Thread( () -> {
-            c1.getNum();
+        //Thread t2 = new Thread( () -> {
+            //c1.getNum();
             int count = 1;
 
-            for ( Article a : c1.getList("other") ) {
+            for ( Article a : c1.getList("tech") ) {
                 System.out.println(a.getUrl() );
 
-                System.out.println(count + ": " + a.getTitle() + "\n" + a.getKWs());
+                System.out.println(count + ": " + a.getTitle() + "\n" );//+ a.getKWs());
 
                 //System.out.println(count + ": " + a.getAvt() + "\n");
 
@@ -52,8 +52,8 @@ public class Test2 {
                 count++;
             }
             System.out.print("\n" + "Time consume: " + clock1.getElapsedTime() + " ms" + "\n");
-        });
-        t2.start();
+        //});
+       // t2.start();
 
         //c1.getPol();
         //System.out.println(doc);

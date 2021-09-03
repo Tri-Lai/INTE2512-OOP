@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Category {
     public Category() throws IOException {
@@ -110,47 +108,19 @@ public class Category {
 
         ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-        //Zing
-        es.execute( () -> {
-            try {
-                getFrom(10, cate, source[0], link[0]);
-            } catch (Exception e) {}
-            System.out.println("Zing: " + clock.getElapsedTime());
-        });
-
-        //Thanh Nien
-        es.execute( () -> {
-            try {
-                getFrom(10, cate, source[1], link[1]);
-            } catch (Exception e) {}
-            System.out.println("Thanh Nien: " + clock.getElapsedTime());
-        });
-
-        //Tuoi Tre
-        es.execute( () -> {
-            try {
-                getFrom(10, cate, source[2], link[2]);
-            } catch (Exception e) {}
-            System.out.println("Tuoi Tre: " + clock.getElapsedTime());
-        });
-
-        //Nhan Dan
-        es.execute( () -> {
-            try {
-                getFrom(10, cate, source[3], link[3]);
-            } catch (Exception e) {}
-            System.out.println("Nhan Dan: " + clock.getElapsedTime());
-        });
-
-        //VNExpress
-        es.execute( () -> {
-            try {
-                getFrom(10, cate, source[4], link[4]);
-            } catch (Exception e) {}
-            System.out.println("VNE: " + clock.getElapsedTime());
-        });
-
+        for (int id = 0; id <= 4; id++) {
+            int finalId = id;
+            es.execute( () -> {
+                try {
+                    getFrom(10, cate, source[finalId], link[finalId]);
+                } catch (Exception e) {}
+                System.out.println(source[finalId] + ": " + clock.getElapsedTime());
+            });
+        }
+        //Stop getting task
         es.shutdown();
+
+        //wait to all task completed
         while ( !es.isTerminated() ) {};
 
         System.out.print("\n" + "Time consume: " + clock.getElapsedTime() + " ms" + "\n");
@@ -198,6 +168,9 @@ public class Category {
             if ( !isTuoiTre ) {
                 //avoid the blank
                 if (e.child(0).tagName().equals("ins")) {
+                    continue;
+                }
+                if (e.selectFirst("a").attr("href").isEmpty() ) {
                     continue;
                 }
             }
@@ -261,7 +234,7 @@ public class Category {
             count++;
         }
 
-        while ( !es.isTerminated() ) {};
+        while ( !es.isTerminated() ) {}
     }
 
     //Get url of page of specified category
@@ -440,7 +413,6 @@ public class Category {
             if (Covid.size() < 50) {
                 Covid.add(article);
             }
-            System.out.println("covid");
             sig = true;
         }
 
@@ -451,7 +423,6 @@ public class Category {
             if (Pol.size() < 50) {
                 Pol.add(article);
             }
-            System.out.println("pol");
             sig = true;
         }
 
@@ -460,7 +431,6 @@ public class Category {
             if (Busi.size() < 50) {
                 Busi.add(article);
             }
-            System.out.println("busi");
             sig = true;
         }
 
@@ -469,7 +439,6 @@ public class Category {
             if (Tech.size() < 50) {
                 Tech.add(article);
             }
-            System.out.println("tech");
             sig = true;
         }
 
@@ -478,7 +447,6 @@ public class Category {
             if (Health.size() < 50) {
                 Health.add(article);
             }
-            System.out.println("health");
             sig = true;
         }
 
@@ -488,7 +456,6 @@ public class Category {
             if (Sport.size() < 50) {
                 Sport.add(article);
             }
-            System.out.println("sport");
             sig = true;
         }
 
@@ -497,7 +464,6 @@ public class Category {
             if (Entertain.size() < 50) {
                 Entertain.add(article);
             }
-            System.out.println("enter");
             sig = true;
         }
 
@@ -506,13 +472,11 @@ public class Category {
             if (World.size() < 50) {
                 World.add(article);
             }
-            System.out.println("world");
         }
 
         //Check if article hasn't belong to any Cate
         else if (sig == false) {
             if (Other.size() < 50) {
-            System.out.println("blue");
             Other.add(article);
         }
         }
@@ -521,8 +485,8 @@ public class Category {
     public void setOther () throws IOException {
         ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-        Document doc = Jsoup.connect(link[1]).get();
-        String hpl = link[1],
+        Document doc = Jsoup.connect(link[0]).get();
+        String hpl = link[0],
                 cate = "other";
 
         List<Element> list;
@@ -545,12 +509,18 @@ public class Category {
             isTuoiTre = true;
         }
 
+
+        System.out.println(list.size());
+
         for (int id = 0; id < list.size(); id++) {
             Element e = list.get(id);
 
             if ( !isTuoiTre ) {
                 //avoid the blank
                 if (e.child(0).tagName().equals("ins")) {
+                    continue;
+                }
+                if (e.selectFirst("a").attr("href").isEmpty() ) {
                     continue;
                 }
             }
@@ -605,15 +575,16 @@ public class Category {
 
             String finalUrl = url;
             String finalAvt = avt;
+            //System.out.println(count);
 
-            es.execute( () -> {
+           es.execute( () -> {
                 try {
                     Article a = new Article(finalUrl, finalAvt);
 
                     //Check if it belongs to any other Cate and add
                     check2Add(a.getKWs().toLowerCase(), a, cate);
-                    //System.out.println(finalAvt + "\n" + finalUrl + "\n" + a.getKWs() + "\n" + Other.size());
-                    System.out.println(Other.size());
+                    //System.out.println(finalAvt + "\n" + finalUrl + "\n" + a.getKWs() + "\n" );//+ Other.size());
+                    //System.out.println(Other.size());
                     if (Other.size() > 10) {
                         System.out.println("done");
                         //es.shutdown();
@@ -623,14 +594,16 @@ public class Category {
             });
 
             //Stop when scraped 10 Article
-            if (count == list.size()) {
-                System.out.println("pop");
+            if (count == 40 || count == list.size() || Other.size() == 10) {
+                System.out.println("num: " + count);
                 es.shutdown();
                 break;
             }
             count++;
         }
+        //es.shutdown();
 
         while ( !es.isTerminated() ) {}
     }
+
 }

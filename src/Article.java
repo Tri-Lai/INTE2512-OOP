@@ -135,6 +135,9 @@ public class Article {
         else if (id == 2 && doc.select(title[id]).isEmpty() ) {
             out = doc.selectFirst("div.container").selectFirst("img").attr("src");
         }
+        else if (id == 3 && doc.select(title[id]).isEmpty() ) {
+            out = doc.selectFirst("div.sp-cover").selectFirst("img").attr("src");
+        }
         else {
             out = doc.selectFirst(title[id]).text();
         }
