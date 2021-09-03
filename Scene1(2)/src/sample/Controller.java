@@ -166,11 +166,13 @@ public class Controller implements Initializable{
     @FXML
     private ImageView image1;
 
+    //Set image fit with the pane
     public void initialize(URL url, ResourceBundle resourceBundle){
         image1.fitWidthProperty().bind(splitPane.widthProperty());
         image1.fitHeightProperty().bind(splitPane.heightProperty().subtract(80));
     }
 
+    //TilePane to store the proogress bar
     private TilePane tilePane;
 
     public void setTilePane(String name) {

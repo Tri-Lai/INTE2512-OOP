@@ -99,12 +99,13 @@ public class Controller2 implements Initializable{
     @FXML
     private WebView webView;
 
-
+    //Set video
     public void initialize(URL url, ResourceBundle resourceBundle){
         WebEngine webEngine = webView.getEngine();
         webEngine.load("https://znews-mcloud-bf-s2.zadn.vn/VJsUNap_P-o/7ea4b57414aafef4a7bb/aef9fd1f58d2b28cebc3/720/58044cd8748e9dd0c49f.mp4?authen=exp=1630743859~acl=/VJsUNap_P-o/*~hmac=ad11d4e1e668c78c86f55023dfbc0211");
     }
 
+    //TilePane to store the proogress bar
     private TilePane tilePane;
 
     public void setTilePane(String name) {
