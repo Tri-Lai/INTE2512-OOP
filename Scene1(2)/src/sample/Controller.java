@@ -12,8 +12,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.*;
-import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,13 +22,6 @@ import java.util.ResourceBundle;
 
 
 public class Controller implements Initializable{
-
-    public void initialize(URL url, ResourceBundle resourceBundle){
-
-    }
-
-    private int default_page = 0;
-    private final int[] pages = new int[5];
 
     private Stage stage;
     private Scene scene;
@@ -75,6 +68,9 @@ public class Controller implements Initializable{
 
     //add ScrollPane to store the newspaper content when finish loading
     private ScrollPane myScrollPane;
+
+    public Controller() {
+    }
 
     @FXML
     protected void hotnewClicked() {
@@ -165,9 +161,15 @@ public class Controller implements Initializable{
     }
 
     @FXML
-    private WebView Video;
+    private SplitPane splitPane;
 
+    @FXML
+    private ImageView image1;
 
+    public void initialize(URL url, ResourceBundle resourceBundle){
+        image1.fitWidthProperty().bind(splitPane.widthProperty());
+        image1.fitHeightProperty().bind(splitPane.heightProperty().subtract(80));
+    }
 
     private TilePane tilePane;
 
