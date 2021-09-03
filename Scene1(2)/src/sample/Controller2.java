@@ -12,6 +12,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
+import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
@@ -21,24 +23,15 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 
-public class Controller implements Initializable{
-
-    public void initialize(URL url, ResourceBundle resourceBundle){
-
-    }
-
-    private int default_page = 0;
-    private final int[] pages = new int[5];
+public class Controller2 implements Initializable{
 
     private Stage stage;
-    private Scene scene;
     private Parent root;
+    private Scene scene;
+
 
     @FXML
-    private Pane myPane;
-
-    @FXML
-    private GridPane myGridPane;
+    private Text text;
 
     @FXML
     private VBox mainScreen;
@@ -51,27 +44,6 @@ public class Controller implements Initializable{
 
     @FXML
     private Button test;
-
-    @FXML
-    private Button page1;
-
-    @FXML
-    private Button page2;
-
-    @FXML
-    private Button page3;
-
-    @FXML
-    private Button page4;
-
-    @FXML
-    private Button page5;
-
-    @FXML
-    private Button next;
-
-    @FXML
-    private Button prev;
 
     //add ScrollPane to store the newspaper content when finish loading
     private ScrollPane myScrollPane;
@@ -122,52 +94,16 @@ public class Controller implements Initializable{
     }
 
     @FXML
-    protected void otherClicked() {
-
-    }
+    private VBox vBox;
 
     @FXML
-    protected void prevClicked() {
+    private WebView webView;
 
+
+    public void initialize(URL url, ResourceBundle resourceBundle){
+        WebEngine webEngine = webView.getEngine();
+        webEngine.load("https://znews-mcloud-bf-s2.zadn.vn/VJsUNap_P-o/7ea4b57414aafef4a7bb/aef9fd1f58d2b28cebc3/720/58044cd8748e9dd0c49f.mp4?authen=exp=1630743859~acl=/VJsUNap_P-o/*~hmac=ad11d4e1e668c78c86f55023dfbc0211");
     }
-
-    @FXML
-    protected void firstPageClicked() {
-
-    }
-
-    @FXML
-    protected void secondPageClicked() {
-
-    }
-
-    @FXML
-    protected void thirdPageClicked() {
-
-
-    }
-
-    @FXML
-    protected void fourthPageClicked() {
-
-
-    }
-
-    @FXML
-    protected void fifthPageClicked() {
-
-
-    }
-
-    @FXML
-    protected void nextClicked() {
-
-    }
-
-    @FXML
-    private WebView Video;
-
-
 
     private TilePane tilePane;
 
@@ -219,7 +155,7 @@ public class Controller implements Initializable{
                 //Change scene function
                 Parent root = null;
                 try {
-                    root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Layout2.fxml")));
+                    root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("sample.fxml")));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -246,4 +182,5 @@ public class Controller implements Initializable{
             }
         }
     };
+
 }

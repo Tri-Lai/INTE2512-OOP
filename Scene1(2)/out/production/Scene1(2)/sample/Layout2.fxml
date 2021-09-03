@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.web.WebView?>
+
+<StackPane fx:id="myStackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller2">
+   <children>
+      <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0" pannable="true" StackPane.alignment="CENTER">
+         <content>
+            <VBox fx:id="vBox" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0">
+               <children>
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+                     <children>
+                        <GridPane alignment="TOP_CENTER" prefHeight="100.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="82.0" prefWidth="577.0" text="KINGSMAN DAILY NEWS" textAlignment="CENTER" GridPane.columnIndex="1">
+                                 <font>
+                                    <Font name="Javanese Text" size="27.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </Label>
+                              <ImageView fitHeight="109.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@logo.PNG" />
+                                 </image>
+                              </ImageView>
+                              <TextField maxWidth="300.0" minHeight="-Infinity" minWidth="-Infinity" promptText="Enter what you are looking for" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                           </children>
+                        </GridPane>
+                        <HBox alignment="CENTER" spacing="10.0">
+                           <children>
+                              <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #8B0000;" text="Hot New" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #8B0000;" text="COVID-19" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #8B0000;" text="Business" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #8B0000;" text="Politics" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #8B0000;" text="Health" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #8B0000;" text="Technology" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #8B0000;" text="Sports" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Button>
+                              <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #8B0000;" text="Entertainment" textFill="WHITE" textOverrun="CLIP">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #8B0000;" text="World" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #8B0000;" text="Others" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" wrappingWidth="1300.0" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font name="Arial Bold" size="25.0" />
+                     </font>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="17/08/2021 " wrappingWidth="1350.0">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Text>
+                  <Text lineSpacing="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TPO - Bí thư Thành ủy TPHCM Nguyễn Văn Nên cho biết, Tổng Bí thư Nguyễn Phú Trọng đã gọi điện thăm hỏi, động viên Đảng bộ và đồng bào TPHCM đã hơn 2 tháng qua kiên cường ứng phó với đại dịch COVID-19." wrappingWidth="1300.0" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="5.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Arial" size="20.0" />
+                     </font>
+                  </Text>
+                  <ImageView cache="true" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+                     <image>
+                        <Image url="@ptt-thanh-6533.png" />
+                     </image>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </ImageView>
+                  <Text fx:id="text" lineSpacing="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quy hoạch nêu rõ, đường bộ là phương thức linh hoạt, hiệu quả với cự ly ngắn và trung bình (dưới 300 km); hỗ trợ gom, giải tỏa hàng hóa, hành khách cho các hình thức vận tải khác. Hệ thống đường bộ quốc gia phải đảm bảo kết nối với đường địa phương; giữa các vùng động lực và vùng khó khăn; đến đầu mối vận tải quốc tế.Các địa phương có thể điều chỉnh tiến độ đầu tư các tuyến đường, nếu nhận thấy nhu cầu cần thiết đầu tư sớm hơn và bố trí được nguồn lực. Địa phương muốn mở rộng quốc lộ đi qua địa bàn có thể phối hợp nguồn vốn theo hướng trung ương đầu tư phần đường theo quy hoạch, địa phương đầu tư phần mở rộng.Để thực hiện được mục tiêu nêu trên, Chính phủ sẽ huy động tối đa mọi nguồn lực; đẩy mạnh đầu tư PPP (đối tác công tư), trong đó vốn ngân sách Nhà nước hỗ trợ, dẫn dắt, kích hoạt để thu hút nguồn lực từ các thành phần kinh tế khác. Chính phủ đặt mục tiêu năm 2030 cả nước có hơn 5.000 km cao tốc đường bộ; đến năm 2050 có 41 tuyến cao tốc với tổng chiều dài hơn 9.000 km.Ngày 1/9, Quy hoạch phát triển mạng lưới đường bộ thời kỳ 2020-2030, tầm nhìn đến 2050 đã được Thủ tướng phê duyệt, nêu rõ đến năm 2050, các tuyến cao tốc gồm: tuyến Bắc Nam phía Đông (Lạng Sơn - Cà Mau) dài hơn 2.000 km, quy mô 4-10 làn xe; tuyến Bắc Nam phía Tây dài hơn 1.200 km, quy mô 4-6 làn xe.Khu vực phía Bắc gồm 14 tuyến, chiều dài 2.300 km; miền Trung - Tây Nguyên có 10 tuyến, chiều dài 1.400 km; phía Nam có 10 tuyến, chiều dài 1.290 km.Vành đai đô thị Hà Nội có 3 tuyến, dài 425 km; vành đai đô thị TP HCM gồm 2 tuyến, dài gần 300 km.Năm 2021, cả nước có hơn 1.160 km cao tốc. Như vậy, đến năm 2030 sẽ có thêm 3.840 km; đến năm 2050 tăng tiếp 7.840 km.Cũng theo Quy hoạch, đến năm 2030, cả nước dự kiến có 172 tuyến quốc lộ, tổng 30.000 km. Đường bộ ven biển chạy qua 20 tỉnh, thành dài 3.000 km. Các dự án được ưu tiên đầu tư dựa trên nguyên tắc đảm bảo tính lan tỏa, là động lực phát triển vùng hoặc liên vùng, đầu tư phát huy hiệu quả ngay.Các tuyến cao tốc cần tập trung hoàn thiện gồm: tuyến Bắc Nam phía Đông; một số tuyến cao tốc khu vực Nam Bộ; miền Trung - Tây Nguyên; miền núi phía Bắc; vành đai đô thị Hà Nội, TP HCM. Mục tiêu đến năm 2030 đưa vào khai thác hơn 5.000 km cao tốc.Chính phủ đặt mục tiêu năm 2030 cả nước có hơn 5.000 km cao tốc đường bộ; đến năm 2050 có 41 tuyến cao tốc với tổng chiều dài hơn 9.000 km.Ngày 1/9, Quy hoạch phát triển mạng lưới đường bộ thời kỳ 2020-2030, tầm nhìn đến 2050 đã được Thủ tướng phê duyệt, nêu rõ đến năm 2050, các tuyến cao tốc gồm: tuyến Bắc Nam phía Đông (Lạng Sơn - Cà Mau) dài hơn 2.000 km, quy mô 4-10 làn xe; tuyến Bắc Nam phía Tây dài hơn 1.200 km, quy mô 4-6 làn xe.Khu vực phía Bắc gồm 14 tuyến, chiều dài 2.300 km; miền Trung - Tây Nguyên có 10 tuyến, chiều dài 1.400 km; phía Nam có 10 tuyến, chiều dài 1.290 km.Vành đai đô thị Hà Nội có 3 tuyến, dài 425 km; vành đai đô thị TP HCM gồm 2 tuyến, dài gần 300 km.Năm 2021, cả nước có hơn 1.160 km cao tốc. Như vậy, đến năm 2030 sẽ có thêm 3.840 km; đến năm 2050 tăng tiếp 7.840 km.Cũng theo Quy hoạch, đến năm 2030, cả nước dự kiến có 172 tuyến quốc lộ, tổng 30.000 km. Đường bộ ven biển chạy qua 20 tỉnh, thành dài 3.000 km. Các dự án được ưu tiên đầu tư dựa trên nguyên tắc đảm bảo tính lan tỏa, là động lực phát triển vùng hoặc liên vùng, đầu tư phát huy hiệu quả ngay.Các tuyến cao tốc cần tập trung hoàn thiện gồm: tuyến Bắc Nam phía Đông; một số tuyến cao tốc khu vực Nam Bộ; miền Trung - Tây Nguyên; miền núi phía Bắc; vành đai đô thị Hà Nội, TP HCM. Mục tiêu đến năm 2030 đưa vào khai thác hơn 5.000 km cao tốc. " wrappingWidth="1300.0" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font name="Arial" size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="20.0" top="20.0" />
+                     </VBox.margin>
+                  </Text>
+                  <WebView fx:id="webView" cache="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1350.0" VBox.vgrow="ALWAYS" />
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </children>
+</StackPane>
