@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
@@ -14,424 +13,343 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="myStackPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.Controller">
-    <children>
-        <BorderPane fx:id="mainScreen" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="739.0" prefWidth="1248.0">
-            <top>
-                <HBox alignment="CENTER" prefHeight="77.0" spacing="40.0" BorderPane.alignment="CENTER">
-                    <children>
-                        <ImageView fitHeight="45.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" translateX="-220.0">
-                            <HBox.margin>
-                                <Insets top="10.0" />
-                            </HBox.margin>
-                            <image>
-                                <Image url="@image/logo.PNG" />
-                            </image>
-                            <viewport>
-                                <Rectangle2D />
-                            </viewport>
-                        </ImageView>
-                        <Label alignment="CENTER" contentDisplay="CENTER" minWidth="-Infinity" prefHeight="59.0" prefWidth="348.0" text="Kingsman's Daily News" textAlignment="CENTER" translateX="80.0">
-                            <font>
-                                <Font name="Apple Chancery" size="31.0" />
-                            </font>
-                            <padding>
-                                <Insets right="20.0" />
-                            </padding>
-                        </Label>
-                        <TextField prefHeight="26.0" prefWidth="214.0" promptText="Enter what you are looking for" translateX="220.0" />
-                    </children>
-                    <opaqueInsets>
-                        <Insets />
-                    </opaqueInsets>
-                </HBox>
-            </top>
-            <bottom>
-                <GridPane vgap="10.0" BorderPane.alignment="CENTER">
-                    <columnConstraints>
+<StackPane fx:id="myStackPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.HomepageController">
+   <children>
+      <VBox fx:id="mainBox" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0">
+         <children>
+            <VBox minHeight="-Infinity" minWidth="-Infinity">
+               <children>
+                  <GridPane prefHeight="100.0">
+                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                    <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="583.0" text="INTE2512 - Object Oriented Programming - Group Kingsman - Final Project: News aggregator" textAlignment="CENTER" translateX="350.0" GridPane.rowIndex="1">
-                            <font>
-                                <Font size="14.0" />
-                            </font>
-                            <padding>
-                                <Insets bottom="10.0" />
-                            </padding>
+                     </rowConstraints>
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="82.0" prefWidth="577.0" text="KINGSMAN DAILY NEWS" textAlignment="CENTER" GridPane.columnIndex="1">
+                           <font>
+                              <Font name="Javanese Text" size="27.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
                         </Label>
-                        <HBox alignment="CENTER" prefHeight="104.0" prefWidth="1248.0" spacing="10.0">
-                            <children>
-                                <Button fx:id="prev" mnemonicParsing="false" onAction="#prevClicked" prefWidth="60.0" text="PREV">
+                        <ImageView fx:id="logo" fitHeight="109.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@image/logo.PNG" />
+                           </image>
+                        </ImageView>
+                        <TextField maxWidth="300.0" promptText="Enter what you are looking for" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+                           <GridPane.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </GridPane.margin>
+                        </TextField>
+                     </children>
+                  </GridPane>
+                  <HBox alignment="CENTER" spacing="10.0">
+                     <children>
+                        <Button fx:id="hotnewBt" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#hotnewClicked" style="-fx-background-color: #8B0000;" text="Hot New" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="covidBt" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#covidClick" style="-fx-background-color: #8B0000;" text="COVID-19" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="businessBt" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#businessClicked" style="-fx-background-color: #8B0000;" text="Business" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="politicBt" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#politicClicked" style="-fx-background-color: #8B0000;" text="Politics" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="healthBt" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#healthClicked" style="-fx-background-color: #8B0000;" text="Health" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="technologyBt" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#techClicked" style="-fx-background-color: #8B0000;" text="Technology" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="sportBt" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#sportsClicked" style="-fx-background-color: #8B0000;" text="Sports" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
                            <HBox.margin>
-                              <Insets right="20.0" />
-                           </HBox.margin></Button>
-                                <Button fx:id="page1" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#pageClicked" prefWidth="2.0" text="1" />
-                                <Button fx:id="page2" mnemonicParsing="false" onAction="#secondPageClicked" text="2" />
-                                <Button fx:id="page3" minWidth="-Infinity" mnemonicParsing="false" onAction="#thirdPageClicked" text="3" />
-                                <Button fx:id="page4" minWidth="-Infinity" mnemonicParsing="false" onAction="#fourthPageClicked" text="4" />
-                                <Button fx:id="page5" minWidth="-Infinity" mnemonicParsing="false" onAction="#fifthPageClicked" text="5" />
-                                <Button fx:id="next" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextClicked" prefWidth="60.0" text="NEXT">
+                              <Insets />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="entertainmentBt" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#entertainmentClicked" style="-fx-background-color: #8B0000;" text="Entertainment" textFill="WHITE" textOverrun="CLIP">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="worldBt" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#worldClicked" style="-fx-background-color: #8B0000;" text="World" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="otherBt" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#otherClicked" style="-fx-background-color: #8B0000;" text="Others" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+            <BorderPane fx:id="articleContainer" minWidth="-Infinity">
+               <center>
+                  <GridPane hgap="10.0" vgap="10.0" BorderPane.alignment="CENTER">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="420.0" minWidth="10.0" prefWidth="244.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="540.0" minWidth="10.0" prefWidth="244.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="453.0" minWidth="10.0" prefWidth="244.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="373.77203369140625" minHeight="297.1522216796875" prefHeight="335.75091552734375" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="369.3477783203125" minHeight="294.22796630859375" prefHeight="330.24908447265625" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <VBox fx:id="box1" prefHeight="336.0" prefWidth="753.0">
+                           <children>
+                              <AnchorPane fx:id="imagePane1" maxHeight="438.0" maxWidth="635.0" prefHeight="438.0" prefWidth="627.0" style="-fx-background-color: #f56c42;">
+                                 <children>
+                                    <ImageView fx:id="image1" fitHeight="276.0" fitWidth="628.0" pickOnBounds="true" preserveRatio="true" smooth="false" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                              <Hyperlink fx:id="title1" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="50.0" prefWidth="821.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Hyperlink>
+                              <HBox fx:id="pubdateBox">
+                                 <children>
+                                    <Text fx:id="pubDate1" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="626.8182373046875">
+                                       <font>
+                                          <Font size="27.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <SplitPane dividerPositions="0.5" orientation="VERTICAL" GridPane.rowIndex="1">
+                           <items>
+                              <ImageView fx:id="image2" fitHeight="260.0" fitWidth="263.0" pickOnBounds="true" smooth="false" />
+                              <VBox prefHeight="6.0" prefWidth="270.0" SplitPane.resizableWithParent="false">
+                                 <children>
+                                    <Hyperlink fx:id="title2" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="50.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" />
+                                    <HBox prefHeight="37.0" prefWidth="269.0">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </items>
+                        </SplitPane>
+                        <SplitPane dividerPositions="0.5" orientation="VERTICAL" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <items>
+                              <ImageView fx:id="image3" fitHeight="259.0" fitWidth="267.0" pickOnBounds="true" smooth="false" />
+                              <VBox prefHeight="6.0" prefWidth="270.0">
+                                 <children>
+                                    <Hyperlink fx:id="title3" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="50.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" />
+                                    <HBox prefHeight="37.0" prefWidth="269.0">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </items>
+                        </SplitPane>
+                        <SplitPane dividerPositions="0.5" layoutX="243.0" layoutY="304.0" orientation="VERTICAL" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <items>
+                              <ImageView fx:id="image4" fitHeight="259.0" fitWidth="245.0" pickOnBounds="true" />
+                              <VBox prefHeight="6.0" prefWidth="270.0">
+                                 <children>
+                                    <Hyperlink fx:id="title4" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="50.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" />
+                                    <HBox prefHeight="37.0" prefWidth="269.0">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </items>
+                        </SplitPane>
+                     </children>
+                     <padding>
+                        <Insets left="20.0" right="20.0" />
+                     </padding>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </GridPane>
+               </center>
+               <right>
+                  <VBox spacing="20.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <SplitPane dividerPositions="0.5" prefWidth="386.0">
+                           <items>
+                              <ImageView fx:id="image5" fitHeight="94.0" fitWidth="131.0" pickOnBounds="true" />
+                              <VBox prefHeight="6.0" prefWidth="247.0">
+                                 <children>
+                                    <Hyperlink fx:id="title5" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="50.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" />
+                                    <HBox prefHeight="37.0" prefWidth="269.0">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </items>
+                        </SplitPane>
+                        <SplitPane dividerPositions="0.5" layoutX="10.0" layoutY="10.0" prefWidth="386.0">
+                           <items>
+                              <ImageView fx:id="image6" fitHeight="94.0" fitWidth="131.0" pickOnBounds="true" />
+                              <VBox prefHeight="6.0" prefWidth="247.0">
+                                 <children>
+                                    <Hyperlink fx:id="title6" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="50.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" />
+                                    <HBox prefHeight="37.0" prefWidth="269.0">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </items>
+                        </SplitPane>
+                        <SplitPane dividerPositions="0.5" layoutX="10.0" layoutY="106.0" prefWidth="386.0">
+                           <items>
+                              <ImageView fx:id="image7" fitHeight="94.0" fitWidth="131.0" pickOnBounds="true" />
+                              <VBox prefHeight="6.0" prefWidth="247.0">
+                                 <children>
+                                    <Hyperlink fx:id="title7" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="50.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" />
+                                    <HBox prefHeight="37.0" prefWidth="269.0">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </items>
+                        </SplitPane>
+                        <SplitPane dividerPositions="0.5" layoutX="10.0" layoutY="202.0" prefWidth="386.0">
+                           <items>
+                              <ImageView fx:id="image8" fitHeight="94.0" fitWidth="131.0" pickOnBounds="true" />
+                              <VBox prefHeight="6.0" prefWidth="247.0">
+                                 <children>
+                                    <Hyperlink fx:id="title8" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="50.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" />
+                                    <HBox prefHeight="37.0" prefWidth="269.0">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </items>
+                        </SplitPane>
+                        <SplitPane dividerPositions="0.5" layoutX="10.0" layoutY="298.0" prefWidth="386.0">
+                           <items>
+                              <ImageView fx:id="image9" fitHeight="94.0" fitWidth="131.0" pickOnBounds="true" />
+                              <VBox prefHeight="6.0" prefWidth="247.0">
+                                 <children>
+                                    <Hyperlink fx:id="title9" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="50.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" />
+                                    <HBox prefHeight="37.0" prefWidth="269.0">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </items>
+                        </SplitPane>
+                        <SplitPane dividerPositions="0.5" layoutX="10.0" layoutY="394.0" prefWidth="386.0">
+                           <items>
+                              <ImageView fx:id="image10" fitHeight="94.0" fitWidth="131.0" pickOnBounds="true" />
+                              <VBox prefHeight="6.0" prefWidth="247.0">
+                                 <children>
+                                    <Hyperlink fx:id="title10" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="50.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" />
+                                    <HBox prefHeight="37.0" prefWidth="269.0">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </items>
+                        </SplitPane>
+                     </children>
+                     <BorderPane.margin>
+                        <Insets right="10.0" />
+                     </BorderPane.margin>
+                  </VBox>
+               </right>
+            </BorderPane>
+            <GridPane minHeight="-Infinity">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" text="INTE2512 - Object Oriented Programming - Group Kingsman - Final Project: News aggregator" textAlignment="CENTER" textFill="#949494" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="10.0" />
+                     </GridPane.margin>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </Label>
+                  <HBox fx:id="buttonBox" alignment="CENTER" prefHeight="104.0" prefWidth="1248.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="prev" mnemonicParsing="false" onAction="#prevClicked" prefWidth="60.0" text="PREV" />
+                        <Button fx:id="page1" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#firstPageClicked" prefWidth="2.0" text="1">
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin></Button>
-                            </children>
-                            <opaqueInsets>
-                                <Insets />
-                            </opaqueInsets>
-                        </HBox>
-                    </children>
-                </GridPane>
-            </bottom>
-            <right>
-                <GridPane fx:id="myGridPane" prefHeight="847.0" prefWidth="1250.0" BorderPane.alignment="CENTER">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="8700.0" minWidth="10.0" prefWidth="742.4208374023438" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints maxHeight="46.39386749267578" minHeight="0.0" prefHeight="40.24617004394531" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="800.0" minHeight="10.0" prefHeight="541.7538299560547" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="0.0" minHeight="10.0" prefHeight="535.9382934570312" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                    <children>
-                        <HBox alignment="TOP_CENTER" prefHeight="120.0" prefWidth="1218.0" spacing="10.0">
-                            <children>
-                                <Button fx:id="category1" minWidth="-Infinity" mnemonicParsing="false" onAction="#hotnewClicked" prefHeight="26.0" style="-fx-background-color: #8B0000 #8B0000;" text="HOT NEW" textFill="WHITE" />
-                                <Button fx:id="category2" minWidth="-Infinity" mnemonicParsing="false" onAction="#covidClick" prefHeight="26.0" style="-fx-background-color: #8B0000 #8B0000;" text="COVID19" textFill="WHITE" />
-                                <Button fx:id="category3" minWidth="-Infinity" mnemonicParsing="false" onAction="#politicClicked" style="-fx-background-color: #8B0000 #8B0000;" text="POLITIC" textFill="WHITE" />
-                                <Button fx:id="category4" minWidth="-Infinity" mnemonicParsing="false" onAction="#businessClicked" style="-fx-background-color: #8B0000 #8B0000;" text="BUSINESS" textFill="WHITE" />
-                                <Button fx:id="category5" minWidth="-Infinity" mnemonicParsing="false" onAction="#techClicked" style="-fx-background-color: #8B0000 #8B0000;" text="TECHNOLOGY" textFill="WHITE" />
-                                <Button fx:id="category6" minWidth="-Infinity" mnemonicParsing="false" onAction="#healthClicked" style="-fx-background-color: #8B0000 #8B0000;" text="HEALTH" textFill="WHITE" />
-                                <Button fx:id="category7" minWidth="-Infinity" mnemonicParsing="false" onAction="#sportsClicked" style="-fx-background-color: #8B0000 #8B0000;" text="SPORTS" textFill="WHITE" />
-                                <Button fx:id="category8" minWidth="-Infinity" mnemonicParsing="false" onAction="#entertainmentClicked" style="-fx-background-color: #8B0000 #8B0000;" text="ENTERTAINMENT" textFill="WHITE" />
-                                <Button fx:id="category9" minWidth="-Infinity" mnemonicParsing="false" onAction="#worldClicked" style="-fx-background-color: #8B0000 #8B0000;" text="WORLD" textFill="WHITE" />
-                                <Button fx:id="category10" minWidth="-Infinity" mnemonicParsing="false" onAction="#otherClicked" style="-fx-background-color: #8B0000 #8B0000;" text="OTHER" textFill="WHITE" />
-                            </children>
-                            <opaqueInsets>
-                                <Insets />
-                            </opaqueInsets>
-                        </HBox>
-                        <Pane fx:id="myPane" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
-                            <children>
-                                <SplitPane dividerPositions="0.7698170731707317" layoutX="15.0" layoutY="6.0" orientation="VERTICAL" prefHeight="307.0" prefWidth="712.0">
-                                    <items>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                                            <children>
-                                                <ImageView fitHeight="229.0" fitWidth="661.0" layoutX="19.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" translateX="130.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="19.0" AnchorPane.rightAnchor="279.5654602050781" AnchorPane.topAnchor="2.0">
-                                                    <image>
-                                                        <Image url="@image/ptt-thanh-6533.png" />
-                                                    </image>
-                                                </ImageView>
-                                            </children></AnchorPane>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                                            <opaqueInsets>
-                                                <Insets />
-                                            </opaqueInsets>
-                                            <children>
-                                                <Hyperlink fx:id="title" alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="2.0" onAction="#articleClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                <HBox layoutX="1.0" layoutY="33.0" prefHeight="31.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
-                                                    <children>
-                                                        <ImageView fitHeight="28.0" fitWidth="158.0" pickOnBounds="true" smooth="false">
-                                                            <image>
-                                                                <Image url="https://s1.vnecdn.net/vnexpress/restruct/i/v415/logo_default.jpg" />
-                                                            </image>
-                                                        </ImageView>
-                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
-                                                    </children>
-                                                </HBox>
-                                            </children>
-                                        </AnchorPane>
-                                    </items>
-                                </SplitPane>
-                                <SplitPane dividerPositions="0.6944444444444444" layoutX="15.0" layoutY="316.0" orientation="VERTICAL" prefHeight="193.0" prefWidth="237.0">
-                                    <items>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="122.0" prefWidth="341.0">
-                                            <children>
-                                                <ImageView fitHeight="149.0" fitWidth="255.0" layoutX="-58.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true" translateX="50.0" AnchorPane.bottomAnchor="-7.0" AnchorPane.leftAnchor="-58.0" AnchorPane.rightAnchor="48.0" AnchorPane.topAnchor="-5.0">
-                                                    <image>
-                                                        <Image url="@image/ptt-thanh-6533.png" />
-                                                    </image>
-                                                </ImageView>
-                                            </children>
-                                        </AnchorPane>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="56.0" prefWidth="238.0">
-                                            <children>
-                                                <Hyperlink fx:id="title1" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                <HBox prefHeight="31.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
-                                                    <children>
-                                                        <ImageView fitHeight="16.0" fitWidth="77.0" pickOnBounds="true" smooth="false">
-                                                            <image>
-                                                                <Image url="https://s1.vnecdn.net/vnexpress/restruct/i/v415/logo_default.jpg" />
-                                                            </image>
-                                                        </ImageView>
-                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
-                                                    </children>
-                                                </HBox>
-                                            </children>
-                                        </AnchorPane>
-                                    </items>
-                                </SplitPane>
-                                <VBox layoutX="860.0" prefHeight="522.0" prefWidth="369.0" spacing="8.0">
-                                    <children>
-                                        <SplitPane dividerPositions="0.3474114441416894" prefHeight="80.0" prefWidth="369.0">
-                                            <items>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                                    <children>
-                                                        <ImageView fitHeight="79.0" fitWidth="126.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="0.0">
-                                                            <image>
-                                                                <Image url="@image/ptt-thanh-6533.png" />
-                                                            </image>
-                                                        </ImageView>
-                                                    </children></AnchorPane>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                                    <children>
-                                                        <Hyperlink fx:id="title3" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                        <HBox prefHeight="31.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
-                                                            <children>
-                                                                <ImageView fitHeight="28.0" fitWidth="72.0" pickOnBounds="true" smooth="false">
-                                                                    <image>
-                                                                        <Image url="https://s1.vnecdn.net/vnexpress/restruct/i/v415/logo_default.jpg" />
-                                                                    </image>
-                                                                </ImageView>
-                                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875">
-                                                                    <font>
-                                                                        <Font size="11.0" />
-                                                                    </font></Text>
-                                                            </children>
-                                                        </HBox>
-                                                    </children>
-                                                </AnchorPane>
-                                            </items>
-                                        </SplitPane>
-                                        <SplitPane dividerPositions="0.3474114441416894" layoutX="10.0" layoutY="10.0" prefHeight="80.0" prefWidth="369.0">
-                                            <items>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                                    <children>
-                                                        <ImageView fitHeight="79.0" fitWidth="126.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="0.0">
-                                                            <image>
-                                                                <Image url="@image/ptt-thanh-6533.png" />
-                                                            </image>
-                                                        </ImageView>
-                                                    </children>
-                                                </AnchorPane>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                                    <children>
-                                                        <Hyperlink fx:id="title31" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                        <HBox prefHeight="31.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
-                                                            <children>
-                                                                <ImageView fitHeight="28.0" fitWidth="72.0" pickOnBounds="true" smooth="false">
-                                                                    <image>
-                                                                        <Image url="https://s1.vnecdn.net/vnexpress/restruct/i/v415/logo_default.jpg" />
-                                                                    </image>
-                                                                </ImageView>
-                                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875">
-                                                                    <font>
-                                                                        <Font size="11.0" />
-                                                                    </font></Text>
-                                                            </children>
-                                                        </HBox>
-                                                    </children>
-                                                </AnchorPane>
-                                            </items>
-                                        </SplitPane>
-                                        <SplitPane dividerPositions="0.3474114441416894" layoutX="10.0" layoutY="98.0" prefHeight="80.0" prefWidth="369.0">
-                                            <items>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                                    <children>
-                                                        <ImageView fitHeight="79.0" fitWidth="126.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="0.0">
-                                                            <image>
-                                                                <Image url="@image/ptt-thanh-6533.png" />
-                                                            </image>
-                                                        </ImageView>
-                                                    </children>
-                                                </AnchorPane>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                                    <children>
-                                                        <Hyperlink fx:id="title311" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                        <HBox prefHeight="31.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
-                                                            <children>
-                                                                <ImageView fitHeight="28.0" fitWidth="72.0" pickOnBounds="true" smooth="false">
-                                                                    <image>
-                                                                        <Image url="https://s1.vnecdn.net/vnexpress/restruct/i/v415/logo_default.jpg" />
-                                                                    </image>
-                                                                </ImageView>
-                                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875">
-                                                                    <font>
-                                                                        <Font size="11.0" />
-                                                                    </font></Text>
-                                                            </children>
-                                                        </HBox>
-                                                    </children>
-                                                </AnchorPane>
-                                            </items>
-                                        </SplitPane>
-                                        <SplitPane dividerPositions="0.3474114441416894" layoutX="10.0" layoutY="186.0" prefHeight="80.0" prefWidth="369.0">
-                                            <items>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                                    <children>
-                                                        <ImageView fitHeight="79.0" fitWidth="126.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="0.0">
-                                                            <image>
-                                                                <Image url="@image/ptt-thanh-6533.png" />
-                                                            </image>
-                                                        </ImageView>
-                                                    </children>
-                                                </AnchorPane>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                                    <children>
-                                                        <Hyperlink fx:id="title3111" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                        <HBox prefHeight="31.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
-                                                            <children>
-                                                                <ImageView fitHeight="28.0" fitWidth="72.0" pickOnBounds="true" smooth="false">
-                                                                    <image>
-                                                                        <Image url="https://s1.vnecdn.net/vnexpress/restruct/i/v415/logo_default.jpg" />
-                                                                    </image>
-                                                                </ImageView>
-                                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875">
-                                                                    <font>
-                                                                        <Font size="11.0" />
-                                                                    </font></Text>
-                                                            </children>
-                                                        </HBox>
-                                                    </children>
-                                                </AnchorPane>
-                                            </items>
-                                        </SplitPane>
-                                        <SplitPane dividerPositions="0.3474114441416894" layoutX="10.0" layoutY="274.0" prefHeight="80.0" prefWidth="369.0">
-                                            <items>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                                    <children>
-                                                        <ImageView fitHeight="79.0" fitWidth="126.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="0.0">
-                                                            <image>
-                                                                <Image url="@image/ptt-thanh-6533.png" />
-                                                            </image>
-                                                        </ImageView>
-                                                    </children>
-                                                </AnchorPane>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                                    <children>
-                                                        <Hyperlink fx:id="title31111" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                        <HBox prefHeight="31.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
-                                                            <children>
-                                                                <ImageView fitHeight="28.0" fitWidth="72.0" pickOnBounds="true" smooth="false">
-                                                                    <image>
-                                                                        <Image url="https://s1.vnecdn.net/vnexpress/restruct/i/v415/logo_default.jpg" />
-                                                                    </image>
-                                                                </ImageView>
-                                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875">
-                                                                    <font>
-                                                                        <Font size="11.0" />
-                                                                    </font></Text>
-                                                            </children>
-                                                        </HBox>
-                                                    </children>
-                                                </AnchorPane>
-                                            </items>
-                                        </SplitPane>
-                                        <SplitPane dividerPositions="0.3474114441416894" layoutX="10.0" layoutY="362.0" prefHeight="80.0" prefWidth="369.0">
-                                            <items>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                                    <children>
-                                                        <ImageView fitHeight="79.0" fitWidth="126.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="0.0">
-                                                            <image>
-                                                                <Image url="@image/ptt-thanh-6533.png" />
-                                                            </image>
-                                                        </ImageView>
-                                                    </children>
-                                                </AnchorPane>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                                    <children>
-                                                        <Hyperlink fx:id="title311111" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                        <HBox prefHeight="31.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
-                                                            <children>
-                                                                <ImageView fitHeight="28.0" fitWidth="72.0" pickOnBounds="true" smooth="false">
-                                                                    <image>
-                                                                        <Image url="https://s1.vnecdn.net/vnexpress/restruct/i/v415/logo_default.jpg" />
-                                                                    </image>
-                                                                </ImageView>
-                                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875">
-                                                                    <font>
-                                                                        <Font size="11.0" />
-                                                                    </font></Text>
-                                                            </children>
-                                                        </HBox>
-                                                    </children>
-                                                </AnchorPane>
-                                            </items>
-                                        </SplitPane>
-                                    </children>
-                                </VBox>
-                                <SplitPane dividerPositions="0.6944444444444444" layoutX="252.0" layoutY="316.0" orientation="VERTICAL" prefHeight="193.0" prefWidth="237.0">
-                                    <items>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="122.0" prefWidth="341.0">
-                                            <children>
-                                                <ImageView fitHeight="149.0" fitWidth="255.0" layoutX="-58.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true" translateX="50.0" AnchorPane.bottomAnchor="-7.0" AnchorPane.leftAnchor="-58.0" AnchorPane.rightAnchor="48.0" AnchorPane.topAnchor="-5.0">
-                                                    <image>
-                                                        <Image url="@image/ptt-thanh-6533.png" />
-                                                    </image>
-                                                </ImageView>
-                                            </children>
-                                        </AnchorPane>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="56.0" prefWidth="238.0">
-                                            <children>
-                                                <Hyperlink fx:id="title11" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                <HBox prefHeight="31.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
-                                                    <children>
-                                                        <ImageView fitHeight="15.0" fitWidth="77.0" pickOnBounds="true" smooth="false">
-                                                            <image>
-                                                                <Image url="https://s1.vnecdn.net/vnexpress/restruct/i/v415/logo_default.jpg" />
-                                                            </image>
-                                                        </ImageView>
-                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
-                                                    </children>
-                                                </HBox>
-                                            </children>
-                                        </AnchorPane>
-                                    </items>
-                                </SplitPane>
-                                <SplitPane dividerPositions="0.6944444444444444" layoutX="489.0" layoutY="316.0" orientation="VERTICAL" prefHeight="193.0" prefWidth="237.0">
-                                    <items>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="122.0" prefWidth="341.0">
-                                            <children>
-                                                <ImageView fitHeight="149.0" fitWidth="255.0" layoutX="-58.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true" translateX="50.0" AnchorPane.bottomAnchor="-7.0" AnchorPane.leftAnchor="-58.0" AnchorPane.rightAnchor="48.0" AnchorPane.topAnchor="-5.0">
-                                                    <image>
-                                                        <Image url="@image/ptt-thanh-6533.png" />
-                                                    </image>
-                                                </ImageView>
-                                            </children>
-                                        </AnchorPane>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="56.0" prefWidth="238.0">
-                                            <children>
-                                                <Hyperlink fx:id="title12" alignment="CENTER" contentDisplay="CENTER" onAction="#articleClicked" prefHeight="35.0" prefWidth="662.0" text="Chỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCMChỉ đạo của Tổng Bí thư về phòng, chống dịch COVID-19 tại TPHCM" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                <HBox prefHeight="31.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
-                                                    <children>
-                                                        <ImageView fitHeight="17.0" fitWidth="77.0" pickOnBounds="true" smooth="false">
-                                                            <image>
-                                                                <Image url="https://s1.vnecdn.net/vnexpress/restruct/i/v415/logo_default.jpg" />
-                                                            </image>
-                                                        </ImageView>
-                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thứ Ba, 06-07-2021, 06:41" textAlignment="CENTER" wrappingWidth="169.8182373046875" />
-                                                    </children>
-                                                </HBox>
-                                            </children>
-                                        </AnchorPane>
-                                    </items>
-                                </SplitPane>
-                            </children>
-                        </Pane>
-                    </children>
-                </GridPane>
-            </right>
-        </BorderPane>
-    </children>
+                        <Button fx:id="page2" mnemonicParsing="false" onAction="#secondPageClicked" text="2" />
+                        <Button fx:id="page3" minWidth="-Infinity" mnemonicParsing="false" onAction="#thirdPageClicked" text="3" />
+                        <Button fx:id="page4" minWidth="-Infinity" mnemonicParsing="false" onAction="#fifthPageClicked" text="4" />
+                        <Button fx:id="page5" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageClicked" text="5">
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin></Button>
+                        <Button fx:id="next" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextClicked" prefWidth="60.0" text="NEXT" />
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </HBox>
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
+   </children>
 </StackPane>

@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class StopWatch {
-    private final DateTimeFormatter out = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
+    private DateTimeFormatter out = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
     LocalDateTime now = LocalDateTime.now();
 
 
@@ -50,6 +50,6 @@ public class StopWatch {
     }
 
     public long getElapsedTime() {
-        return e - s;
+        return  System.currentTimeMillis() - s;
     }
 }
