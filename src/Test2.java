@@ -3,8 +3,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Test2 {
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -23,7 +21,7 @@ public class Test2 {
         //Thread t1 = new Thread( () -> {
             try {
                 //c1.setOther();
-                c1.setCate("tech");
+                c1.setCate("new");
             } catch (IOException e) {}
 
         //});
@@ -32,15 +30,16 @@ public class Test2 {
         //t1.join();
 
         //Thread t2 = new Thread( () -> {
-            //c1.getNum();
+            c1.getNum();
+            c1.sort();
             int count = 1;
 
-            for ( Article a : c1.getList("tech") ) {
+            for ( Article a : c1.getList("new") ) {
                 System.out.println(a.getUrl() );
 
-                System.out.println(count + ": " + a.getTitle() + "\n" );//+ a.getKWs());
+                System.out.println(count + ": " + a.getTitle() );//+ a.getKWs());
 
-                //System.out.println(count + ": " + a.getAvt() + "\n");
+                System.out.println(a.getPubDay() + "\n");
 
                 //a.getSum();
 
@@ -53,7 +52,7 @@ public class Test2 {
             }
             System.out.print("\n" + "Time consume: " + clock1.getElapsedTime() + " ms" + "\n");
         //});
-       // t2.start();
+       //t2.start();
 
         //c1.getPol();
         //System.out.println(doc);

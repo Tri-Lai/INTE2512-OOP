@@ -1,17 +1,15 @@
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.io.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Category {
-    public Category() throws IOException {
+    public Category() {
     }
 
     private ArrayList<Article> New = new ArrayList<>();
@@ -20,26 +18,26 @@ public class Category {
 
     private ArrayList<Article> Pol = new ArrayList<>();
 
-    private ArrayList<Article> Busi = new ArrayList<Article>();
+    private ArrayList<Article> Busi = new ArrayList<>();
 
-    private ArrayList<Article> Tech = new ArrayList<Article>();
+    private ArrayList<Article> Tech = new ArrayList<>();
 
-    private ArrayList<Article> Health = new ArrayList<Article>();
+    private ArrayList<Article> Health = new ArrayList<>();
 
-    private ArrayList<Article> Sport = new ArrayList<Article>();
+    private ArrayList<Article> Sport = new ArrayList<>();
 
-    private ArrayList<Article> Entertain = new ArrayList<Article>();
+    private ArrayList<Article> Entertain = new ArrayList<>();
 
-    private ArrayList<Article> World = new ArrayList<Article>();
+    private ArrayList<Article> World = new ArrayList<>();
 
-    private ArrayList<Article> Other = new ArrayList<Article>();
+    private ArrayList<Article> Other = new ArrayList<>();
 
-    private static String[] source = {"zingnews",
+    private static final String[] source = {"zingnews",
             "thanhnien",
             "tuoitre",
             "nhandan",
             "vnexpress"};
-    private static String[] link = {"https://zingnews.vn/",
+    private static final String[] link = {"https://zingnews.vn/",
             "https://thanhnien.vn/",
             "https://tuoitre.vn/",
             "https://nhandan.vn/",
@@ -47,7 +45,7 @@ public class Category {
 
     //Get the specified Category list
     public ArrayList<Article> getList(String name) {
-        ArrayList<Article> out = new ArrayList<Article>();
+        ArrayList<Article> out = new ArrayList<>();
 
         switch ( name ) {
             case "new":
@@ -95,7 +93,7 @@ public class Category {
     }
 
     public void getNum () {
-        System.out.println("Covid: " + Covid.size() + " Politic: " + Pol.size()
+        System.out.println("New: " + New.size() + " Covid: " + Covid.size() + " Politic: " + Pol.size()
                 + " Business: " + Busi.size() + " Tech: " + Tech.size() + " Health: " + Health.size()
                 + " Sport: " + Sport.size() + " Entertain: " + Entertain.size() + " World: " + World.size()
                 + " Other: " + Other.size());
@@ -107,13 +105,95 @@ public class Category {
         clock.start();
 
         ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        int need = 0;
 
+        switch (cate) {
+            case "new":
+                need = 40;  break;
+
+            case "covid":
+                need = 0;
+                break;
+
+            case "politic":
+                if (Pol.size() < 50) {
+                    if ( ((50 - Pol.size() ) %5) > 0 ) {
+                        need = ((50 - Pol.size() ) /5) + 1;
+                    }
+                    else {
+                        need = (50 - Pol.size() ) /5;
+                    }
+                }
+                break;
+
+            case "business":
+                if (Busi.size() < 50 && ( ((50 - Busi.size() ) %5) > 0 )) {
+                        need = ((50 - Busi.size() ) /5) + 1;
+                }
+                else {
+                    need = (50 - Busi.size() ) /5;
+                }
+                break;
+
+            case "tech":
+                if (Tech.size() < 50 && ( ((50 - Tech.size() ) %5) > 0 )) {
+                    need = ((50 - Tech.size() ) /5) + 1;
+                }
+                else {
+                    need = (50 - Tech.size() ) /5;
+                }
+                break;
+
+            case "health":
+                if (Health.size() < 50 && ( ((50 - Health.size() ) %5) > 0 )) {
+                    need = ((50 - Health.size() ) /5) + 1;
+                }
+                else {
+                    need = (50 - Health.size() ) /5;
+                }
+                break;
+
+            case "sport":
+                if (Sport.size() < 50 && ( ((50 - Sport.size() ) %5) > 0 )) {
+                    need = ((50 - Sport.size() ) /5) + 1;
+                }
+                else {
+                    need = (50 - Sport.size() ) /5;
+                }
+                break;
+
+            case "entertain":
+                if (Entertain.size() < 50 && ( ((50 - Entertain.size() ) %5) > 0 )) {
+                    need = ((50 - Entertain.size() ) /5) + 1;
+                }
+                else {
+                    need = (50 - Entertain.size() ) /5;
+                }
+                break;
+
+            case "world":
+                if (World.size() < 50 && ( ((50 - World.size() ) %5) > 0 )) {
+                    need = ((50 - World.size() ) /5) + 1;
+                }
+                else {
+                    need = (50 - World.size() ) /5;
+                }
+                break;
+
+            case "other":
+                need = 0;
+                break;
+        }
         for (int id = 0; id <= 4; id++) {
             int finalId = id;
+
+            int finalNeed = need;
             es.execute( () -> {
                 try {
-                    getFrom(10, cate, source[finalId], link[finalId]);
-                } catch (Exception e) {}
+                    getFrom(finalNeed, cate, source[finalId], link[finalId]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 System.out.println(source[finalId] + ": " + clock.getElapsedTime());
             });
         }
@@ -121,13 +201,13 @@ public class Category {
         es.shutdown();
 
         //wait to all task completed
-        while ( !es.isTerminated() ) {};
+        while ( !es.isTerminated() ) {}
 
-        System.out.print("\n" + "Time consume: " + clock.getElapsedTime() + " ms" + "\n");
+        System.out.print("\n" + "Time setCate() consume: " + clock.getElapsedTime() + " ms" + "\n");
     }
 
     //Get the Number of article of Cate from Src which have homepage link is hpl
-    private void getFrom(int number, String cate, String src, String hpl) throws IOException, InterruptedException {
+    private void getFrom(int number, String cate, String src, String hpl) throws IOException {
         ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
         File hP = new File("Downloads/" + src + ".html");
@@ -137,12 +217,21 @@ public class Category {
         //Check and get URl of category
         String urlcate = getUrlCate(doc, cate, hpl);
 
+        int limit = number;
+
+        //if urlcate is empty then scrap from home page
+        if ( urlcate.isEmpty()) {
+            urlcate = hpl;
+            limit = 40;
+        }
+        if (cate.equals("new") || cate.equals("other") ) {
+            limit = 40;
+        }
+
         System.out.println(urlcate);
 
         //Get Category page
         doc = Jsoup.connect(urlcate).get();
-
-        int count = 1;
 
         List<Element> list;
         boolean isTuoiTre;
@@ -158,11 +247,12 @@ public class Category {
             if ( !doc.select("div.box-tournament.box-worldcup-2018").isEmpty() ) {
                 doc.select("div.box-tournament.box-worldcup-2018").remove();
             }
-            list = doc.selectFirst("section[id*=content]").select("a[href*=/][title~=[a-z]]");
+            list = Objects.requireNonNull(doc.selectFirst("section[id*=content]")).select("a[href*=/][title~=[a-z]]");
             isTuoiTre = true;
         }
+        System.out.println(list.size());
 
-        for (int id = 0; id < 50; id++) {
+        for (int id = 0; id < list.size(); id++) {
             Element e = list.get(id);
 
             if ( !isTuoiTre ) {
@@ -170,8 +260,14 @@ public class Category {
                 if (e.child(0).tagName().equals("ins")) {
                     continue;
                 }
-                if (e.selectFirst("a").attr("href").isEmpty() ) {
-                    continue;
+                else if ( !e.select("a").isEmpty() ) {
+                    if ( Objects.requireNonNull(e.selectFirst("a")).attr("href").equals("") ) {
+                        continue;
+                    }
+                }
+                else if ( e.child(1).tagName().equals("ins") ) {
+                    id++;
+                    e = list.get(id);
                 }
             }
 
@@ -180,59 +276,53 @@ public class Category {
                 continue;
             }
 
-                String avt = "";
+            String avt = "";
 
-                //Check and get Avatar Image Link
-                if (!(e.select("img").isEmpty())) {
-                    avt = e.selectFirst("img").attr("src");
+            //Check and get Avatar Image Link
+            if (!(e.select("img").isEmpty())) {
+                    avt = Objects.requireNonNull(e.selectFirst("img").attr("src") );
 
                     //Check image link
                     if (!(avt.contains("https:")) && !(avt.contains(".jpeg"))) {
-                        avt = e.selectFirst("img").attr("data-src");
+                        avt = Objects.requireNonNull(e.selectFirst("img").attr("data-src") );
                     }
                 }
 
-                //Get Article Link
-                String url = e.selectFirst("a").attr("href");
+            //Get Article Link
+            String url = e.selectFirst("a").attr("href");
 
-                //Check to complete url
-                if (!url.contains(hpl)) {
+            //Check to complete url
+            if (!url.contains(hpl)) {
                     url = new StringBuffer(hpl).deleteCharAt(hpl.length() - 1) + url;
                 }
 
+            //System.out.println(id + ": " + url);
+
             //dont get the special articles
             if ( url.contains("https://special.nhandan.vn/") ) {
-                id++;
-                e = list.get(id);
-                //Check and get Avatar Image Link
-                if (!(e.select("img").isEmpty())) {
-                    avt = e.selectFirst("img").attr("src");
-
-                    //Check image link
-                    if (!(avt.contains("https:")) && !(avt.contains(".jpeg"))) {
-                        avt = e.selectFirst("img").attr("data-src");
-                    }
-                }
+                continue;
             }
 
-            String finalUrl = url;
             String finalAvt = avt;
+            String finalUrl = url;
+
             es.execute( () -> {
                 try {
                     Article a = new Article(finalUrl, finalAvt);
-
+                    //System.out.println(finalUrl + "\n" +  finalAvt);
                     //Check if it belongs to any other Cate and add
                     check2Add(a.getKWs().toLowerCase(), a, cate);
-                } catch (IOException ex) {};
+                } catch (Exception ex) {};
             });
 
             //Stop when scraped 10 Article
-            if (count == number) {
+            if (id == limit || id == list.size()-1) {
+                System.out.println("blue");
                 es.shutdown();
                 break;
             }
-            count++;
         }
+        es.shutdown();
 
         while ( !es.isTerminated() ) {}
     }
@@ -243,6 +333,15 @@ public class Category {
 
         //Get category hyperlink
         switch (cate) {
+            case "new": case "other": {
+                for ( Element e : doc.select("a[href*=/]") ) {
+                    if (e.text().toLowerCase().contains("tin mới") || e.text().equalsIgnoreCase("mới nhất")) {
+                        out = e.attr("href");
+                        break;
+                    }
+                }
+                break;
+            }
             //category Politic
             case "politic": {
                 //Check
@@ -264,7 +363,7 @@ public class Category {
                 break;
             }
 
-                //Category Business
+            //Category Business
             case "business": {
                 if (!doc.select("a[href*=kinh-doanh]").isEmpty()) {
                     for (Element e : doc.select("a[href*=kinh-doanh]") ) {
@@ -407,9 +506,13 @@ public class Category {
     private void check2Add(String kw, Article article, String cate) {
         boolean sig = false;
 
+        if (New.size() < 100 ) {
+            New.add(article);
+        }
+
         //Check if Covid
         if (kw.contains("covid-19") || kw.contains("chống dịch") || kw.contains("vaccine") || kw.contains("f0")
-                || kw.contains("dịch bệnh") || kw.contains("ncov")  || cate.equals("covid")) {
+                || kw.contains("dịch bệnh") || kw.contains("ncov")  ) { //|| cate.equals("covid")
             if (Covid.size() < 50) {
                 Covid.add(article);
             }
@@ -482,128 +585,20 @@ public class Category {
         }
     }
 
-    public void setOther () throws IOException {
-        ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-
-        Document doc = Jsoup.connect(link[0]).get();
-        String hpl = link[0],
-                cate = "other";
-
-        List<Element> list;
-        boolean isTuoiTre;
-        int count = 1;
-
-        //Vne, Zing, TN, ND
-        if ( !doc.select("article").isEmpty() ) {
-            System.out.println("blue");
-            list = doc.select("article");
-            isTuoiTre = false;
-        }
-
-        //Tuoi Tre
-        else {
-            if ( !doc.select("div.box-tournament.box-worldcup-2018").isEmpty() ) {
-                doc.select("div.box-tournament.box-worldcup-2018").remove();
+    public void sort () {
+        StopWatch clock1 = new StopWatch();
+        clock1.start();
+        Collections.sort(New, (d1, d2) -> {
+            try {
+                // Check if published date of one of two article is null so that throw the NullPointerException
+                if (d1.getPubDay() == null || d2.getPubDay() == null)
+                    throw new Exception();
+                // Return the compared value of the Article object in descending order.
+                return d2.getPubDay().compareTo(d1.getPubDay());
+            } catch (Exception e) {
+                throw new NullPointerException("Date Error: Date is empty!");
             }
-            list = doc.selectFirst("section[id*=content]").select("a[href*=/][title~=[a-z]]");
-            isTuoiTre = true;
-        }
-
-
-        System.out.println(list.size());
-
-        for (int id = 0; id < list.size(); id++) {
-            Element e = list.get(id);
-
-            if ( !isTuoiTre ) {
-                //avoid the blank
-                if (e.child(0).tagName().equals("ins")) {
-                    continue;
-                }
-                if (e.selectFirst("a").attr("href").isEmpty() ) {
-                    continue;
-                }
-            }
-
-            //Filter for tuoi tre
-            if (e.select("img").isEmpty() && isTuoiTre) {
-                continue;
-            }
-
-            String avt = "";
-
-            //Check and get Avatar Image Link
-            if (!(e.select("img").isEmpty())) {
-                avt = e.selectFirst("img").attr("src");
-
-                //Check image link
-                if (!(avt.contains("https:")) && !(avt.contains(".jpeg"))) {
-                    avt = e.selectFirst("img").attr("data-src");
-                }
-            }
-
-            //Get Article Link
-            String url;
-            if ( !e.select("a").isEmpty() ) {
-                url = e.selectFirst("a").attr("href");
-            }
-            else {
-                url = e.parent().attr("href");
-            }
-
-            //Check to complete url
-            if (!url.contains(hpl)) {
-                url = new StringBuffer(hpl).deleteCharAt(hpl.length() - 1) + url;
-            }
-
-            //dont get the special articles
-            if ( url.contains("https://special.nhandan.vn/") ) {
-                id++;
-                e = list.get(id);
-                //Check and get Avatar Image Link
-                if (!(e.select("img").isEmpty())) {
-                    avt = e.selectFirst("img").attr("src");
-
-                    //Check image link
-                    if (!(avt.contains("https:")) && !(avt.contains(".jpeg"))) {
-                        avt = e.selectFirst("img").attr("data-src");
-                    }
-                }
-            }
-
-            //System.out.println(url + avt);
-
-            String finalUrl = url;
-            String finalAvt = avt;
-            //System.out.println(count);
-
-           es.execute( () -> {
-                try {
-                    Article a = new Article(finalUrl, finalAvt);
-
-                    //Check if it belongs to any other Cate and add
-                    check2Add(a.getKWs().toLowerCase(), a, cate);
-                    //System.out.println(finalAvt + "\n" + finalUrl + "\n" + a.getKWs() + "\n" );//+ Other.size());
-                    //System.out.println(Other.size());
-                    if (Other.size() > 10) {
-                        System.out.println("done");
-                        //es.shutdown();
-                    }
-                } catch (IOException ex) {};
-
-            });
-
-            //Stop when scraped 10 Article
-            if (count == 40 || count == list.size() || Other.size() == 10) {
-                System.out.println("num: " + count);
-                es.shutdown();
-                break;
-            }
-            count++;
-        }
-        //es.shutdown();
-
-        while ( !es.isTerminated() ) {}
+        });
+        System.out.print("\n" + "Time sort() consume: " + clock1.getElapsedTime() + " ms" + "\n");
     }
-
 }
