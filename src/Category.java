@@ -112,7 +112,7 @@ public class Category {
                 need = 40;  break;
 
             case "covid":
-                need = 0;
+                need = 40;
                 break;
 
             case "politic":
@@ -181,7 +181,7 @@ public class Category {
                 break;
 
             case "other":
-                need = 0;
+                need = 40;
                 break;
         }
         for (int id = 0; id <= 4; id++) {
