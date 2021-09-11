@@ -21,7 +21,7 @@ public class Test2 {
         //Thread t1 = new Thread( () -> {
             try {
                 //c1.setOther();
-                c1.setCate("new");
+                c1.setCate("politic");
             } catch (IOException e) {}
 
         //});
@@ -30,14 +30,15 @@ public class Test2 {
         //t1.join();
 
         //Thread t2 = new Thread( () -> {
-            c1.getNum();
-            c1.sort();
+
+            c1.sort("politic");
             int count = 1;
 
-            for ( Article a : c1.getList("new") ) {
-                System.out.println(a.getUrl() );
+            for ( Article a : c1.getList("politic") ) {
 
-                System.out.println(count + ": " + a.getTitle() );//+ a.getKWs());
+                //System.out.println(a.getUrl()  +  "\n" + a.getAvt());
+
+                System.out.println(count + ": " + a.getTitle() );
 
                 System.out.println(a.getPubDay() + "\n");
 
@@ -50,6 +51,7 @@ public class Test2 {
                 }
                 count++;
             }
+        c1.getNum();
             System.out.print("\n" + "Time consume: " + clock1.getElapsedTime() + " ms" + "\n");
         //});
        //t2.start();
