@@ -4,6 +4,7 @@ import org.jsoup.nodes.Element;
 
 import java.io.*;
 
+import java.net.SocketTimeoutException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -47,7 +48,7 @@ public class Category {
     public ArrayList<Article> getList(String name) {
         ArrayList<Article> out = new ArrayList<>();
 
-        switch ( name ) {
+        switch (name) {
             case "new":
                 out = New;
                 break;
@@ -66,19 +67,19 @@ public class Category {
 
             case "tech":
                 out = Tech;
-            break;
+                break;
 
             case "health":
-                out =  Health;
-            break;
+                out = Health;
+                break;
 
             case "sport":
-                out =  Sport;
-            break;
+                out = Sport;
+                break;
 
             case "entertain":
-                out =  Entertain;
-            break;
+                out = Entertain;
+                break;
 
             case "world":
                 out = World;
@@ -92,7 +93,7 @@ public class Category {
         return out;
     }
 
-    public void getNum () {
+    public void getNum() {
         System.out.println("New: " + New.size() + " Covid: " + Covid.size() + " Politic: " + Pol.size()
                 + " Business: " + Busi.size() + " Tech: " + Tech.size() + " Health: " + Health.size()
                 + " Sport: " + Sport.size() + " Entertain: " + Entertain.size() + " World: " + World.size()
@@ -109,74 +110,65 @@ public class Category {
 
         switch (cate) {
             case "new":
-                need = 40;  break;
-
             case "covid":
                 need = 40;
                 break;
 
             case "politic":
                 if (Pol.size() < 50) {
-                    if ( ((50 - Pol.size() ) %5) > 0 ) {
-                        need = ((50 - Pol.size() ) /5) + 1;
-                    }
-                    else {
-                        need = (50 - Pol.size() ) /5;
+                    if (((50 - Pol.size()) % 5) > 0) {
+                        need = ((50 - Pol.size()) / 5) + 1;
+                    } else {
+                        need = (50 - Pol.size()) / 5;
                     }
                 }
                 break;
 
             case "business":
-                if (Busi.size() < 50 && ( ((50 - Busi.size() ) %5) > 0 )) {
-                        need = ((50 - Busi.size() ) /5) + 1;
-                }
-                else {
-                    need = (50 - Busi.size() ) /5;
+                if (Busi.size() < 50 && (((50 - Busi.size()) % 5) > 0)) {
+                    need = ((50 - Busi.size()) / 5) + 1;
+                } else {
+                    need = (50 - Busi.size()) / 5;
                 }
                 break;
 
             case "tech":
-                if (Tech.size() < 50 && ( ((50 - Tech.size() ) %5) > 0 )) {
-                    need = ((50 - Tech.size() ) /5) + 1;
-                }
-                else {
-                    need = (50 - Tech.size() ) /5;
+                if (Tech.size() < 50 && (((50 - Tech.size()) % 5) > 0)) {
+                    need = ((50 - Tech.size()) / 5) + 1;
+                } else {
+                    need = (50 - Tech.size()) / 5;
                 }
                 break;
 
             case "health":
-                if (Health.size() < 50 && ( ((50 - Health.size() ) %5) > 0 )) {
-                    need = ((50 - Health.size() ) /5) + 1;
-                }
-                else {
-                    need = (50 - Health.size() ) /5;
+                if (Health.size() < 50 && (((50 - Health.size()) % 5) > 0)) {
+                    need = ((50 - Health.size()) / 5) + 1;
+                } else {
+                    need = (50 - Health.size()) / 5;
                 }
                 break;
 
             case "sport":
-                if (Sport.size() < 50 && ( ((50 - Sport.size() ) %5) > 0 )) {
-                    need = ((50 - Sport.size() ) /5) + 1;
-                }
-                else {
-                    need = (50 - Sport.size() ) /5;
+                if (Sport.size() < 50 && (((50 - Sport.size()) % 5) > 0)) {
+                    need = ((50 - Sport.size()) / 5) + 1;
+                } else {
+                    need = (50 - Sport.size()) / 5;
                 }
                 break;
 
             case "entertain":
-                if (Entertain.size() < 50 && ( ((50 - Entertain.size() ) %5) > 0 )) {
-                    need = ((50 - Entertain.size() ) /5) + 1;
-                }
-                else {
-                    need = (50 - Entertain.size() ) /5;
+                if (Entertain.size() < 50 && (((50 - Entertain.size()) % 5) > 0)) {
+                    need = ((50 - Entertain.size()) / 5) + 1;
+                } else {
+                    need = (50 - Entertain.size()) / 5;
                 }
                 break;
 
             case "world":
-                if (World.size() < 50 && ( ((50 - World.size() ) %5) > 0 )) {
-                    need = ((50 - World.size() ) /5) + 1;
-                }
-                else {
-                    need = (50 - World.size() ) /5;
+                if (World.size() < 50 && (((50 - World.size()) % 5) > 0)) {
+                    need = ((50 - World.size()) / 5) + 1;
+                } else {
+                    need = (50 - World.size()) / 5;
                 }
                 break;
 
@@ -184,11 +176,12 @@ public class Category {
                 need = 40;
                 break;
         }
+
         for (int id = 0; id <= 4; id++) {
             int finalId = id;
 
             int finalNeed = need;
-            es.execute( () -> {
+            es.execute(() -> {
                 try {
                     getFrom(finalNeed, cate, source[finalId], link[finalId]);
                 } catch (Exception e) {
@@ -201,7 +194,8 @@ public class Category {
         es.shutdown();
 
         //wait to all task completed
-        while ( !es.isTerminated() ) {}
+        while (!es.isTerminated()) {
+        }
 
         System.out.print("\n" + "Time setCate() consume: " + clock.getElapsedTime() + " ms" + "\n");
     }
@@ -217,55 +211,58 @@ public class Category {
         //Check and get URl of category
         String urlcate = getUrlCate(doc, cate, hpl);
 
-        int limit = number;
-
         //if urlcate is empty then scrap from home page
-        if ( urlcate.isEmpty()) {
+        if (urlcate.isEmpty()) {
             urlcate = hpl;
-            limit = 40;
-        }
-        if (cate.equals("new") || cate.equals("other") ) {
-            limit = 40;
         }
 
         System.out.println(urlcate);
 
+        boolean err = true;
+
         //Get Category page
-        doc = Jsoup.connect(urlcate).get();
+        while (err) {
+            try {
+                doc = Jsoup.connect(urlcate).get();
+                err = false;
+            } catch (SocketTimeoutException ste) {
+                System.out.println("Socket timeout excetion occurs");
+
+                doc = Jsoup.connect(urlcate).get();
+            }
+        }
 
         List<Element> list;
         boolean isTuoiTre;
 
         //Vne, Zing, TN, ND
-        if ( !doc.select("article").isEmpty() ) {
-             list = doc.select("article");
-             isTuoiTre = false;
+        if (!doc.select("article").isEmpty()) {
+            list = doc.select("article");
+            isTuoiTre = false;
         }
 
         //Tuoi Tre
         else {
-            if ( !doc.select("div.box-tournament.box-worldcup-2018").isEmpty() ) {
+            if (!doc.select("div.box-tournament.box-worldcup-2018").isEmpty()) {
                 doc.select("div.box-tournament.box-worldcup-2018").remove();
             }
             list = Objects.requireNonNull(doc.selectFirst("section[id*=content]")).select("a[href*=/][title~=[a-z]]");
             isTuoiTre = true;
         }
-        System.out.println(list.size());
+        //System.out.println(list.size());
 
         for (int id = 0; id < list.size(); id++) {
             Element e = list.get(id);
 
-            if ( !isTuoiTre ) {
+            if (!isTuoiTre) {
                 //avoid the blank
                 if (e.child(0).tagName().equals("ins")) {
                     continue;
-                }
-                else if ( !e.select("a").isEmpty() ) {
-                    if ( Objects.requireNonNull(e.selectFirst("a")).attr("href").equals("") ) {
+                } else if (!e.select("a").isEmpty()) {
+                    if (Objects.requireNonNull(e.selectFirst("a")).attr("href").equals("")) {
                         continue;
                     }
-                }
-                else if ( e.child(1).tagName().equals("ins") ) {
+                } else if (e.child(1).tagName().equals("ins")) {
                     id++;
                     e = list.get(id);
                 }
@@ -280,51 +277,61 @@ public class Category {
 
             //Check and get Avatar Image Link
             if (!(e.select("img").isEmpty())) {
-                    avt = Objects.requireNonNull(e.selectFirst("img").attr("src") );
+                avt = Objects.requireNonNull(Objects.requireNonNull(e.selectFirst("img")).attr("src"));
 
-                    //Check image link
-                    if (!(avt.contains("https:")) && !(avt.contains(".jpeg"))) {
-                        avt = Objects.requireNonNull(e.selectFirst("img").attr("data-src") );
-                    }
+                //Check image link
+                if (!(avt.contains("https:")) && !(avt.contains(".jpeg"))) {
+                    avt = Objects.requireNonNull(Objects.requireNonNull(e.selectFirst("img")).attr("data-src"));
                 }
+            }
 
             //Get Article Link
-            String url = e.selectFirst("a").attr("href");
+            String url = Objects.requireNonNull(e.selectFirst("a")).attr("href");
 
             //Check to complete url
             if (!url.contains(hpl)) {
-                    url = new StringBuffer(hpl).deleteCharAt(hpl.length() - 1) + url;
-                }
-
-            //System.out.println(id + ": " + url);
+                url = new StringBuffer(hpl).deleteCharAt(hpl.length() - 1) + url;
+            }
 
             //dont get the special articles
-            if ( url.contains("https://special.nhandan.vn/") ) {
+            if (url.contains("https://special.nhandan.vn/") || url.contains("https://thanhnien.vn/video")
+                    || url.contains("https://thanhnien.vn/the-thao/tuong-thuat")) {
                 continue;
             }
 
             String finalAvt = avt;
             String finalUrl = url;
 
-            es.execute( () -> {
+            es.execute(() -> {
                 try {
                     Article a = new Article(finalUrl, finalAvt);
-                    //System.out.println(finalUrl + "\n" +  finalAvt);
+
                     //Check if it belongs to any other Cate and add
                     check2Add(a.getKWs().toLowerCase(), a, cate);
-                } catch (Exception ex) {};
+                } catch (Exception ex) {
+                    Article a = null;
+                    try {
+                        a = new Article(finalUrl, finalAvt);
+                    } catch (Exception exc) {
+                        exc.printStackTrace();
+                    }
+
+                    //Check if it belongs to any other Cate and add
+                    check2Add(a.getKWs().toLowerCase(), a, cate);
+                    System.out.println("Exception occurs when create and check article: " + finalUrl);
+                }
             });
 
             //Stop when scraped 10 Article
-            if (id == limit || id == list.size()-1) {
-                System.out.println("blue");
+            if (id == number || id == list.size() - 1) {
                 es.shutdown();
                 break;
             }
         }
         es.shutdown();
 
-        while ( !es.isTerminated() ) {}
+        while (!es.isTerminated()) {
+        }
     }
 
     //Get url of page of specified category
@@ -333,8 +340,9 @@ public class Category {
 
         //Get category hyperlink
         switch (cate) {
-            case "new": case "other": {
-                for ( Element e : doc.select("a[href*=/]") ) {
+            case "new":
+            case "other": {
+                for (Element e : doc.select("a[href*=/]")) {
                     if (e.text().toLowerCase().contains("tin mới") || e.text().equalsIgnoreCase("mới nhất")) {
                         out = e.attr("href");
                         break;
@@ -346,17 +354,17 @@ public class Category {
             case "politic": {
                 //Check
                 if (!(doc.select("a[href*=chinh-tri]").isEmpty())) {
-                    out = doc.selectFirst("a[href*=chinh-tri]").attr("href");
+                    out = Objects.requireNonNull(doc.selectFirst("a[href*=chinh-tri]")).attr("href");
                 } else if (!doc.select("a[href*=chinhtri]").isEmpty()) {
-                    out = doc.selectFirst("a[href*=chinhtri]").attr("href");
+                    out = Objects.requireNonNull(doc.selectFirst("a[href*=chinhtri]")).attr("href");
                 }
 
                 //Use "Phap Luat" category instead
                 if (out.isEmpty()) {
                     if (!(doc.select("a[href*=phap-luat]").isEmpty())) {
-                        out = doc.selectFirst("a[href*=phap-luat]").attr("href");
+                        out = Objects.requireNonNull(doc.selectFirst("a[href*=phap-luat]")).attr("href");
                     } else if (!doc.select("a[href*=phapluat]").isEmpty()) {
-                        out = doc.selectFirst("a[href*=phapluat]").attr("href");
+                        out = Objects.requireNonNull(doc.selectFirst("a[href*=phapluat]")).attr("href");
                     }
                 }
 
@@ -366,22 +374,21 @@ public class Category {
             //Category Business
             case "business": {
                 if (!doc.select("a[href*=kinh-doanh]").isEmpty()) {
-                    for (Element e : doc.select("a[href*=kinh-doanh]") ) {
+                    for (Element e : doc.select("a[href*=kinh-doanh]")) {
                         if (e.text().equalsIgnoreCase("kinh doanh") || e.text().equalsIgnoreCase("tài chính - kinh doanh")) {
                             out = e.attr("href");
 
-                            if (out.contains(hpl) ) {
+                            if (out.contains(hpl)) {
                                 break;
                             }
                         }
                     }
-                }
-                else if (!(doc.select("a[href*=kinhdoanh]").isEmpty())) {
-                    for (Element e : doc.select("a[href*=kinhdoanh]") ) {
+                } else if (!(doc.select("a[href*=kinhdoanh]").isEmpty())) {
+                    for (Element e : doc.select("a[href*=kinhdoanh]")) {
                         if (e.text().equalsIgnoreCase("kinh doanh") || e.text().equalsIgnoreCase("tài chính - kinh doanh")) {
                             out = e.attr("href");
 
-                            if (out.contains(hpl) ) {
+                            if (out.contains(hpl)) {
                                 break;
                             }
                         }
@@ -390,9 +397,9 @@ public class Category {
 
                 if (out.isEmpty()) {
                     if (!(doc.select("a[href*=kinhte]").isEmpty())) {
-                        out = doc.selectFirst("a[href*=kinhte]").attr("href");
+                        out = Objects.requireNonNull(doc.selectFirst("a[href*=kinhte]")).attr("href");
                     } else if (!doc.select("a[href*=kinh-te]").isEmpty()) {
-                        out = doc.selectFirst("a[href*=kinh-te]").attr("href");
+                        out = Objects.requireNonNull(doc.selectFirst("a[href*=kinh-te]")).attr("href");
                     }
                 }
 
@@ -402,10 +409,9 @@ public class Category {
             //Category Technology
             case "tech": {
                 if (!doc.select("a[href*=congnghe]").isEmpty()) {
-                    out = doc.selectFirst("a[href*=congnghe]").attr("href");
-                }
-                else if (!(doc.select("a[href*=cong-nghe]").isEmpty())) {
-                    out = doc.selectFirst("a[href*=cong-nghe]").attr("href");
+                    out = Objects.requireNonNull(doc.selectFirst("a[href*=congnghe]")).attr("href");
+                } else if (!(doc.select("a[href*=cong-nghe]").isEmpty())) {
+                    out = Objects.requireNonNull(doc.selectFirst("a[href*=cong-nghe]")).attr("href");
                 }
                 break;
             }
@@ -413,9 +419,9 @@ public class Category {
             //Category Health
             case "health": {
                 if (!(doc.select("a[href*=suc-khoe]").isEmpty())) {
-                    out = doc.selectFirst("a[href*=suc-khoe]").attr("href");
+                    out = Objects.requireNonNull(doc.selectFirst("a[href*=suc-khoe]")).attr("href");
                 } else if (!doc.select("a[href*=suckhoe]").isEmpty()) {
-                    out = doc.selectFirst("a[href*=suckhoe]").attr("href");
+                    out = Objects.requireNonNull(doc.selectFirst("a[href*=suckhoe]")).attr("href");
                 }
 
                 break;
@@ -424,9 +430,9 @@ public class Category {
             //Category Sport
             case "sport": {
                 if (!(doc.select("a[href*=thethao]").isEmpty())) {
-                    out = doc.selectFirst("a[href*=thethao]").attr("href");
+                    out = Objects.requireNonNull(doc.selectFirst("a[href*=thethao]")).attr("href");
                 } else if (!doc.select("a[href*=the-thao]").isEmpty()) {
-                    out = doc.selectFirst("a[href*=the-thao]").attr("href");
+                    out = Objects.requireNonNull(doc.selectFirst("a[href*=the-thao]")).attr("href");
                 }
 
                 break;
@@ -435,22 +441,21 @@ public class Category {
             //Entertainment
             case "entertain": {
                 if (!doc.select("a[href*=giaitri]").isEmpty()) {
-                    for (Element e : doc.select("a[href*=giaitri]") ) {
+                    for (Element e : doc.select("a[href*=giaitri]")) {
                         if (e.text().equalsIgnoreCase("giải trí")) {
                             out = e.attr("href");
 
-                            if (!out.contains("video") ) {
+                            if (!out.contains("video")) {
                                 break;
                             }
                         }
                     }
-                }
-                else if (!(doc.select("a[href*=giai-tri]").isEmpty())) {
-                    for (Element e : doc.select("a[href*=giai-tri]") ) {
+                } else if (!(doc.select("a[href*=giai-tri]").isEmpty())) {
+                    for (Element e : doc.select("a[href*=giai-tri]")) {
                         if (e.text().equalsIgnoreCase("giải trí")) {
                             out = e.attr("href");
 
-                            if (!out.contains("video") ) {
+                            if (!out.contains("video")) {
                                 break;
                             }
                         }
@@ -458,8 +463,8 @@ public class Category {
                 }
 
                 //Replace by Van Hoa
-                if ( out.isEmpty() ) {
-                    if (!(doc.select("a[href*=vanhoa]").isEmpty()) ) {
+                if (out.isEmpty()) {
+                    if (!(doc.select("a[href*=vanhoa]").isEmpty())) {
                         for (Element e : doc.select("a[href*=vanhoa]")) {
                             if (e.text().equalsIgnoreCase("văn hóa")) {
                                 out = e.attr("href");
@@ -469,8 +474,7 @@ public class Category {
                                 }
                             }
                         }
-                    }
-                    else if (!(doc.select("a[href*=van-hoa]").isEmpty())) {
+                    } else if (!(doc.select("a[href*=van-hoa]").isEmpty())) {
                         for (Element e : doc.select("a[href*=van-hoa]")) {
                             if (e.text().equalsIgnoreCase("văn hoá")) {
                                 out = e.attr("href");
@@ -488,12 +492,10 @@ public class Category {
 
             //World
             case "world": {
-                if (out.isEmpty()) {
-                    if (!(doc.select("a[href*=the-gioi]").isEmpty())) {
-                        out = doc.selectFirst("a[href*=the-gioi]").attr("href");
-                    } else if (!doc.select("a[href*=thegioi]").isEmpty()) {
-                        out = doc.selectFirst("a[href*=thegioi]").attr("href");
-                    }
+                if (!(doc.select("a[href*=the-gioi]").isEmpty())) {
+                    out = Objects.requireNonNull(doc.selectFirst("a[href*=the-gioi]")).attr("href");
+                } else if (!doc.select("a[href*=thegioi]").isEmpty()) {
+                    out = Objects.requireNonNull(doc.selectFirst("a[href*=thegioi]")).attr("href");
                 }
                 break;
             }
@@ -506,13 +508,13 @@ public class Category {
     private void check2Add(String kw, Article article, String cate) {
         boolean sig = false;
 
-        if (New.size() < 100 ) {
+        if (New.size() < 100) {
             New.add(article);
         }
 
         //Check if Covid
         if (kw.contains("covid-19") || kw.contains("chống dịch") || kw.contains("vaccine") || kw.contains("f0")
-                || kw.contains("dịch bệnh") || kw.contains("ncov")  ) { //|| cate.equals("covid")
+                || kw.contains("dịch bệnh") || kw.contains("ncov")) { //|| cate.equals("covid")
             if (Covid.size() < 50) {
                 Covid.add(article);
             }
@@ -577,28 +579,156 @@ public class Category {
             }
         }
 
-        //Check if article hasn't belong to any Cate
-        else if (sig == false) {
+        //Check if article hasn't belonged to any Cate
+        else if (!sig) {
             if (Other.size() < 50) {
-            Other.add(article);
-        }
+                Other.add(article);
+            }
         }
     }
 
-    public void sort () {
+    //Sort List of article from newest to oldest
+    public void sort(String name) {
+        //Count time consume
         StopWatch clock1 = new StopWatch();
         clock1.start();
-        Collections.sort(New, (d1, d2) -> {
-            try {
-                // Check if published date of one of two article is null so that throw the NullPointerException
-                if (d1.getPubDay() == null || d2.getPubDay() == null)
-                    throw new Exception();
-                // Return the compared value of the Article object in descending order.
-                return d2.getPubDay().compareTo(d1.getPubDay());
-            } catch (Exception e) {
-                throw new NullPointerException("Date Error: Date is empty!");
+
+        ArrayList<Article> sortList = new ArrayList<>();
+
+        //Check to get the List
+        switch (name) {
+            case "new":
+                sortList = New;
+                break;
+
+            case "politic":
+                sortList = Pol;
+                break;
+
+            case "tech":
+                sortList = Tech;
+                break;
+
+            case "business":
+                sortList = Busi;
+                break;
+
+            case "health":
+                sortList = Health;
+                break;
+
+            case "sport":
+                sortList = Sport;
+                break;
+
+            case "Entertain":
+                sortList = Entertain;
+                break;
+
+            case "world":
+                sortList = World;
+                break;
+
+            case "other":
+                sortList = Other;
+                break;
+
+        }
+
+        //Sorting part
+        //Take 1 article from the beginning of the List and then next
+        for (int id1 = 0; id1 < sortList.size() - 2; id1++) {
+            //Create variable store the id of the newest article
+            int newest = id1;
+
+            //take each article which have the id next to the above to compare and find out the newest
+            for (int id2 = id1 + 1; id2 < sortList.size(); id2++) {
+                boolean done = false;
+
+                //Split to 2 strings dd/mm/yyyy and hh/mm
+                String[] date1 = sortList.get(newest).getPubDay().split(" "),
+                        date2 = sortList.get(id2).getPubDay().split(" ");
+
+                //Split dd/mm/yyyy to 3 strings dd, mm and yyyy
+                String[] s1 = date1[0].split("/"),
+                        s2 = date2[0].split("/");
+
+                //Take each string from yyyy to dd and compare
+                for (int k = s1.length - 1; k >= 0; k--) {
+                    //If year or month or day of article 1 is larger than, then article 2 become newest
+                    if (Integer.parseInt(s1[k]) != Integer.parseInt(s2[k])) {
+                        if (Integer.parseInt(s1[k]) < Integer.parseInt(s2[k])) {
+                            newest = id2;
+                        }
+                        done = true;
+                        break;
+                    }
+                }
+                if (done) {
+                    continue;
+                }
+
+                //If year, month and day is the same, compare hour and minute
+                s1 = date1[1].split(":");
+                s2 = date2[1].split(":");
+
+                //Take hour and then minutes
+                for (int k = 0; k < 2; k++) {
+
+                    //If the hour or minute is larger than, then article 2 become the newest
+                    if (Integer.parseInt(s1[k]) != Integer.parseInt(s2[k])) {
+                        if (Integer.parseInt(s1[k]) < Integer.parseInt(s2[k])) {
+                            newest = id2;
+                        }
+                        break;
+                    }
+                }
             }
-        });
-        System.out.print("\n" + "Time sort() consume: " + clock1.getElapsedTime() + " ms" + "\n");
+            Article temp = sortList.get(id1);
+            sortList.set(id1, sortList.get(newest));
+            sortList.set(newest, temp);
+        }
+
+        //Replace by the sorted list
+        switch (name) {
+            case "new":
+                New = sortList;
+                break;
+
+            case "politic":
+                Pol = sortList;
+                break;
+
+            case "tech":
+                Tech = sortList;
+                break;
+
+            case "business":
+                Busi = sortList;
+                break;
+
+            case "health":
+                Health = sortList;
+                break;
+
+            case "sport":
+                Sport = sortList;
+                break;
+
+            case "Entertain":
+                Entertain = sortList;
+                break;
+
+            case "world":
+                World = sortList;
+                break;
+
+            case "other":
+                Other = sortList;
+                break;
+
+        }
+
+        System.out.print("\n" + "Time sortT() consume: " + clock1.getElapsedTime() + " ms" + "\n");
     }
 }
