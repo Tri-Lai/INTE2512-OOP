@@ -4,14 +4,12 @@
   Semester: 2021B
   Assessment: Final Project
   Created  date: 12/07/2021
-
   Author: Lai Nghiep Tri - s3799602
           Thieu Tran Tri Thuc - s3870730
           Nguyen Hoang Long - S3878451
-          Trinh Pham Hoang Long - s3879366
-
-  Last modified date: dd/mm/yyyy
-  Acknowledgement: Canvas lecture slides, W3schools,
+          Pham Trinh Hoang Long - s3879366
+  Last modified date: 18/09/2021
+  Acknowledgement: Canvas lecture slides, W3schools, Geeksforgeeks, Oracle Documentation, javatpoint
 */
 
 package sample.ultilities;

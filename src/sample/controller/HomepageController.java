@@ -1,3 +1,17 @@
+/*
+  RMIT University Vietnam
+  Course: INTE2512 Object-Oriented Programming
+  Semester: 2021B
+  Assessment: Final Project
+  Created  date: 12/07/2021
+  Author: Lai Nghiep Tri - s3799602
+          Thieu Tran Tri Thuc - s3870730
+          Nguyen Hoang Long - S3878451
+          Pham Trinh Hoang Long - s3879366
+  Last modified date: 18/09/2021
+  Acknowledgement: Canvas lecture slides, W3schools, Geeksforgeeks, Oracle Documentation, javatpoint
+*/
+
 package sample.controller;
 
 import javafx.application.Platform;
@@ -170,7 +184,12 @@ public class HomepageController implements Initializable{
     }
 
     //--Loading article--
-    private void loadNewArticle(int index) {
+    /**
+     * Overloading function for loading the next 10 articles when changing page number
+     *
+     * @param index: page number
+     */
+    private void loadArticles(int index) {
         ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
         //Array of image
@@ -232,6 +251,12 @@ public class HomepageController implements Initializable{
         }
     }
 
+    /**
+     * This function will run by default when the user open the application to load the first 10 articles of certain
+     * category.
+     *
+     * @param index: page number
+     */
     @FXML
     protected void defaultPage(int index) {
         ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
@@ -291,47 +316,73 @@ public class HomepageController implements Initializable{
     }
 
     //--Page number handler--
+
+    /**
+     * Loading the first 10 articles in the category list
+     *
+     * @param index: page number
+     */
     @FXML
     protected void firstPageClicked(int index) {
         // Using the Platform.runLater() to avoid FX application thread; currentThread=JavaFX Application Thread error
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                loadNewArticle(index);
+                loadArticles(index);
             }
         });
     }
 
+    /**
+     * Loading the next article 10th to 19th (10 articles) in the category list
+     *
+     * @param index: page number
+     */
     @FXML
     protected void secondPageClicked(int index) {
         // Using the Platform.runLater() to avoid FX application thread; currentThread=JavaFX Application Thread error
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                loadNewArticle(index);
+                loadArticles(index);
             }
         });
     }
 
+    /**
+     * Loading the next article 20th to 29th (10 articles) in the category list
+     *
+     * @param index: page number
+     */
     @FXML
     protected void thirdPageClicked(int index) {
         // Using the Platform.runLater() to avoid FX application thread; currentThread=JavaFX Application Thread error
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                loadNewArticle(index);
+                loadArticles(index);
             }
         });
     }
 
+    /**
+     * Loading the next article 30th to 39th (10 articles) in the category list
+     *
+     * @param index: page number
+     */
     @FXML
     protected void fourthPageClicked(int index) {
-        Platform.runLater(() -> loadNewArticle(index));
+        Platform.runLater(() -> loadArticles(index));
     }
 
+    /**
+     * Loading the next article 40th to 49th (10 articles) in the category list
+     *
+     * @param index: page number
+     */
     @FXML
     protected void fifthPageClicked(int index) {
-        Platform.runLater(() -> loadNewArticle(index));
+        Platform.runLater(() -> loadArticles(index));
     }
 
     //------------Main Screen components------------
@@ -459,24 +510,33 @@ public class HomepageController implements Initializable{
     @FXML
     private Text dateTime10;
 
-    //--------------------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------
+    /*
+     * This initialize function will run firstly at the time the app open.
+     */
     public void initialize(URL url, ResourceBundle resourceBundle){
         loadArticles("new");
     }
 
+    /**
+     * Setting the category instance and access the news outlets to scrape the articles of desired category. Since the
+     * total articles of each category is 50 so the number of articles per outlets need to be scraped is 10 articles.
+     *
+     * @param category: category user clicked
+     */
     private void loadArticles(String category) {
-
-        StopWatch timer = new StopWatch();
-        timer.start();
-
+        // Create Category instance and set the category
         Category tech = new Category();
         try {
             tech.setCate(category);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        tech.getNum();
+
+        // Sort the scraped articles in ascending order based upon their published time
         tech.sort(category);
+
+        // Get the list of sorted articles
         articles = tech.getList(category);
 
         //Resize the first image
@@ -492,10 +552,13 @@ public class HomepageController implements Initializable{
         page3.setOnAction((ActionEvent) -> thirdPageClicked(20));
         page4.setOnAction((ActionEvent) -> fourthPageClicked(30));
         page5.setOnAction((ActionEvent) -> fifthPageClicked(40));
-
-        System.out.print("\n" + "Time consume: " + timer.getElapsedTime() + " ms" + "\n");
     }
 
+    /**
+     * Create a tile pane to store a loading pie
+     *
+     * @param name:
+     */
     public void setTilePane(String name) {
 
         if(name.equals("Link")) {
@@ -513,7 +576,9 @@ public class HomepageController implements Initializable{
         tilePane.getChildren().addAll(myProgressIndicator);
     }
 
-    //Blur screen and pop up the progress indicator when the button is clicked then move on a new screen
+    /**
+     * Blur screen and pop up the progress indicator when the button is clicked then move on a new screen
+     */
     @FXML
     protected void articleClicked(){
         GaussianBlur gaussianBlur = new GaussianBlur();
@@ -611,6 +676,13 @@ public class HomepageController implements Initializable{
         }
     };
 
+    /**
+     *
+     *
+     * @param node
+     * @param potentialHierarchyElement
+     * @return
+     */
     public static boolean inHierarchy(Node node, Node potentialHierarchyElement) {
         if (potentialHierarchyElement == null) {
             return true;
@@ -624,9 +696,15 @@ public class HomepageController implements Initializable{
         return false;
     }
 
-    //-----------------------------------------------------------------------------------------------------------------
-    //Functions set content for the Homepage layout
+    //--------------------------------------------Utilities functions------------------------------------------------
 
+    /**
+     * Functions set Image avatar of articles in the Homepage layout except the first article.
+     *
+     * @param image: Avatar ImageView element
+     * @param URL: Path link of article thumbnail image
+     * @return: ImageView instance
+     */
     public ImageView setIMG(ImageView image, String URL){
 
         Image img = new Image(URL);
@@ -635,15 +713,37 @@ public class HomepageController implements Initializable{
         return image;
     }
 
+    /**
+     * Functions set title of articles in the Homepage layout.
+     *
+     * @param title: HyperLink instance
+     * @param titleName: Name of the article
+     * @return: Title of the article as the path link
+     */
     public Hyperlink setTitle(Hyperlink title, String titleName){
         title.setText(titleName);
         return title;
     }
 
+    /**
+     * Functions set published date of articles in the Homepage layout.
+     *
+     * @param dateTime: Text instance
+     * @param URL: Published date of the article
+     * @return: Published date as Text instance
+     */
     public Text setDateTime(Text dateTime, String URL){
         dateTime.setText(URL);
         return dateTime;
     }
+
+    /**
+     * Functions set Image avatar of the first article in the Homepage layout.
+     *
+     * @param image: Avatar ImageView element
+     * @param URL: Path link of article thumbnail image
+     * @return: ImageView instance
+     */
 
     public ImageView set1stIMG(ImageView image, String URL){
 
