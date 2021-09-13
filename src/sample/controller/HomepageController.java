@@ -1,5 +1,6 @@
 package sample.controller;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -12,79 +13,65 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.scene.image.ImageView;
+
+import sample.model.Article;
+import sample.model.Category;
+import sample.ultilities.StopWatch;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import sample.model.*;
-import sample.Main;
-import sample.ultilities.Sort;
-import sample.ultilities.StopWatch;
+public class HomepageController implements Initializable{
 
-public class HomepageController implements Initializable {
-
-    public ImageView logo;
-    public VBox mainBox;
-    public Button hotnewBt;
-    public Button covidBt;
-    public Button businessBt;
-    public Button politicBt;
-    public Button healthBt;
-    public Button technologyBt;
-    public Button sportBt;
-    public Button entertainmentBt;
-    public Button worldBt;
-    public Button otherBt;
-    public BorderPane articleContainer;
-    public Hyperlink title1;
-    public ImageView outlet1;
-    public Hyperlink title2;
-    public ImageView outlet2;
-    public Hyperlink title3;
-    public ImageView outlet3;
-    public AnchorPane imagePane1;
-    public Text pubDate1 = new Text("hello");
-    public HBox pubdateBox;
+    //--Variable declarations--
+    public Article article;
+    public String linkArticle = "";
+    ArrayList<Article> articles;
 
 
-    private int default_page = 0;
-    private final int[] pages = new int[5];
+    //------------FXML Attributes------------
+    private Scene scene;
+    private Parent root;
+    ProgressIndicator myProgressIndicator = new ProgressIndicator(0);
 
-    private Stage stage;
 
-    @FXML
-    private TilePane tilePane;
-
+    //--Pane initialisation--
     @FXML
     private Pane myPane;
+
+    //TilePane to store the proogress bar
+    private TilePane tilePane;
 
     @FXML
     private GridPane myGridPane;
 
     @FXML
-    private BorderPane mainScreen;
+    //add ScrollPane to store the newspaper content when finish loading
+    private ScrollPane myScrollPane;
+
+    @FXML
+    private VBox mainScreen;
+
+    @FXML
+    private BorderPane articleContainer;
+
+    @FXML
+    private SplitPane splitPane;
 
     @FXML
     private StackPane myStackPane;
 
-    @FXML
-    private SplitPane splitpane1;
-
-    @FXML
-    private ProgressIndicator myProgressIndicator;
-
-    @FXML
-    private Button test;
-
+    //--Page number buttons--
     @FXML
     private Button page1;
 
@@ -100,183 +87,438 @@ public class HomepageController implements Initializable {
     @FXML
     private Button page5;
 
+    //--Category buttons--
     @FXML
-    private Button next;
+    private Button hotnew;
 
     @FXML
-    private Button prev;
+    private Button covid;
 
     @FXML
-    private ImageView image1;
-    @FXML
-    private ImageView image2;
-    @FXML
-    private ImageView image3;
-    @FXML
-    private ImageView image4;
-    @FXML
-    private ImageView image5;
-    @FXML
-    private ImageView image6;
-    @FXML
-    private ImageView image7;
-    @FXML
-    private ImageView image8;
-    @FXML
-    private ImageView image9;
-    @FXML
-    private ImageView image10;
+    private Button business;
 
     @FXML
-    VBox box1;
+    private Button politic;
 
     @FXML
-    private ImageView[] imageList = {image1, image2, image3, image4, image5,
-                                    image6, image7, image8, image9, image10};
+    private Button health;
 
-    //add ScrollPane to store the newspaper content when finish loading
-    private ScrollPane myScrollPane;
+    @FXML
+    private Button technology;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        StopWatch clock1 = new StopWatch();
-        clock1.start();
+    @FXML
+    private Button sports;
 
-        Category c1 = null;
-        try {
-            c1 = new Category();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @FXML
+    private Button entertainment;
 
-        try {
-            c1.setCate("business");
-        } catch (IOException e) {}
+    @FXML
+    private Button world;
 
-        int count = 1;
+    @FXML
+    private Button others;
 
-        for ( Article a : c1.getList("business") ) {
-            System.out.println(a.getUrl() );
-
-            System.out.println(count + ": " + a.getTitle() + "\n" );//+ a.getKWs());
-            //System.out.println(count + ": " + a.getAvt() + "\n");
-            //a.getSum();
-            //a.getBody();
-
-            count++;
-        }
-        System.out.print("\n" + "Time consume: " + clock1.getElapsedTime() + " ms" + "\n");
-        c1.getNum();
-    }
-
+    //--category handler--
     @FXML
     protected void hotnewClicked() {
-
+        loadArticles("new");
     }
 
     @FXML
     protected void covidClick() {
-
+        loadArticles("covid");
     }
 
     @FXML
     protected void politicClicked() {
-
+        loadArticles("politic");
     }
 
     @FXML
     protected void businessClicked() {
-
+        loadArticles("business");
     }
 
     @FXML
     protected void techClicked() {
-
+        loadArticles("tech");
     }
 
     @FXML
     protected void healthClicked() {
-
+        loadArticles("health");
     }
 
     @FXML
     protected void sportsClicked() {
-
+        loadArticles("sport");
     }
 
     @FXML
     protected void entertainmentClicked() {
-
+        loadArticles("entertain");
     }
 
     @FXML
     protected void worldClicked() {
-
+        loadArticles("world");
     }
 
     @FXML
     protected void otherClicked() {
+        loadArticles("other");
+    }
 
+    //--Loading article--
+    private void loadNewArticle(int index) {
+        ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        //Array of image
+        ImageView[] Images = {image1, image2, image3, image4, image5, image6, image7, image8, image9, image10};
+
+        //Array of hyperlinks for titles
+        Hyperlink[] Title = {title1, title2, title3, title4, title5, title6, title7, title8, title9, title10 };
+
+        //Array of Source
+        ImageView[] Source = {src1, src2, src3, src4, src5, src6, src7, src8, src9, src10};
+
+        //Array of Date and Time
+        Text[] DateTime = {dateTime1, dateTime2, dateTime3, dateTime4, dateTime5, dateTime6, dateTime7, dateTime8, dateTime9,dateTime10 };
+
+        es.execute(() -> {
+            //Loop for avatar article
+            for (int i = 0; i< Images.length; i++){
+                String avtLink = articles.get(index+i).getAvt();
+                setIMG(Images[i], (avtLink.equals("") ? "sample/view/image/unavailable_Avatar.jpg" : avtLink));
+            }
+        });
+
+        es.execute(() -> {
+            //Place title
+            for (int i =0; i< Title.length; i++){
+                setTitle(Title[i], articles.get(index+i).getTitle());
+            }
+        });
+
+        es.execute(() -> {
+            //Set the source outlet image for each article
+            for (int i =0; i< Source.length; i++){
+                if (articles.get(index+i).getSource().equals("vnexpress"))
+                    setIMG(Source[i], "sample/view/image/vnexpress_logo.png");
+                else if (articles.get(index+i).getSource().equals("tuoitre"))
+                    setIMG(Source[i], "sample/view/image/tuoitre_logo.png");
+                else if (articles.get(index+i).getSource().equals("nhandan"))
+                    setIMG(Source[i], "sample/view/image/nhandan_logo.png");
+                else if (articles.get(index+i).getSource().equals("zingnews"))
+                    setIMG(Source[i], "sample/view/image/zingnews_logo.png");
+                else if (articles.get(index+i).getSource().equals("thanhnien"))
+                    setIMG(Source[i], "sample/view/image/thanhnien_logo.png");
+            }
+        });
+
+        es.execute(() -> {
+            //Loop for date time
+            for (int i = 0; i < DateTime.length; i++){
+                setDateTime(DateTime[i], articles.get(index+i).getPubDay());
+            }
+        });
+
+        //Stop getting task
+        es.shutdown();
+
+        //wait to all task completed
+        while ( !es.isTerminated() ) {
+            setTilePane("Page");
+        }
     }
 
     @FXML
-    protected void prevClicked() {
+    protected void defaultPage(int index) {
+        ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
+        //Array of image
+        ImageView[] Images = {image1, image2, image3, image4, image5, image6, image7, image8, image9, image10};
+
+        //Array of hyperlinks for titles
+        Hyperlink[] Title = {title1, title2, title3, title4, title5, title6, title7, title8, title9, title10 };
+
+        //Array of Source
+        ImageView[] Source = {src1, src2, src3, src4, src5, src6, src7, src8, src9, src10};
+
+        //Array of Date and Time
+        Text[] DateTime = {dateTime1, dateTime2, dateTime3, dateTime4, dateTime5, dateTime6, dateTime7, dateTime8, dateTime9,dateTime10 };
+
+        es.execute(() -> {
+            //Loop for avatar article
+            for (int i = 0; i< Images.length; i++){
+                String avtLink = articles.get(index+i).getAvt();
+                setIMG(Images[i], (avtLink.equals("") ? "sample/view/image/unavailable_Avatar.jpg" : avtLink));
+            }
+        });
+
+        es.execute(() -> {
+            //Place title
+            for (int i =0; i< Title.length; i++){
+                setTitle(Title[i], articles.get(index+i).getTitle());
+            }
+        });
+
+        es.execute(() -> {
+            //Set the source outlet image for each article
+            for (int i =0; i< Source.length; i++){
+                if (articles.get(index+i).getSource().equals("vnexpress"))
+                    setIMG(Source[i], "sample/view/image/vnexpress_logo.png");
+                else if (articles.get(index+i).getSource().equals("tuoitre"))
+                    setIMG(Source[i], "sample/view/image/tuoitre_logo.png");
+                else if (articles.get(index+i).getSource().equals("nhandan"))
+                    setIMG(Source[i], "sample/view/image/nhandan_logo.png");
+                else if (articles.get(index+i).getSource().equals("zingnews"))
+                    setIMG(Source[i], "sample/view/image/zingnews_logo.png");
+                else if (articles.get(index+i).getSource().equals("thanhnien"))
+                    setIMG(Source[i], "sample/view/image/thanhnien_logo.png");
+            }
+        });
+
+        es.execute(() -> {
+            //Loop for date time
+            for (int i = 0; i < DateTime.length; i++){
+                setDateTime(DateTime[i], articles.get(index+i).getPubDay());
+            }
+        });
+
+        //Stop getting task
+        es.shutdown();
+    }
+
+    //--Page number handler--
+    @FXML
+    protected void firstPageClicked(int index) {
+        // Using the Platform.runLater() to avoid FX application thread; currentThread=JavaFX Application Thread error
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                loadNewArticle(index);
+            }
+        });
     }
 
     @FXML
-    protected void firstPageClicked() {
-
+    protected void secondPageClicked(int index) {
+        // Using the Platform.runLater() to avoid FX application thread; currentThread=JavaFX Application Thread error
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                loadNewArticle(index);
+            }
+        });
     }
 
     @FXML
-    protected void secondPageClicked() {
-
+    protected void thirdPageClicked(int index) {
+        // Using the Platform.runLater() to avoid FX application thread; currentThread=JavaFX Application Thread error
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                loadNewArticle(index);
+            }
+        });
     }
 
     @FXML
-    protected void thirdPageClicked() {
-
-
+    protected void fourthPageClicked(int index) {
+        Platform.runLater(() -> loadNewArticle(index));
     }
 
     @FXML
-    protected void fourthPageClicked() {
-
-
+    protected void fifthPageClicked(int index) {
+        Platform.runLater(() -> loadNewArticle(index));
     }
 
+    //------------Main Screen components------------
+    //--Article avatars--
     @FXML
-    protected void fifthPageClicked() {
+    private ImageView image1;
 
+    @FXML
+    private ImageView image2;
 
+    @FXML
+    private ImageView image3;
+
+    @FXML
+    private ImageView image4;
+
+    @FXML
+    private ImageView image5;
+
+    @FXML
+    private ImageView image6;
+
+    @FXML
+    private ImageView image7;
+
+    @FXML
+    private ImageView image8;
+
+    @FXML
+    private ImageView image9;
+
+    @FXML
+    private ImageView image10;
+
+    //--Article Link--
+    @FXML
+    private Hyperlink title1;
+
+    @FXML
+    private Hyperlink title2;
+
+    @FXML
+    private Hyperlink title3;
+
+    @FXML
+    private Hyperlink title4;
+
+    @FXML
+    private Hyperlink title5;
+
+    @FXML
+    private Hyperlink title6;
+
+    @FXML
+    private Hyperlink title7;
+
+    @FXML
+    private Hyperlink title8;
+
+    @FXML
+    private Hyperlink title9;
+
+    @FXML
+    private Hyperlink title10;
+
+    //--News outlets image--
+    @FXML
+    private ImageView src1;
+
+    @FXML
+    private ImageView src2;
+
+    @FXML
+    private ImageView src3;
+
+    @FXML
+    private ImageView src4;
+
+    @FXML
+    private ImageView src5;
+
+    @FXML
+    private ImageView src6;
+
+    @FXML
+    private ImageView src7;
+
+    @FXML
+    private ImageView src8;
+
+    @FXML
+    private ImageView src9;
+
+    @FXML
+    private ImageView src10;
+
+    //--Published time of articles--
+    @FXML
+    private Text dateTime1;
+
+    @FXML
+    private Text dateTime2;
+
+    @FXML
+    private Text dateTime3;
+
+    @FXML
+    private Text dateTime4;
+
+    @FXML
+    private Text dateTime5;
+
+    @FXML
+    private Text dateTime6;
+
+    @FXML
+    private Text dateTime7;
+
+    @FXML
+    private Text dateTime8;
+
+    @FXML
+    private Text dateTime9;
+
+    @FXML
+    private Text dateTime10;
+
+    //--------------------------------------------------------------------------------------------------------------------
+    public void initialize(URL url, ResourceBundle resourceBundle){
+        loadArticles("new");
     }
 
-    @FXML
-    protected void nextClicked() {
+    private void loadArticles(String category) {
 
+        StopWatch timer = new StopWatch();
+        timer.start();
+
+        Category tech = new Category();
+        try {
+            tech.setCate(category);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        tech.getNum();
+        tech.sort(category);
+        articles = tech.getList(category);
+
+        //Resize the first image
+        image1.fitWidthProperty().bind(splitPane.widthProperty());
+        image1.fitHeightProperty().bind(splitPane.heightProperty().subtract(80));
+
+        // Loading first page articles as default at the time the application open
+        defaultPage(0);
+
+        // Referencing action when click page number
+        page1.setOnAction((ActionEvent) -> firstPageClicked(0));
+        page2.setOnAction((ActionEvent) -> secondPageClicked(10));
+        page3.setOnAction((ActionEvent) -> thirdPageClicked(20));
+        page4.setOnAction((ActionEvent) -> fourthPageClicked(30));
+        page5.setOnAction((ActionEvent) -> fifthPageClicked(40));
+
+        System.out.print("\n" + "Time consume: " + timer.getElapsedTime() + " ms" + "\n");
     }
 
     public void setTilePane(String name) {
-        myProgressIndicator = new ProgressIndicator();
-        test = new Button("Increase");
 
-        if(name.equals("Link"))
-            test.setOnAction(linkClick);
-        else
-            test.setOnAction(pageClick);
+        if(name.equals("Link")) {
+            scene.addEventFilter(MouseEvent.MOUSE_CLICKED, evt -> {
+                if (!inHierarchy(evt.getPickResult().getIntersectedNode(), title1)) {
+                    root.requestFocus();
+                }
+            });
+        } else {
+
+        }
 
         tilePane = new TilePane();
         tilePane.setAlignment(Pos.CENTER);
-        tilePane.getChildren().addAll(myProgressIndicator, test);
+        tilePane.getChildren().addAll(myProgressIndicator);
     }
 
-    //Blurred and pop up the progress indicator when the button is clicked then move on a new screen
+    //Blur screen and pop up the progress indicator when the button is clicked then move on a new screen
     @FXML
     protected void articleClicked(){
         GaussianBlur gaussianBlur = new GaussianBlur();
         gaussianBlur.setRadius(10.5);
-        mainBox.setEffect(gaussianBlur);
+        mainScreen.setEffect(gaussianBlur);
         setTilePane("Link");
         myStackPane.getChildren().add(tilePane);
     }
@@ -285,9 +527,13 @@ public class HomepageController implements Initializable {
     protected void pageClicked(){
         GaussianBlur gaussianBlur = new GaussianBlur();
         gaussianBlur.setRadius(10.5);
-        mainBox.setEffect(gaussianBlur);
+        mainScreen.setEffect(gaussianBlur);
         setTilePane("Page");
         myStackPane.getChildren().add(tilePane);
+    }
+
+    protected void categoryClicked() {
+        hotnew.setOnAction((ActionEvent) -> hotnewClicked());
     }
 
     //Progress Indicator function
@@ -295,20 +541,54 @@ public class HomepageController implements Initializable {
     EventHandler<ActionEvent> linkClick = new EventHandler<ActionEvent>() {
         double ii = 0;
         public void handle(ActionEvent event) {
+
+            // Temp link
+            Hyperlink hyperlink = (Hyperlink) event.getTarget();
+
+            Article chosenArticle = null;
+
+            if (hyperlink.equals(title1)) {
+                chosenArticle = articles.get(0);
+            } else if (hyperlink.getText().equals(articles.get(1).getUrl())) {
+                chosenArticle = articles.get(1);
+            } else if (hyperlink.getText().equals(articles.get(2).getUrl())) {
+                chosenArticle = articles.get(2);
+            } else if (hyperlink.getText().equals(articles.get(3).getUrl())) {
+                chosenArticle = articles.get(3);
+            } else if (hyperlink.getText().equals(articles.get(4).getUrl())) {
+                chosenArticle = articles.get(4);
+            } else if (hyperlink.getText().equals(articles.get(5).getUrl())) {
+                chosenArticle = articles.get(5);
+            } else if (hyperlink.getText().equals(articles.get(6).getUrl())) {
+                chosenArticle = articles.get(6);
+            } else if (hyperlink.getText().equals(articles.get(7).getUrl())) {
+                chosenArticle = articles.get(7);
+            } else if (hyperlink.getText().equals(articles.get(8).getUrl())) {
+                chosenArticle = articles.get(8);
+            } else if (hyperlink.getText().equals(articles.get(9).getUrl())) {
+                chosenArticle = articles.get(9);
+            }
+
             ii += 0.1;
             myProgressIndicator.setProgress(ii);
 
+            try {
+                assert chosenArticle != null;
+                article = new Article(chosenArticle.getUrl(), chosenArticle.getAvt());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             if(ii > 1.1){
                 //Change scene function
-                Parent article_page = null;
+                Parent root = null;
                 try {
-                    article_page = FXMLLoader.load(getClass().getResource("article_layout.fxml"));
+                    root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("view/article.fxml")));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-                stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-                stage.setScene(new Scene(article_page));
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(root));
                 stage.show();
             }
         }
@@ -324,12 +604,57 @@ public class HomepageController implements Initializable {
             myProgressIndicator.setProgress(ii);
 
             if (ii > 1.1) {
-                mainBox.setEffect(null);
+                mainScreen.setEffect(null);
                 myStackPane.getChildren().removeAll(tilePane);
                 ii = 0;
             }
         }
     };
 
+    public static boolean inHierarchy(Node node, Node potentialHierarchyElement) {
+        if (potentialHierarchyElement == null) {
+            return true;
+        }
+        while (node != null) {
+            if (node == potentialHierarchyElement) {
+                return true;
+            }
+            node = node.getParent();
+        }
+        return false;
+    }
 
+    //-----------------------------------------------------------------------------------------------------------------
+    //Functions set content for the Homepage layout
+
+    public ImageView setIMG(ImageView image, String URL){
+
+        Image img = new Image(URL);
+        image.setImage(img);
+
+        return image;
+    }
+
+    public Hyperlink setTitle(Hyperlink title, String titleName){
+        title.setText(titleName);
+        return title;
+    }
+
+    public Text setDateTime(Text dateTime, String URL){
+        dateTime.setText(URL);
+        return dateTime;
+    }
+
+    public ImageView set1stIMG(ImageView image, String URL){
+
+        Image img = new Image(URL);
+        image.setImage(img);
+
+        image.fitWidthProperty().bind(splitPane.widthProperty());
+        image.fitHeightProperty().bind(splitPane.heightProperty().subtract(80));
+
+        return image;
+    }
 }
+
+

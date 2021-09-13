@@ -16,8 +16,6 @@
 
 package sample.ultilities;
 
-import sample.model.Article;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
