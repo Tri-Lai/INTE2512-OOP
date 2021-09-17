@@ -15,6 +15,7 @@
 package sample.controller;
 
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -27,15 +28,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.scene.image.ImageView;
-
 import sample.model.Article;
 import sample.model.Category;
-import sample.ultilities.StopWatch;
 
 import java.io.IOException;
 import java.net.URL;
@@ -45,32 +43,33 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class HomepageController implements Initializable{
+public class HomepageController implements Initializable {
 
-    //--Variable declarations--
+    //--------------------------------------------Variable declarations------------------------------------------------
     public Article article;
     public String linkArticle = "";
-    ArrayList<Article> articles;
+    private ArrayList<Article> articles;
+    private int index = 0;
+    private int article_index;
 
+    //--------------------------------------------FXML components------------------------------------------------
 
-    //------------FXML Attributes------------
-    private Scene scene;
-    private Parent root;
+    //--Loading pie--
+    @FXML
     ProgressIndicator myProgressIndicator = new ProgressIndicator(0);
 
+    @FXML
+    ProgressIndicator loadingPie = new ProgressIndicator(0);
 
     //--Pane initialisation--
-    @FXML
-    private Pane myPane;
-
-    //TilePane to store the proogress bar
+    //TilePane to store the progress bar
     private TilePane tilePane;
 
     @FXML
     private GridPane myGridPane;
 
+    // Add ScrollPane to store the newspaper content when finish loading
     @FXML
-    //add ScrollPane to store the newspaper content when finish loading
     private ScrollPane myScrollPane;
 
     @FXML
@@ -131,259 +130,6 @@ public class HomepageController implements Initializable{
 
     @FXML
     private Button others;
-
-    //--category handler--
-    @FXML
-    protected void hotnewClicked() {
-        loadArticles("new");
-    }
-
-    @FXML
-    protected void covidClick() {
-        loadArticles("covid");
-    }
-
-    @FXML
-    protected void politicClicked() {
-        loadArticles("politic");
-    }
-
-    @FXML
-    protected void businessClicked() {
-        loadArticles("business");
-    }
-
-    @FXML
-    protected void techClicked() {
-        loadArticles("tech");
-    }
-
-    @FXML
-    protected void healthClicked() {
-        loadArticles("health");
-    }
-
-    @FXML
-    protected void sportsClicked() {
-        loadArticles("sport");
-    }
-
-    @FXML
-    protected void entertainmentClicked() {
-        loadArticles("entertain");
-    }
-
-    @FXML
-    protected void worldClicked() {
-        loadArticles("world");
-    }
-
-    @FXML
-    protected void otherClicked() {
-        loadArticles("other");
-    }
-
-    //--Loading article--
-    /**
-     * Overloading function for loading the next 10 articles when changing page number
-     *
-     * @param index: page number
-     */
-    private void loadArticles(int index) {
-        ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-
-        //Array of image
-        ImageView[] Images = {image1, image2, image3, image4, image5, image6, image7, image8, image9, image10};
-
-        //Array of hyperlinks for titles
-        Hyperlink[] Title = {title1, title2, title3, title4, title5, title6, title7, title8, title9, title10 };
-
-        //Array of Source
-        ImageView[] Source = {src1, src2, src3, src4, src5, src6, src7, src8, src9, src10};
-
-        //Array of Date and Time
-        Text[] DateTime = {dateTime1, dateTime2, dateTime3, dateTime4, dateTime5, dateTime6, dateTime7, dateTime8, dateTime9,dateTime10 };
-
-        es.execute(() -> {
-            //Loop for avatar article
-            for (int i = 0; i< Images.length; i++){
-                String avtLink = articles.get(index+i).getAvt();
-                setIMG(Images[i], (avtLink.equals("") ? "sample/view/image/unavailable_Avatar.jpg" : avtLink));
-            }
-        });
-
-        es.execute(() -> {
-            //Place title
-            for (int i =0; i< Title.length; i++){
-                setTitle(Title[i], articles.get(index+i).getTitle());
-            }
-        });
-
-        es.execute(() -> {
-            //Set the source outlet image for each article
-            for (int i =0; i< Source.length; i++){
-                if (articles.get(index+i).getSource().equals("vnexpress"))
-                    setIMG(Source[i], "sample/view/image/vnexpress_logo.png");
-                else if (articles.get(index+i).getSource().equals("tuoitre"))
-                    setIMG(Source[i], "sample/view/image/tuoitre_logo.png");
-                else if (articles.get(index+i).getSource().equals("nhandan"))
-                    setIMG(Source[i], "sample/view/image/nhandan_logo.png");
-                else if (articles.get(index+i).getSource().equals("zingnews"))
-                    setIMG(Source[i], "sample/view/image/zingnews_logo.png");
-                else if (articles.get(index+i).getSource().equals("thanhnien"))
-                    setIMG(Source[i], "sample/view/image/thanhnien_logo.png");
-            }
-        });
-
-        es.execute(() -> {
-            //Loop for date time
-            for (int i = 0; i < DateTime.length; i++){
-                setDateTime(DateTime[i], articles.get(index+i).getPubDay());
-            }
-        });
-
-        //Stop getting task
-        es.shutdown();
-
-        //wait to all task completed
-        while ( !es.isTerminated() ) {
-            setTilePane("Page");
-        }
-    }
-
-    /**
-     * This function will run by default when the user open the application to load the first 10 articles of certain
-     * category.
-     *
-     * @param index: page number
-     */
-    @FXML
-    protected void defaultPage(int index) {
-        ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-
-        //Array of image
-        ImageView[] Images = {image1, image2, image3, image4, image5, image6, image7, image8, image9, image10};
-
-        //Array of hyperlinks for titles
-        Hyperlink[] Title = {title1, title2, title3, title4, title5, title6, title7, title8, title9, title10 };
-
-        //Array of Source
-        ImageView[] Source = {src1, src2, src3, src4, src5, src6, src7, src8, src9, src10};
-
-        //Array of Date and Time
-        Text[] DateTime = {dateTime1, dateTime2, dateTime3, dateTime4, dateTime5, dateTime6, dateTime7, dateTime8, dateTime9,dateTime10 };
-
-        es.execute(() -> {
-            //Loop for avatar article
-            for (int i = 0; i< Images.length; i++){
-                String avtLink = articles.get(index+i).getAvt();
-                setIMG(Images[i], (avtLink.equals("") ? "sample/view/image/unavailable_Avatar.jpg" : avtLink));
-            }
-        });
-
-        es.execute(() -> {
-            //Place title
-            for (int i =0; i< Title.length; i++){
-                setTitle(Title[i], articles.get(index+i).getTitle());
-            }
-        });
-
-        es.execute(() -> {
-            //Set the source outlet image for each article
-            for (int i =0; i< Source.length; i++){
-                if (articles.get(index+i).getSource().equals("vnexpress"))
-                    setIMG(Source[i], "sample/view/image/vnexpress_logo.png");
-                else if (articles.get(index+i).getSource().equals("tuoitre"))
-                    setIMG(Source[i], "sample/view/image/tuoitre_logo.png");
-                else if (articles.get(index+i).getSource().equals("nhandan"))
-                    setIMG(Source[i], "sample/view/image/nhandan_logo.png");
-                else if (articles.get(index+i).getSource().equals("zingnews"))
-                    setIMG(Source[i], "sample/view/image/zingnews_logo.png");
-                else if (articles.get(index+i).getSource().equals("thanhnien"))
-                    setIMG(Source[i], "sample/view/image/thanhnien_logo.png");
-            }
-        });
-
-        es.execute(() -> {
-            //Loop for date time
-            for (int i = 0; i < DateTime.length; i++){
-                setDateTime(DateTime[i], articles.get(index+i).getPubDay());
-            }
-        });
-
-        //Stop getting task
-        es.shutdown();
-    }
-
-    //--Page number handler--
-
-    /**
-     * Loading the first 10 articles in the category list
-     *
-     * @param index: page number
-     */
-    @FXML
-    protected void firstPageClicked(int index) {
-        // Using the Platform.runLater() to avoid FX application thread; currentThread=JavaFX Application Thread error
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                loadArticles(index);
-            }
-        });
-    }
-
-    /**
-     * Loading the next article 10th to 19th (10 articles) in the category list
-     *
-     * @param index: page number
-     */
-    @FXML
-    protected void secondPageClicked(int index) {
-        // Using the Platform.runLater() to avoid FX application thread; currentThread=JavaFX Application Thread error
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                loadArticles(index);
-            }
-        });
-    }
-
-    /**
-     * Loading the next article 20th to 29th (10 articles) in the category list
-     *
-     * @param index: page number
-     */
-    @FXML
-    protected void thirdPageClicked(int index) {
-        // Using the Platform.runLater() to avoid FX application thread; currentThread=JavaFX Application Thread error
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                loadArticles(index);
-            }
-        });
-    }
-
-    /**
-     * Loading the next article 30th to 39th (10 articles) in the category list
-     *
-     * @param index: page number
-     */
-    @FXML
-    protected void fourthPageClicked(int index) {
-        Platform.runLater(() -> loadArticles(index));
-    }
-
-    /**
-     * Loading the next article 40th to 49th (10 articles) in the category list
-     *
-     * @param index: page number
-     */
-    @FXML
-    protected void fifthPageClicked(int index) {
-        Platform.runLater(() -> loadArticles(index));
-    }
 
     //------------Main Screen components------------
     //--Article avatars--
@@ -510,12 +256,13 @@ public class HomepageController implements Initializable{
     @FXML
     private Text dateTime10;
 
-    //------------------------------------------------------------------------------------------------------
+    //--------------------------------------------Main functions------------------------------------------------
+
     /*
      * This initialize function will run firstly at the time the app open.
      */
-    public void initialize(URL url, ResourceBundle resourceBundle){
-        loadArticles("new");
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        loadArticles("new"); // Newest is a default category
     }
 
     /**
@@ -526,70 +273,392 @@ public class HomepageController implements Initializable{
      */
     private void loadArticles(String category) {
         // Create Category instance and set the category
-        Category tech = new Category();
+        Category cate = new Category();
         try {
-            tech.setCate(category);
+            cate.setCate(category);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         // Sort the scraped articles in ascending order based upon their published time
-        tech.sort(category);
 
+
+        cate.getNum();
+        cate.sort(category);
         // Get the list of sorted articles
-        articles = tech.getList(category);
+        articles = cate.getList(category);
 
         //Resize the first image
         image1.fitWidthProperty().bind(splitPane.widthProperty());
         image1.fitHeightProperty().bind(splitPane.heightProperty().subtract(80));
 
         // Loading first page articles as default at the time the application open
-        defaultPage(0);
+        defaultPage();
 
         // Referencing action when click page number
-        page1.setOnAction((ActionEvent) -> firstPageClicked(0));
-        page2.setOnAction((ActionEvent) -> secondPageClicked(10));
-        page3.setOnAction((ActionEvent) -> thirdPageClicked(20));
-        page4.setOnAction((ActionEvent) -> fourthPageClicked(30));
-        page5.setOnAction((ActionEvent) -> fifthPageClicked(40));
+        page1.setOnAction((ActionEvent) -> firstPageClicked());
+        page2.setOnAction((ActionEvent) -> secondPageClicked());
+        page3.setOnAction((ActionEvent) -> thirdPageClicked());
+        page4.setOnAction((ActionEvent) -> fourthPageClicked());
+        page5.setOnAction((ActionEvent) -> fifthPageClicked());
     }
 
+    //--Loading article--
     /**
-     * Create a tile pane to store a loading pie
+     * Overloading function for loading the next 10 articles when changing page number
      *
-     * @param name:
+     * @param index: page number
      */
-    public void setTilePane(String name) {
+    private void loadArticles(int index) {
+        ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-        if(name.equals("Link")) {
-            scene.addEventFilter(MouseEvent.MOUSE_CLICKED, evt -> {
-                if (!inHierarchy(evt.getPickResult().getIntersectedNode(), title1)) {
-                    root.requestFocus();
-                }
-            });
-        } else {
+        //Array of image
+        ImageView[] Images = {image1, image2, image3, image4, image5, image6, image7, image8, image9, image10};
 
+        //Array of hyperlinks for titles
+        Hyperlink[] Title = {title1, title2, title3, title4, title5, title6, title7, title8, title9, title10 };
+
+        //Array of Source
+        ImageView[] Source = {src1, src2, src3, src4, src5, src6, src7, src8, src9, src10};
+
+        //Array of Date and Time
+        Text[] DateTime = {dateTime1, dateTime2, dateTime3, dateTime4, dateTime5, dateTime6, dateTime7, dateTime8, dateTime9,dateTime10 };
+
+        es.execute(() -> {
+            //Loop for avatar article
+            for (int i = 0; i< Images.length; i++){
+                String avtLink = articles.get(index+i).getAvt();
+                setIMG(Images[i], (avtLink.equals("") ? "sample/view/image/unavailable_Avatar.jpg" : avtLink));
+            }
+        });
+
+        es.execute(() -> {
+            //Place title
+            for (int i =0; i< Title.length; i++){
+                setTitle(Title[i], articles.get(index+i).getTitle());
+            }
+        });
+
+        es.execute(() -> {
+            //Set the source outlet image for each article
+            for (int i =0; i< Source.length; i++){
+                if (articles.get(index+i).getSource().equals("vnexpress"))
+                    setIMG(Source[i], "sample/view/image/vnexpress_logo.png");
+                else if (articles.get(index+i).getSource().equals("tuoitre"))
+                    setIMG(Source[i], "sample/view/image/tuoitre_logo.png");
+                else if (articles.get(index+i).getSource().equals("nhandan"))
+                    setIMG(Source[i], "sample/view/image/nhandan_logo.png");
+                else if (articles.get(index+i).getSource().equals("zingnews"))
+                    setIMG(Source[i], "sample/view/image/zingnews_logo.png");
+                else if (articles.get(index+i).getSource().equals("thanhnien"))
+                    setIMG(Source[i], "sample/view/image/thanhnien_logo.png");
+            }
+        });
+
+        es.execute(() -> {
+            //Loop for date time
+            for (int i = 0; i < DateTime.length; i++){
+                setDateTime(DateTime[i], articles.get(index+i).getPubDay());
+            }
+        });
+
+
+        //Stop getting task
+        es.shutdown();
+
+        //wait to all task completed
+        while ( !es.isTerminated() ) {
+            setTilePane("Page");
         }
-
-        tilePane = new TilePane();
-        tilePane.setAlignment(Pos.CENTER);
-        tilePane.getChildren().addAll(myProgressIndicator);
     }
 
     /**
-     * Blur screen and pop up the progress indicator when the button is clicked then move on a new screen
+     * This function will run by default when the user open the application to load the first 10 articles of certain
+     * category.
      */
     @FXML
-    protected void articleClicked(){
+    protected void defaultPage() {
+        ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        //Array of image
+        ImageView[] Images = {image1, image2, image3, image4, image5, image6, image7, image8, image9, image10};
+
+        //Array of hyperlinks for titles
+        Hyperlink[] Title = {title1, title2, title3, title4, title5, title6, title7, title8, title9, title10 };
+
+        //Array of Source
+        ImageView[] Source = {src1, src2, src3, src4, src5, src6, src7, src8, src9, src10};
+
+        //Array of Date and Time
+        Text[] DateTime = {dateTime1, dateTime2, dateTime3, dateTime4, dateTime5, dateTime6, dateTime7, dateTime8, dateTime9,dateTime10 };
+
+        es.execute(() -> {
+            //Loop for avatar article
+            for (int i = 0; i< Images.length; i++){
+                String avtLink = articles.get(i).getAvt();
+                setIMG(Images[i], (avtLink.equals("") ? "sample/view/image/unavailable_Avatar.jpg" : avtLink));
+            }
+        });
+
+        es.execute(() -> {
+            //Place title
+            for (int i =0; i< Title.length; i++){
+                setTitle(Title[i], articles.get(i).getTitle());
+            }
+        });
+
+        es.execute(() -> {
+            //Set the source outlet image for each article
+            for (int i =0; i< Source.length; i++){
+                if (articles.get(i).getSource().equals("vnexpress"))
+                    setIMG(Source[i], "sample/view/image/vnexpress_logo.png");
+                else if (articles.get(i).getSource().equals("tuoitre"))
+                    setIMG(Source[i], "sample/view/image/tuoitre_logo.png");
+                else if (articles.get(i).getSource().equals("nhandan"))
+                    setIMG(Source[i], "sample/view/image/nhandan_logo.png");
+                else if (articles.get(i).getSource().equals("zingnews"))
+                    setIMG(Source[i], "sample/view/image/zingnews_logo.png");
+                else if (articles.get(i).getSource().equals("thanhnien"))
+                    setIMG(Source[i], "sample/view/image/thanhnien_logo.png");
+            }
+        });
+
+        es.execute(() -> {
+            //Loop for date time
+            for (int i = 0; i < DateTime.length; i++){
+                setDateTime(DateTime[i], articles.get(i).getPubDay());
+            }
+        });
+
+        //Stop getting task
+        es.shutdown();
+    }
+
+    //--Page number handler--
+
+    /**
+     * Loading the first 10 articles in the category list
+     */
+    @FXML
+    protected void firstPageClicked() {
+        ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        es.execute(() -> {
+            index = 0;
+            loadArticles(index);
+        });
+
+        //Stop getting task
+        es.shutdown();
+    }
+
+    /**
+     * Loading the next article 10th to 19th (10 articles) in the category list
+     */
+    @FXML
+    protected void secondPageClicked() {
+        ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        es.execute(() -> {
+            index = 10;
+            loadArticles(index);
+        });
+
+        //Stop getting task
+        es.shutdown();
+    }
+
+    /**
+     * Loading the next article 20th to 29th (10 articles) in the category list
+     */
+    @FXML
+    protected void thirdPageClicked() {
+        ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        es.execute(() -> {
+            index = 20;
+            loadArticles(index);
+        });
+
+        //Stop getting task
+        es.shutdown();
+    }
+
+    /**
+     * Loading the next article 30th to 39th (10 articles) in the category list
+     */
+    @FXML
+    protected void fourthPageClicked() {
+        ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        es.execute(() -> {
+            index = 30;
+            loadArticles(index);
+        });
+
+        //Stop getting task
+        es.shutdown();
+    }
+
+    /**
+     * Loading the next article 40th to 49th (10 articles) in the category list
+     */
+    @FXML
+    protected void fifthPageClicked() {
+        ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        es.execute(() -> {
+            index = 40;
+            loadArticles(index);
+        });
+
+        //Stop getting task
+        es.shutdown();
+    }
+
+    //--category handler--
+
+    /**
+     * Displaying articles in the "Newest" category
+     */
+    @FXML
+    protected void hotnewClicked() {
+        loadArticles("new");
+    }
+
+    /**
+     * Displaying articles in the "COVID-19" category
+     */
+    @FXML
+    protected void covidClick() {
+        loadArticles("covid");
+    }
+
+    /**
+     * Displaying articles in the "Politic" category
+     */
+    @FXML
+    protected void politicClicked() {
+        loadArticles("politic");
+    }
+
+    /**
+     * Displaying articles in the "Business" category
+     */
+    @FXML
+    protected void businessClicked() {
+        loadArticles("business");
+    }
+
+    /**
+     * Displaying articles in the "Technology" category
+     */
+    @FXML
+    protected void techClicked() {
+        loadArticles("tech");
+    }
+
+    /**
+     * Displaying articles in the "Health" category
+     */
+    @FXML
+    protected void healthClicked() {
+        loadArticles("health");
+    }
+
+    /**
+     * Displaying articles in the "Sports" category
+     */
+    @FXML
+    protected void sportsClicked() {
+        loadArticles("sport");
+    }
+
+    /**
+     * Displaying articles in the "Entertainment" category
+     */
+    @FXML
+    protected void entertainmentClicked() {
+        loadArticles("entertain");
+    }
+
+    /**
+     * Displaying articles in the "World" category
+     */
+    @FXML
+    protected void worldClicked() {
+        loadArticles("world");
+    }
+
+    /**
+     * Displaying articles in the "Others" category
+     */
+    @FXML
+    protected void otherClicked() {
+        loadArticles("other");
+    }
+
+    /**
+     * Creating pane to with Blur Screen to store the loading pie
+     * @param name:
+     */
+    protected void setTilePane(String name) {
+        loadingArticles task = new loadingArticles();
+        loadingPie.progressProperty().bind(task.progressProperty());
+        new Thread(task).start();
+
+        myProgressIndicator = new ProgressIndicator(0);
+        Button test = new Button("Increase");
+
+        // Check if user click article link then do switch scene or otherwise do change page number
+        if(name.equals("Link")) {
+            test.setOnAction(linkClick);
+        } else {
+            test.setOnAction(pageClick);
+        }
+        tilePane = new TilePane();
+        tilePane.setAlignment(Pos.CENTER);
+        tilePane.getChildren().addAll(myProgressIndicator, loadingPie, test);
+    }
+
+    @FXML
+    protected void articleClicked(ActionEvent event) {
+
+        // Check which article has been clicked and get their index in "articles" list
+        if (event.getTarget().toString().contains("title1")) {
+            article_index = index;
+        } else if (event.getTarget().toString().contains("title2")) {
+            article_index = index + 1;
+        } else if (event.getTarget().toString().contains("title3")) {
+            article_index = index + 2;
+        } else if (event.getTarget().toString().contains("title4")) {
+            article_index = index + 3;
+        } else if (event.getTarget().toString().contains("title5")) {
+            article_index = index + 4;
+        } else if (event.getTarget().toString().contains("title6")) {
+            article_index = index + 5;
+        } else if (event.getTarget().toString().contains("title7")) {
+            article_index = index + 6;
+        } else if (event.getTarget().toString().contains("title8")) {
+            article_index = index + 7;
+        } else if (event.getTarget().toString().contains("title9")) {
+            article_index = index + 8;
+        } else if (event.getTarget().toString().contains("title10")) {
+            article_index = index + 9;
+        }
+
         GaussianBlur gaussianBlur = new GaussianBlur();
         gaussianBlur.setRadius(10.5);
         mainScreen.setEffect(gaussianBlur);
         setTilePane("Link");
+
+
         myStackPane.getChildren().add(tilePane);
     }
 
     @FXML
     protected void pageClicked(){
+        // Create blur screen
         GaussianBlur gaussianBlur = new GaussianBlur();
         gaussianBlur.setRadius(10.5);
         mainScreen.setEffect(gaussianBlur);
@@ -597,62 +666,29 @@ public class HomepageController implements Initializable{
         myStackPane.getChildren().add(tilePane);
     }
 
-    protected void categoryClicked() {
-        hotnew.setOnAction((ActionEvent) -> hotnewClicked());
-    }
-
-    //Progress Indicator function
     @FXML
     EventHandler<ActionEvent> linkClick = new EventHandler<ActionEvent>() {
         double ii = 0;
         public void handle(ActionEvent event) {
-
-            // Temp link
-            Hyperlink hyperlink = (Hyperlink) event.getTarget();
-
-            Article chosenArticle = null;
-
-            if (hyperlink.equals(title1)) {
-                chosenArticle = articles.get(0);
-            } else if (hyperlink.getText().equals(articles.get(1).getUrl())) {
-                chosenArticle = articles.get(1);
-            } else if (hyperlink.getText().equals(articles.get(2).getUrl())) {
-                chosenArticle = articles.get(2);
-            } else if (hyperlink.getText().equals(articles.get(3).getUrl())) {
-                chosenArticle = articles.get(3);
-            } else if (hyperlink.getText().equals(articles.get(4).getUrl())) {
-                chosenArticle = articles.get(4);
-            } else if (hyperlink.getText().equals(articles.get(5).getUrl())) {
-                chosenArticle = articles.get(5);
-            } else if (hyperlink.getText().equals(articles.get(6).getUrl())) {
-                chosenArticle = articles.get(6);
-            } else if (hyperlink.getText().equals(articles.get(7).getUrl())) {
-                chosenArticle = articles.get(7);
-            } else if (hyperlink.getText().equals(articles.get(8).getUrl())) {
-                chosenArticle = articles.get(8);
-            } else if (hyperlink.getText().equals(articles.get(9).getUrl())) {
-                chosenArticle = articles.get(9);
-            }
-
             ii += 0.1;
+
             myProgressIndicator.setProgress(ii);
 
-            try {
-                assert chosenArticle != null;
-                article = new Article(chosenArticle.getUrl(), chosenArticle.getAvt());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
             if(ii > 1.1){
-                //Change scene function
+                //Change to article scene
                 Parent root = null;
                 try {
-                    root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("view/article.fxml")));
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    ArticleController c2 = new ArticleController(articles.get(article_index));
+                    FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("sample/view/article.fxml")));
+                    loader.setController(c2);
+                    root = loader.load();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
+                //Progress Indicator function
+                //------------FXML Attributes------------
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                assert root != null;
                 stage.setScene(new Scene(root));
                 stage.show();
             }
@@ -662,12 +698,10 @@ public class HomepageController implements Initializable{
     @FXML
     EventHandler<ActionEvent> pageClick = new EventHandler<ActionEvent>() {
         double ii = 0;
-
         public void handle(ActionEvent e) {
             // set progress to different level of progress indicator
             ii += 0.1;
             myProgressIndicator.setProgress(ii);
-
             if (ii > 1.1) {
                 mainScreen.setEffect(null);
                 myStackPane.getChildren().removeAll(tilePane);
@@ -676,24 +710,17 @@ public class HomepageController implements Initializable{
         }
     };
 
-    /**
-     *
-     *
-     * @param node
-     * @param potentialHierarchyElement
-     * @return
-     */
-    public static boolean inHierarchy(Node node, Node potentialHierarchyElement) {
-        if (potentialHierarchyElement == null) {
-            return true;
-        }
-        while (node != null) {
-            if (node == potentialHierarchyElement) {
-                return true;
-            }
-            node = node.getParent();
-        }
-        return false;
+    private void categoryClicked() {
+        hotnew.setOnAction((ActionEvent) -> hotnewClicked());
+        business.setOnAction((ActionEvent) -> businessClicked());
+        covid.setOnAction((ActionEvent) -> covidClick());
+        world.setOnAction((ActionEvent) -> worldClicked());
+        technology.setOnAction((ActionEvent) -> techClicked());
+        health.setOnAction((ActionEvent) -> healthClicked());
+        others.setOnAction((ActionEvent) -> otherClicked());
+        politic.setOnAction((ActionEvent) -> politicClicked());
+        sports.setOnAction((ActionEvent) -> sportsClicked());
+        entertainment.setOnAction((ActionEvent) -> entertainmentClicked());
     }
 
     //--------------------------------------------Utilities functions------------------------------------------------
@@ -705,11 +732,14 @@ public class HomepageController implements Initializable{
      * @param URL: Path link of article thumbnail image
      * @return: ImageView instance
      */
-    public ImageView setIMG(ImageView image, String URL){
-
+    protected ImageView setIMG(ImageView image, String URL){
         Image img = new Image(URL);
-        image.setImage(img);
-
+        // Allow the JavaFX system to run the code on the JavaFX application thread
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                image.setImage(img);
+            }
+        });
         return image;
     }
 
@@ -720,8 +750,13 @@ public class HomepageController implements Initializable{
      * @param titleName: Name of the article
      * @return: Title of the article as the path link
      */
-    public Hyperlink setTitle(Hyperlink title, String titleName){
-        title.setText(titleName);
+    protected Hyperlink setTitle(Hyperlink title, String titleName){
+        // Allow the JavaFX system to run the code on the JavaFX application thread
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                title.setText(titleName);
+            }
+        });
         return title;
     }
 
@@ -732,8 +767,13 @@ public class HomepageController implements Initializable{
      * @param URL: Published date of the article
      * @return: Published date as Text instance
      */
-    public Text setDateTime(Text dateTime, String URL){
-        dateTime.setText(URL);
+    protected Text setDateTime(Text dateTime, String URL){
+        // Allow the JavaFX system to run the code on the JavaFX application thread
+        Platform.runLater(new Runnable() {
+          @Override public void run() {
+              dateTime.setText(URL);
+          }
+        });
         return dateTime;
     }
 
@@ -744,16 +784,30 @@ public class HomepageController implements Initializable{
      * @param URL: Path link of article thumbnail image
      * @return: ImageView instance
      */
-
-    public ImageView set1stIMG(ImageView image, String URL){
-
+    protected ImageView set1stIMG(ImageView image, String URL){
+        // Allow the JavaFX system to run the code on the JavaFX application thread
         Image img = new Image(URL);
-        image.setImage(img);
-
-        image.fitWidthProperty().bind(splitPane.widthProperty());
-        image.fitHeightProperty().bind(splitPane.heightProperty().subtract(80));
-
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                image.setImage(img);
+                image.fitWidthProperty().bind(splitPane.widthProperty());
+                image.fitHeightProperty().bind(splitPane.heightProperty().subtract(80));
+            }
+        });
         return image;
+    }
+}
+
+class loadingArticles extends Task<Void> {
+    @Override
+    protected Void call() throws Exception {
+        for (int i = 0; i < 10; i++) {
+            updateProgress(i+1, 10);
+            updateMessage("The application is loading article.");
+            Thread.sleep(500);
+        }
+        updateMessage("Done!");
+        return null;
     }
 }
 

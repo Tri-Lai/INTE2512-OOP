@@ -4,12 +4,14 @@
   Semester: 2021B
   Assessment: Final Project
   Created  date: 12/07/2021
+
   Author: Lai Nghiep Tri - s3799602
           Thieu Tran Tri Thuc - s3870730
           Nguyen Hoang Long - S3878451
-          Pham Trinh Hoang Long - s3879366
-  Last modified date: 18/09/2021
-  Acknowledgement: Canvas lecture slides, W3schools, Geeksforgeeks, Oracle Documentation, javatpoint
+          Trinh Pham Hoang Long - s3879366
+
+  Last modified date: dd/mm/yyyy
+  Acknowledgement: Canvas lecture slides, W3schools,
 */
 
 package sample.ultilities;
@@ -19,9 +21,7 @@ import java.time.format.DateTimeFormatter;
 
 public class StopWatch {
     private DateTimeFormatter out = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
-    LocalDateTime now = LocalDateTime.now();
-
-
+    private LocalDateTime now = LocalDateTime.now();
     private String startTime, endTime;
     private long s, e;
 

@@ -4,12 +4,14 @@
   Semester: 2021B
   Assessment: Final Project
   Created  date: 12/07/2021
+
   Author: Lai Nghiep Tri - s3799602
           Thieu Tran Tri Thuc - s3870730
           Nguyen Hoang Long - S3878451
           Pham Trinh Hoang Long - s3879366
-  Last modified date: 18/09/2021
-  Acknowledgement: Canvas lecture slides, W3schools, Geeksforgeeks, Oracle Documentation, javatpoint
+
+  Last modified date: dd/mm/yyyy
+  Acknowledgement: Canvas lecture slides, W3schools,
 */
 
 package sample.model;
@@ -20,19 +22,24 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.Objects;
 
 public class Article {
     public Article(String url, String avtUrl) throws Exception {
+        Document doc1;
         //Create connection
         Connection connect = Jsoup.connect(url);
-
         //Change the timeout to avoid socket timeout exception
         connect.timeout(15000);
-
         //get Document
-        doc = connect.get();
+        try {
+            doc1 = connect.get();
+        } catch (SocketTimeoutException ste) {
+            doc1 = connect.get();
+        }
+        doc = doc1;
         id = checkWeb(url);
         iurl = url;
         pubD = setPubDay();
@@ -121,8 +128,48 @@ public class Article {
     }
 
     public String getAvt() {
+        //Get first image in article
         if (img.isEmpty()) {
-            //Waitingggggggggg
+            //select body part
+            Element temp = doc.selectFirst(body[id]);
+            switch (id) {
+                //Zing
+                case 0:
+                    //Check is there any img in article
+                    if ( !temp.select("table[class*=picture]").isEmpty() ) {
+                        img = temp.selectFirst("table[class*=picture]").select("tbody > tr > td[class*=pic]")
+                                .select("img").attr("data-src");
+                    }
+                    break;
+                //VNExpress
+                case 1:
+                    //Check is there any img in article
+                    if ( !temp.select("figure[itemprop*=associatedMedia image]").isEmpty() ) {
+                        img = temp.selectFirst("figure[itemprop*=associatedMedia image]").selectFirst("meta").attr("content");
+                    }
+                    break;
+                //Thanh Nien
+                case 2:
+                    //Check is there any img in article
+                    if ( !temp.select("table[class*=imagefull]").isEmpty() ) {
+                        img = temp.selectFirst("table[class*=imagefull]").selectFirst("img").attr("data-src");
+                    }
+                    break;
+                //Tuoi Tre
+                case 3:
+                    //Check is there any img in article
+                    if ( !temp.select("div[type*=Photo]").isEmpty() ) {
+                        img = temp.selectFirst("div[type*=Photo]").selectFirst("img").attr("src");
+                    }
+                    break;
+                //Nhan Dan
+                case 4:
+                    //Check is there any img in article
+                    if ( !temp.select("div[class*=light-img]").isEmpty() ) {
+                        img = temp.selectFirst("div[class*=light-img]").select("img").attr("src");
+                    }
+                    break;
+            }
         }
         return img;
     }
@@ -185,19 +232,22 @@ public class Article {
     //Set Published Day
     public String setPubDay() throws Exception {
         String out;
-
         if (id == 0 && doc.select(pubDay[id]).isEmpty()) {
             out = doc.selectFirst("span.publish").text();
-        } else if (id == 4 && doc.select(pubDay[id]).isEmpty()) {
-            out = doc.select("div[class=box-date uk-text-center]").text();
+        }
+        else if (id == 4 && doc.select(pubDay[id]).isEmpty() ) {
+            if ( !doc.select("div[class=box-date uk-text-center]").isEmpty() ) {
+                out = doc.select("div[class=box-date uk-text-center]").text();
+            }
+            else {
+                out = doc.select("div[class=pull-left]").text();
+            }
         } else {
             out = doc.selectFirst(pubDay[id]).text();
-
         }
         out = out.replace(" (GMT+7)", "").replace(" GMT+7", "")
                 .replaceAll("[^\\d/\\s:-]", "")
                 .replaceAll("\\s{2}", "");
-
         if (id == 2) {
             String[] part = out.split("\\s");
             if (part.length > 2) {
@@ -244,7 +294,7 @@ public class Article {
 
     //Get Summary
     public String getSum() {
-        String out = null;
+        String out = "";
 
         if (id == 4) {
             out += "Link image : " + doc.select("div.box-detail-thumb.uk-text-center > img").attr("src") + "\n";
@@ -345,7 +395,7 @@ public class Article {
                     for (Element cell : e.select("tbody > tr > td")) {
                         //Link image
                         if (cell.className().equals("pic")) {
-                            bodyContent += "Link Image: " + cell.select("img").attr("data-src") + "\n";
+                            bodyContent += "Link image: " + cell.select("img").attr("data-src") + "\n";
                         }
 
                         //Caption
@@ -366,7 +416,7 @@ public class Article {
                     for (Element child : row) {
                         switch (child.className()) {
                             case "cover formatted":
-                                System.out.println("\tLink Image: " + child.select("p").first().attr("style").replace("background-image:url(", "").replace(");", ""));
+                                System.out.println("\tLink image: " + child.select("p").first().attr("style").replace("background-image:url(", "").replace(");", ""));
                                 break;
                             case "summary":
                                 System.out.println("\tSummary: " + child.select("p.summary").text());
@@ -414,7 +464,7 @@ public class Article {
                             bodyContent += "Background image: " + figure.select("div.video-container.formatted").first().attr("style").replace("background-image: url(", "").replace(");", "") + "\n";
 
                             //VideoLink
-                            bodyContent += "Link Video: " + figure.attr("data-video-src");
+                            bodyContent += "Link video: " + figure.attr("data-video-src");
 
                             //Cation + hyperlink
                             bodyContent += "Caption: " + figure.select("figcaption > strong").text() + " ( " + "http://zingnews.vn"
@@ -442,7 +492,7 @@ public class Article {
                 bodyContent += "Background Image: " + e.select("div.video-container.formatted").first().attr("style").replace("background-image: url(", "").replace(");", "") + "\n";
 
                 //VideoLink
-                bodyContent += "Link Video: " + e.attr("data-video-src");
+                bodyContent += "Link video: " + e.attr("data-video-src");
 
                 //Cation + hyperlink
                 bodyContent += "Caption: " + e.select("figcaption > strong").text() + " ( " + "http://zingnews.vn"
@@ -488,9 +538,15 @@ public class Article {
             else if (e.tagName().equals("figure")) {
                 //Image
                 if (e.attr("itemprop").equals("associatedMedia image")) {
-                    bodyContent += "Link Image: " + e.select("meta").first().attr("content") + "\n";
+                    bodyContent += "Link image: " + e.select("meta").first().attr("content") + "\n";
 
-                    bodyContent += "Caption: " + e.select("p.Image").first().text() + "\n";
+                    //Image
+                    if (e.attr("itemprop").equals("associatedMedia image")) {
+                        bodyContent += "Link image: " + e.select("meta").first().attr("content") + "\n";
+                        if ( !e.select("p.Image").isEmpty() ) {
+                            bodyContent += "Caption: " + e.select("p.Image").first().text() + "\n";
+                        }
+                    }
                 }
 
                 //Video
@@ -530,8 +586,8 @@ public class Article {
 
             //Video
             else if (e.tagName().equals("table") && e.className().contains("video")) {
-                bodyContent += "Link Video: " + e.select("div.clearfix.cms-video").attr("data-video-src") + "\n";
-                System.out.println("Link Video: " + e.select("div.clearfix.cms-video").attr("data-video-src") + "\n");
+                bodyContent += "Link video: " + e.select("div.clearfix.cms-video").attr("data-video-src") + "\n";
+                System.out.println("Link video: " + e.select("div.clearfix.cms-video").attr("data-video-src") + "\n");
 
                 bodyContent += "Caption: " + e.select("div.imgcaption").text() + "\n";
             }
@@ -595,7 +651,7 @@ public class Article {
 
                 //Video
                 if (e.attr("type").equals("VideoStream")) {
-                    bodyContent += "Link Video: " + e.attr("data-src") + "\n";
+                    bodyContent += "Link video: " + e.attr("data-src") + "\n";
 
                     bodyContent += "Caption: " + e.select("div.VideoCMS_Caption").text() + "\n";
                 }

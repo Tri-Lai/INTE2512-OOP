@@ -1,17 +1,3 @@
-/*
-  RMIT University Vietnam
-  Course: INTE2512 Object-Oriented Programming
-  Semester: 2021B
-  Assessment: Final Project
-  Created  date: 12/07/2021
-  Author: Lai Nghiep Tri - s3799602
-          Thieu Tran Tri Thuc - s3870730
-          Nguyen Hoang Long - S3878451
-          Pham Trinh Hoang Long - s3879366
-  Last modified date: 18/09/2021
-  Acknowledgement: Canvas lecture slides, W3schools, Geeksforgeeks, Oracle Documentation, javatpoint
-*/
-
 package sample.model;
 
 import org.jsoup.Jsoup;
@@ -234,8 +220,6 @@ public class Category {
             urlcate = hpl;
         }
 
-        System.out.println(urlcate);
-
         boolean err = true;
 
         //Get Category page
@@ -255,6 +239,11 @@ public class Category {
 
         //Vne, Zing, TN, ND
         if (!doc.select("article").isEmpty()) {
+
+            if ( !doc.select("div[class*=area area--dark has-margin]").isEmpty() ) {
+                doc.select("div[class*=area area--dark has-margin]").remove();
+            }
+
             list = doc.select("article");
             isTuoiTre = false;
         }
@@ -307,13 +296,17 @@ public class Category {
             String url = Objects.requireNonNull(e.selectFirst("a")).attr("href");
 
             //Check to complete url
-            if (!url.contains(hpl)) {
+            if (!url.contains("https://")) {
                 url = new StringBuffer(hpl).deleteCharAt(hpl.length() - 1) + url;
             }
 
-            //dont get the special articles
+            // Don't get the special articles
             if (url.contains("https://special.nhandan.vn/") || url.contains("https://thanhnien.vn/video")
-                    || url.contains("https://thanhnien.vn/the-thao/tuong-thuat")) {
+                    || url.contains("https://thanhnien.vn/the-thao/tuong-thuat")
+                    || url.contains("https://thoitrangtre.thanhnien.vn/")
+                    || url.contains("https://video.vnexpress.net")
+                    || url.contains("https://vnexpress.net/diem-tin")) {
+                //id--;
                 continue;
             }
 
@@ -323,19 +316,11 @@ public class Category {
             es.execute(() -> {
                 try {
                     Article a = new Article(finalUrl, finalAvt);
-
                     //Check if it belongs to any other Cate and add
                     check2Add(a.getKWs().toLowerCase(), a, cate);
                 } catch (Exception ex) {
-                    Article a = null;
-                    try {
-                        a = new Article(finalUrl, finalAvt);
-                    } catch (Exception exc) {
-                        exc.printStackTrace();
-                    }
-
-                    //Check if it belongs to any other Cate and add
-                    check2Add(a.getKWs().toLowerCase(), a, cate);
+                    ex.printStackTrace();
+                    System.out.println("Exception occurs when create and check article: " + finalUrl);
                 }
             });
 
