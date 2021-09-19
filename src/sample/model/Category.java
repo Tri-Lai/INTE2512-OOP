@@ -1,3 +1,17 @@
+/*
+  RMIT University Vietnam
+  Course: INTE2512 Object-Oriented Programming
+  Semester: 2021B
+  Assessment: Final Project
+  Created  date: 12/07/2021
+  Author: Lai Nghiep Tri - s3799602
+          Thieu Tran Tri Thuc - s3870730
+          Nguyen Hoang Long - S3878451
+          Pham Trinh Hoang Long - s3879366
+  Last modified date: 18/09/2021
+  Acknowledgement: Canvas lecture slides, W3schools, Geeksforgeeks, Oracle Documentation, javatpoint
+*/
+
 package sample.model;
 
 import org.jsoup.Jsoup;
@@ -17,6 +31,7 @@ public class Category {
     public Category() {
     }
 
+    //Create Lists for each category
     private ArrayList<Article> New = new ArrayList<>();
 
     private ArrayList<Article> Covid = new ArrayList<>();
@@ -37,11 +52,14 @@ public class Category {
 
     private ArrayList<Article> Other = new ArrayList<>();
 
+    //Name of sources
     private static final String[] source = {"zingnews",
             "thanhnien",
             "tuoitre",
             "nhandan",
             "vnexpress"};
+
+    //Links of HomePage
     private static final String[] link = {"https://zingnews.vn/",
             "https://thanhnien.vn/",
             "https://tuoitre.vn/",
@@ -50,8 +68,10 @@ public class Category {
 
     //Get the specified Category list
     public ArrayList<Article> getList(String name) {
+        //Create temp List
         ArrayList<Article> out = new ArrayList<>();
 
+        //Check input to get name of category for output
         switch (name) {
             case "new":
                 out = New;
@@ -97,6 +117,7 @@ public class Category {
         return out;
     }
 
+    //For checking number of articles in each category
     public void getNum() {
         System.out.println("New: " + New.size() + " Covid: " + Covid.size() + " Politic: " + Pol.size()
                 + " Business: " + Busi.size() + " Tech: " + Tech.size() + " Health: " + Health.size()
@@ -109,9 +130,12 @@ public class Category {
         StopWatch clock = new StopWatch();
         clock.start();
 
+        //Using executor service
         ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         int need = 0;
 
+        //Check input string to get name of needed category
+        //Set needed number of article for scrapping
         switch (cate) {
             case "new":
             case "covid":
@@ -181,10 +205,13 @@ public class Category {
                 break;
         }
 
+        //loop through 5 sources
         for (int id = 0; id <= 4; id++) {
             int finalId = id;
 
             int finalNeed = need;
+
+            //Give tasks for executor service
             es.execute(() -> {
                 try {
                     getFrom(finalNeed, cate, source[finalId], link[finalId]);
@@ -206,10 +233,13 @@ public class Category {
 
     //Get the Number of article of Cate from Src which have homepage link is hpl
     private void getFrom(int number, String cate, String src, String hpl) throws IOException {
+        //Create an executor service
         ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
+        //get homepage file depends on source
         File hP = new File("src/sample/downloads/" + src + ".html");
 
+        //Parsing file to document
         Document doc = Jsoup.parse(hP, "UTF-8", hpl);
 
         //Check and get URl of category
@@ -222,7 +252,7 @@ public class Category {
 
         boolean err = true;
 
-        //Get Category page
+        //keep get Category page
         while (err) {
             try {
                 doc = Jsoup.connect(urlcate).get();
@@ -237,30 +267,38 @@ public class Category {
         List<Element> list;
         boolean isTuoiTre;
 
-        //Vne, Zing, TN, ND
+        //Get list of article for Vne, Zing, TN, ND
         if (!doc.select("article").isEmpty()) {
-
+            //Remove special articles
             if ( !doc.select("div[class*=area area--dark has-margin]").isEmpty() ) {
                 doc.select("div[class*=area area--dark has-margin]").remove();
             }
 
+            //Get list of article
             list = doc.select("article");
+
             isTuoiTre = false;
         }
 
-        //Tuoi Tre
+        //Get list of article for Tuoi Tre
         else {
             if (!doc.select("div.box-tournament.box-worldcup-2018").isEmpty()) {
                 doc.select("div.box-tournament.box-worldcup-2018").remove();
             }
+            if ( !doc.select("div[class*=box-block-1 w482 fr video]").isEmpty() ) {
+                doc.select("div[class*=box-block-1 w482 fr video]").remove();
+            }
+
             list = Objects.requireNonNull(doc.selectFirst("section[id*=content]")).select("a[href*=/][title~=[a-z]]");
             isTuoiTre = true;
         }
-        //System.out.println(list.size());
 
-        for (int id = 0; id < list.size(); id++) {
+        //Loop through each article in the list
+        for (int id = 0; id < list.size() - 1; id++) {
+            //get one article
             Element e = list.get(id);
 
+            //Filter for special articles
             if (!isTuoiTre) {
                 //avoid the blank
                 if (e.child(0).tagName().equals("ins")) {
@@ -269,13 +307,18 @@ public class Category {
                     if (Objects.requireNonNull(e.selectFirst("a")).attr("href").equals("")) {
                         continue;
                     }
+                }
+                else if ( !e.select("use[xlink:href*=#Headset]").isEmpty() ) {
+                    System.out.println("pop");
+
+                    continue;
                 } else if (e.child(1).tagName().equals("ins")) {
                     id++;
                     e = list.get(id);
                 }
             }
 
-            //Filter for tuoi tre
+            //Filter for special articles for tuoi tre
             if (e.select("img").isEmpty() && isTuoiTre) {
                 continue;
             }
@@ -305,7 +348,8 @@ public class Category {
                     || url.contains("https://thanhnien.vn/the-thao/tuong-thuat")
                     || url.contains("https://thoitrangtre.thanhnien.vn/")
                     || url.contains("https://video.vnexpress.net")
-                    || url.contains("https://vnexpress.net/diem-tin")) {
+                    || url.contains("https://vnexpress.net/diem-tin")
+                    || url.contains("https://tuoitre.vn/video")) {
                 //id--;
                 continue;
             }
@@ -313,25 +357,35 @@ public class Category {
             String finalAvt = avt;
             String finalUrl = url;
 
+            //Give task to executor service
             es.execute(() -> {
                 try {
                     Article a = new Article(finalUrl, finalAvt);
-                    //Check if it belongs to any other Cate and add
-                    check2Add(a.getKWs().toLowerCase(), a, cate);
-                } catch (Exception ex) {
+
+                    //Check to remove podcast articles
+                    if ( !a.getKWs().contains("podcasts") ) {
+                        //Check which category it belongs to
+                        check2Add(a.getKWs().toLowerCase(), a, cate);
+                    }
+                }
+                //Handle exception
+                catch (Exception ex) {
                     ex.printStackTrace();
                     System.out.println("Exception occurs when create and check article: " + finalUrl);
                 }
             });
 
-            //Stop when scraped 10 Article
+            //Stop when scraped enough Article or run of number of articles
             if (id == number || id == list.size() - 1) {
                 es.shutdown();
                 break;
             }
         }
+
+        //Stop getting task
         es.shutdown();
 
+        //wait until all task complete
         while (!es.isTerminated()) {
         }
     }
@@ -508,9 +562,10 @@ public class Category {
 
     //Check Keywords: kw to add to List(s)
     private void check2Add(String kw, Article article, String cate) {
+        //Signal be true if article belongs to any category besides new and other
         boolean sig = false;
 
-        if (New.size() < 100) {
+        if (New.size() < 50) {
             New.add(article);
         }
 
@@ -595,9 +650,10 @@ public class Category {
         StopWatch clock1 = new StopWatch();
         clock1.start();
 
+        //Create a temp List to sort
         ArrayList<Article> sortList = new ArrayList<>();
 
-        //Check to get the List
+        //Check to get the List and assign to temp list
         switch (name) {
             case "new":
                 sortList = New;
@@ -646,6 +702,10 @@ public class Category {
             //take each article which have the id next to the above to compare and find out the newest
             for (int id2 = id1 + 1; id2 < sortList.size(); id2++) {
                 boolean done = false;
+
+                //This one for fixed bugs
+                //System.out.println(New.get(id1).getUrl() + " vs " +  New.get(id2).getUrl());
+                //System.out.println(New.get(id1).getPubDay() + "vs" +  New.get(id2).getPubDay()  + "\n" );
 
                 //Split to 2 strings dd/mm/yyyy and hh/mm
                 String[] date1 = sortList.get(newest).getPubDay().split(" "),
@@ -733,4 +793,5 @@ public class Category {
 
         System.out.print("\n" + "Time sortT() consume: " + clock1.getElapsedTime() + " ms" + "\n");
     }
+
 }

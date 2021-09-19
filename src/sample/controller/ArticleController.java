@@ -1,5 +1,23 @@
+/*
+  RMIT University Vietnam
+  Course: INTE2512 Object-Oriented Programming
+  Semester: 2021B
+  Assessment: Final Project
+  Created  date: 12/07/2021
+  Author: Lai Nghiep Tri - s3799602
+          Thieu Tran Tri Thuc - s3870730
+          Nguyen Hoang Long - S3878451
+          Pham Trinh Hoang Long - s3879366
+  Last modified date: 18/09/2021
+  Acknowledgement: Canvas lecture slides, W3schools, Geeksforgeeks, Oracle Documentation, javatpoint
+*/
+
 package sample.controller;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -21,6 +39,7 @@ import javafx.scene.text.Font;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import sample.model.Article;
 import sample.model.Category;
 
@@ -31,7 +50,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 
-public class ArticleController implements Initializable{
+public class ArticleController implements Initializable {
     public ArticleController(Article input) {
         a1 = input;
     }
@@ -44,7 +63,7 @@ public class ArticleController implements Initializable{
     private ScrollPane mainScreen;
 
     //TilePane to store the progress bar
-    private TilePane tilePane;
+    private VBox tilePane;
 
     @FXML
     private ProgressIndicator myProgressIndicator;
@@ -69,7 +88,15 @@ public class ArticleController implements Initializable{
         loadContent();
     }
 
-    private void loadContent() {
+    Task<Void> loading = new Task<Void>() {
+        @Override
+        protected Void call() throws Exception {
+            loadContent();
+            return null;
+        }
+    };
+
+    public void loadContent() {
         //Title
         addTitle( setTitle( a1.getTitle() ), articleContainer);
 
@@ -148,43 +175,54 @@ public class ArticleController implements Initializable{
     /*
      * Create a tile pane to store a loading pie
      */
+    @FXML
+    ProgressIndicator loadingPie = new ProgressIndicator(0);
+    /*
+     * Create a tile pane to store a loading pie
+     */
     public void setTilePane(String name) {
-        myProgressIndicator = new ProgressIndicator(0);
 
+//
+        loadingPie = new ProgressIndicator();
 
-        Button test = new Button("Increase");
-        if(name.equals("Link"))
-            test.setOnAction(linkClick);
+        Button changeSceneButton = new Button("Click to continue");
+        changeSceneButton.setOnAction(backClick);
 
-        tilePane = new TilePane();
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(loadingPie.progressProperty(), 0)),
+                new KeyFrame(Duration.minutes(0.1), e-> {
+                    // do anything you need here on completion...
+                    tilePane.getChildren().addAll(changeSceneButton);
+                }, new KeyValue(loadingPie.progressProperty(), 1))
+        );
+
+        timeline.play();
+
+        System.out.println(123);
+
+        tilePane = new VBox();
+        tilePane.setSpacing(20);
         tilePane.setAlignment(Pos.CENTER);
-        tilePane.getChildren().addAll(myProgressIndicator, test);
+        tilePane.getChildren().addAll( loadingPie);
     }
 
     @FXML
     EventHandler<ActionEvent> backClick = new EventHandler<ActionEvent>() {
-        double ii = 0;
         public void handle(ActionEvent event) {
-            ii += 0.1;
-            myProgressIndicator.setProgress(ii);
-
-            if(ii > 1.1){
-                //Change to homepage scene
-                Parent root = null;
-                try {
-                    HomepageController c2 = new HomepageController();
-                    FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("sample/view/homepage.fxml")));
-                    loader.setController(c2);
-                    root = loader.load();
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-                //Progress Indicator function
-                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                assert root != null;
-                stage.setScene(new Scene(root));
-                stage.show();
+            //Change to article scene
+            Parent root = null;
+            try {
+                FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("sample/view/homepage.fxml")));
+                root = loader.load();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
+            //Progress Indicator function
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            assert root != null;
+            stage.setScene(new Scene(root));
+            stage.show();
+
         }
     };
 
@@ -199,27 +237,6 @@ public class ArticleController implements Initializable{
         myStackPane.getChildren().add(tilePane);
     }
 
-    //Progress Indicator function
-    @FXML
-    EventHandler<ActionEvent> linkClick = new EventHandler<ActionEvent>() {
-        double ii = 0;
-        public void handle(ActionEvent event) {
-            ii += 0.1;
-            myProgressIndicator.setProgress(ii);
-            if(ii > 1.1){
-                //Change scene function
-                Parent root = null;
-                try {
-                    root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("sample/view/homepage.fxml")));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                stage= (Stage) ((Node)event.getSource()).getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.show();
-            }
-        }
-    };
 
 
     //-------------------------------------------------------------------------------------------------------------

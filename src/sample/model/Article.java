@@ -4,14 +4,12 @@
   Semester: 2021B
   Assessment: Final Project
   Created  date: 12/07/2021
-
   Author: Lai Nghiep Tri - s3799602
           Thieu Tran Tri Thuc - s3870730
           Nguyen Hoang Long - S3878451
           Pham Trinh Hoang Long - s3879366
-
-  Last modified date: dd/mm/yyyy
-  Acknowledgement: Canvas lecture slides, W3schools,
+  Last modified date: 18/09/2021
+  Acknowledgement: Canvas lecture slides, W3schools, Geeksforgeeks, Oracle Documentation, javatpoint
 */
 
 package sample.model;
@@ -20,7 +18,6 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.net.SocketTimeoutException;
 import java.util.List;
@@ -28,25 +25,38 @@ import java.util.Objects;
 
 public class Article {
     public Article(String url, String avtUrl) throws Exception {
+        //Temp document
         Document doc1;
+
         //Create connection
         Connection connect = Jsoup.connect(url);
+
         //Change the timeout to avoid socket timeout exception
         connect.timeout(15000);
+
         //get Document
         try {
             doc1 = connect.get();
-        } catch (SocketTimeoutException ste) {
-            doc1 = connect.get();
+        } catch (SocketTimeoutException ste ) {
+            doc1 = connect.get();   //Re-do if there is exception
         }
+        //Assign to final var
         doc = doc1;
+
+        //Call method to check source
         id = checkWeb(url);
+
         iurl = url;
+
+        //set and get Publish day
         pubD = setPubDay();
+
+        //Get Avatar URl
         img = avtUrl;
     }
 
     private String img;
+
     private final String iurl;
 
     public String getUrl() {
@@ -128,10 +138,11 @@ public class Article {
     }
 
     public String getAvt() {
-        //Get first image in article
+        //Get first image in article if input avt is empty
         if (img.isEmpty()) {
             //select body part
             Element temp = doc.selectFirst(body[id]);
+
             switch (id) {
                 //Zing
                 case 0:
@@ -141,6 +152,7 @@ public class Article {
                                 .select("img").attr("data-src");
                     }
                     break;
+
                 //VNExpress
                 case 1:
                     //Check is there any img in article
@@ -148,6 +160,7 @@ public class Article {
                         img = temp.selectFirst("figure[itemprop*=associatedMedia image]").selectFirst("meta").attr("content");
                     }
                     break;
+
                 //Thanh Nien
                 case 2:
                     //Check is there any img in article
@@ -155,6 +168,7 @@ public class Article {
                         img = temp.selectFirst("table[class*=imagefull]").selectFirst("img").attr("data-src");
                     }
                     break;
+
                 //Tuoi Tre
                 case 3:
                     //Check is there any img in article
@@ -162,6 +176,7 @@ public class Article {
                         img = temp.selectFirst("div[type*=Photo]").selectFirst("img").attr("src");
                     }
                     break;
+
                 //Nhan Dan
                 case 4:
                     //Check is there any img in article
@@ -178,6 +193,8 @@ public class Article {
     public String getKWs() {
         //Get Keywords
         StringBuilder kw = new StringBuilder(doc.select("meta[name=keywords]").attr("content").toLowerCase());
+
+        kw.append(doc.select("title").text().toLowerCase());
 
         //Get Description
         kw.append(doc.select("meta[name=description]").attr("content").toLowerCase());
@@ -197,13 +214,19 @@ public class Article {
     public String getTitle() {
         String out;
 
+        //Handle some special articles
         if (id == 1 && doc.select(title[id]).isEmpty()) {
             out = Objects.requireNonNull(doc.selectFirst("title")).text();
-        } else if (id == 2 && doc.select(title[id]).isEmpty()) {
+        }
+        else if (id == 2 && doc.select(title[id]).isEmpty()) {
             out = Objects.requireNonNull(Objects.requireNonNull(doc.selectFirst("div.container")).selectFirst("img")).attr("src");
-        } else if (id == 3 && doc.select(title[id]).isEmpty()) {
+        }
+        else if (id == 3 && doc.select(title[id]).isEmpty()) {
             out = Objects.requireNonNull(doc.selectFirst("div.sp-cover")).selectFirst("img").attr("src");
-        } else {
+        }
+
+        //Normal article
+        else {
             out = doc.selectFirst(title[id]).text();
         }
 
@@ -232,6 +255,8 @@ public class Article {
     //Set Published Day
     public String setPubDay() throws Exception {
         String out;
+
+        //Handle some special articles
         if (id == 0 && doc.select(pubDay[id]).isEmpty()) {
             out = doc.selectFirst("span.publish").text();
         }
@@ -242,12 +267,21 @@ public class Article {
             else {
                 out = doc.select("div[class=pull-left]").text();
             }
-        } else {
+        }
+        else if (id == 3 && doc.select(pubDay[id]).isEmpty() ) {
             out = doc.selectFirst(pubDay[id]).text();
         }
+
+        //Normal articles
+        else {
+            out = doc.selectFirst(pubDay[id]).text();
+        }
+
+        //Filter to remove redundant characters
         out = out.replace(" (GMT+7)", "").replace(" GMT+7", "")
                 .replaceAll("[^\\d/\\s:-]", "")
                 .replaceAll("\\s{2}", "");
+
         if (id == 2) {
             String[] part = out.split("\\s");
             if (part.length > 2) {
@@ -259,9 +293,12 @@ public class Article {
         } else if (id == 4) {
             out = out.replaceAll("-", "/");
         }
+
+        //return the filtered publish day String
         return out;
     }
 
+    //Method return the Publishing date
     public String getPubDay() {
         return pubD;
     }
@@ -272,20 +309,22 @@ public class Article {
 
         //VNExpress
         if (id == 1) {
-            if (doc.select(author[id]).text().isEmpty()) {
-                name = doc.getElementsByAttributeValueMatching("style", "text-align:right;").text();
-
-            } else {
-                name = doc.select(author[id]).text();
-            }
+            name += doc.select("p[style*=text-align:right;]").text();
         }
 
         //ThanhNien if more than 1 author
-        else if (doc.select("div.details__author__meta ").size() > 1) {
-            for (int i = 0; i < doc.select("div.details__author__meta ").size(); i++) {
-                name += " & " + doc.select(author[id]).get(i).selectFirst("h4 > a").text();
+        else if (id == 2) {
+            if (doc.select("div.details__author__meta ").size() > 1) {
+                for (int i = 0; i < doc.select("div.details__author__meta ").size(); i++) {
+                    name += " & " + doc.select(author[id]).get(i).selectFirst("h4 > a").text();
+                }
+            } else {
+                name = doc.selectFirst(author[id]).text();
             }
-        } else {
+        }
+
+        //Normal articles
+        else {
             name = doc.selectFirst(author[id]).text();
         }
 
@@ -296,6 +335,7 @@ public class Article {
     public String getSum() {
         String out = "";
 
+        //Check if there is img above summary
         if (id == 4) {
             out += "Link image : " + doc.select("div.box-detail-thumb.uk-text-center > img").attr("src") + "\n";
 
@@ -303,21 +343,25 @@ public class Article {
                 out += "Caption: " + doc.select("div.box-detail-thumb.uk-text-center > em").text() + "\n";
             }
         }
+
+        //get summary
         out += doc.select(sum[id]).text() + "\n";
 
+        //Check if there is img under summary
         if (id == 2 && !(doc.selectFirst("div[id*=contentAvatar]").select("img").isEmpty())) {
             out += "Link image: " + doc.selectFirst("div[id*=contentAvatar]").selectFirst("img").attr("src") + "\n";
 
             if (!(doc.selectFirst("div[id*=contentAvatar]").select("div[class*=caption]").isEmpty())) {
                 Element cap = doc.selectFirst("div[id*=contentAvatar]").selectFirst("div[class*=caption]");
                 out += "Caption: "
-                        + cap.text().replace(cap.selectFirst("div.source").text(), "") + "\n"
+                        + cap.text().replace(cap.selectFirst("div.source").text(), "")
                         + "Source: " + cap.selectFirst("div.source").text() + "\n";
             }
         }
         return out;
     }
 
+    //Create variable to store body content
     private String bodyContent = "";
 
     //Check and run body methods
@@ -326,6 +370,7 @@ public class Article {
 
         Element b;
 
+        //check to call right methods
         switch (id) {
             //Zing
             case 0:
@@ -336,15 +381,7 @@ public class Article {
 
             //VNExpress
             case 1:
-                if (doc.select(author[id]).text().isEmpty()) {
-                    //remove Author name
-                    doc.getElementsByAttributeValueMatching("style", "text-align:right;").remove();
-
-                    b = doc.selectFirst(body[id]);
-
-                } else {
-                    b = doc.selectFirst(body[id]);
-                }
+                b = doc.selectFirst(body[id]);
                 bodyVNExpress(b);
                 out = bodyContent;
                 break;
@@ -379,34 +416,35 @@ public class Article {
             String tag = e.tagName();
 
             //Normal paragraph
-            if (tag.equals("p")) {
-                bodyContent += e.text() + "\n";
-            }
+            switch (tag) {
+                case "p":
+                    bodyContent += e.text() + "\n";
+                    break;
 
-            //Heading
-            else if (tag == "h3") {
-                bodyContent += "\t" + e.text() + "\n";
-            }
+                //Heading
+                case "h3":
+                    bodyContent += "\t" + e.text() + "\n";
+                    break;
 
-            //Table
-            else if (tag == "table") {
-                //Picture
-                if (e.className().equals("picture")) {
-                    for (Element cell : e.select("tbody > tr > td")) {
-                        //Link image
-                        if (cell.className().equals("pic")) {
-                            bodyContent += "Link image: " + cell.select("img").attr("data-src") + "\n";
-                        }
+                //Table
+                case "table":
+                    //Picture
+                    if (e.className().equals("picture")) {
+                        for (Element cell : e.select("tbody > tr > td")) {
+                            //Link image
+                            if (cell.className().equals("pic")) {
+                                bodyContent += "Link image: " + cell.select("img").attr("data-src") + "\n";
+                            }
 
-                        //Caption
-                        else if (cell.className().equals("pCaption caption")) {
-                            bodyContent += "Caption: " + cell.text() + "\n";
+                            //Caption
+                            else if (cell.className().equals("pCaption caption")) {
+                                bodyContent += "Caption: " + cell.text() + "\n";
+                            }
                         }
                     }
-                }
 
-                //Related article
-                else if (e.className().equals("article")) {
+                    //Related article
+                /*else if (e.className().equals("article")) {
                     System.out.println("Related article: ");
 
                     System.out.println("\tLink: https://zingnews.vn" + e.select("tbody > tr > td > div.inner-article > a").first().attr("href"));
@@ -427,80 +465,81 @@ public class Article {
                         }
                     }
                     System.out.println("\n");
-                }
-            }
+                }*/
+                    break;
 
-            //Widget and LiveScore
-            else if (tag == "div") {
-                //Corona Widget
-                if (e.className().equals("z-widget-corona")) {
-                    Element widget = e.select("div.z-widget-corona").first().select("div.z-corona-header").first().select(" a").first();
-                    bodyContent += "Link to widget: " + widget.attr("href") + "\n";
-                }
-
-                //Live Score - Match Events
-                else if (e.attr("id").contains("livestream")) {
-                    bodyContent += "Match'events: " + "\n";
-
-                    List<Element> events = e.select("li");
-
-                    //Sort order
-                    int sort = 1;
-
-                    for (int i = 0, k = events.size() - 1; i < events.size() && k > -1; i++, k--) {
-                        Element event = (sort == 1) ? events.get(i) : events.get(k);
-
-                        //Text
-                        bodyContent += event.select("h3").text() + "\n\t" + event.select("p").text() + "\n";
-
-                        //Images
-                        for (Element table : event.select("table")) {
-                            bodyContent += "Link image: " + table.select("img").first().attr("src") + "\n";
-                        }
-
-                        //Videos
-                        for (Element figure : event.select("figure")) {
-                            //Background
-                            bodyContent += "Background image: " + figure.select("div.video-container.formatted").first().attr("style").replace("background-image: url(", "").replace(");", "") + "\n";
-
-                            //VideoLink
-                            bodyContent += "Link video: " + figure.attr("data-video-src");
-
-                            //Cation + hyperlink
-                            bodyContent += "Caption: " + figure.select("figcaption > strong").text() + " ( " + "http://zingnews.vn"
-                                    + figure.select("a").first().attr("href") + " ) ";
-
-                            //Detail
-                            bodyContent += e.select("figcaption").text().replace(e.select("figcaption > strong").text(), "") + "\n";
-                        }
-
-                        if (event.className().equals("video")) {
-                            bodyContent += "Background Image: " + event.select("video").first().attr("poster") + "\n";
-
-                            bodyContent += "Link video: " + event.select("video").first().attr("src") + "\n";
-                        }
-
-                        //Separate parts
-                        bodyContent += "------------------------------------------------------------------" + "\n";
+                //Widget and LiveScore
+                case "div":
+                    //Corona Widget
+                    if (e.className().equals("z-widget-corona")) {
+                        Element widget = e.select("div.z-widget-corona").first().select("div.z-corona-header").first().select(" a").first();
+                        bodyContent += "Link to widget: " + widget.attr("href") + "\n";
                     }
-                }
-            }
 
-            //Video
-            else if (tag == "figure") {
-                //Background
-                bodyContent += "Background Image: " + e.select("div.video-container.formatted").first().attr("style").replace("background-image: url(", "").replace(");", "") + "\n";
+                    //Live Score - Match Events
+                    else if (e.attr("id").contains("livestream")) {
+                        bodyContent += "Match'events: " + "\n";
 
-                //VideoLink
-                bodyContent += "Link video: " + e.attr("data-video-src");
+                        List<Element> events = e.select("li");
 
-                //Cation + hyperlink
-                bodyContent += "Caption: " + e.select("figcaption > strong").text() + " ( " + "http://zingnews.vn"
-                        + e.select("a").first().attr("href") + " ) " + "\n";
+                        //Sort order
+                        int sort = 1;
 
-                //Detail
-                bodyContent += e.select("figcaption").text().replace(e.select("figcaption > strong").text(), "") + "\n";
+                        for (int i = 0, k = events.size() - 1; i < events.size() && k > -1; i++, k--) {
+                            Element event = (sort == 1) ? events.get(i) : events.get(k);
 
+                            //Text
+                            bodyContent += event.select("h3").text() + "\n\t" + event.select("p").text() + "\n";
+
+                            //Images
+                            for (Element table : event.select("table")) {
+                                bodyContent += "Link image: " + table.select("img").first().attr("src") + "\n";
+                            }
+
+                            //Videos
+                            for (Element figure : event.select("figure")) {
+                                //Background
+                                bodyContent += "Background image: " + figure.select("div.video-container.formatted").first().attr("style").replace("background-image: url(", "").replace(");", "") + "\n";
+
+                                //VideoLink
+                                bodyContent += "Link video: " + figure.attr("data-video-src");
+
+                                //Cation + hyperlink
+                                bodyContent += "Caption: " + figure.select("figcaption > strong").text() + " ( " + "http://zingnews.vn"
+                                        + figure.select("a").first().attr("href") + " ) ";
+
+                                //Detail
+                                bodyContent += e.select("figcaption").text().replace(e.select("figcaption > strong").text(), "") + "\n";
+                            }
+
+                            if (event.className().equals("video")) {
+                                bodyContent += "Background Image: " + event.select("video").first().attr("poster") + "\n";
+
+                                bodyContent += "Link video: " + event.select("video").first().attr("src") + "\n";
+                            }
+
+                            //Separate parts
+                            bodyContent += "------------------------------------------------------------------" + "\n";
+                        }
+                    }
+                    break;
+
+                //Video
+                case "figure":
+                    //Background
+                    bodyContent += "Background image: " + e.select("div.video-container.formatted").first().attr("style").replace("background-image: url(", "").replace(");", "") + "\n";
+
+                    //VideoLink
+                    bodyContent += "Link video: " + e.attr("data-video-src");
+
+                    //Cation + hyperlink
+                    bodyContent += "Caption: " + e.select("figcaption > strong").text() + " ( " + "http://zingnews.vn"
+                            + e.select("a").first().attr("href") + " ) " + "\n";
+
+                    //Detail
+                    bodyContent += e.select("figcaption").text().replace(e.select("figcaption > strong").text(), "") + "\n";
+
+                    break;
             }
         }
     }
@@ -510,7 +549,7 @@ public class Article {
         for (Element e : body.children()) {
             //Paragraph
             if (e.tagName().equals("p")) {
-                if (e.className().equals("Normal")) {
+                if (e.className().equals("Normal") && !e.attr("style").contains("text-align:right")) {
                     bodyContent += e.text() + "\n";
                 }
 
@@ -518,20 +557,7 @@ public class Article {
 
             //Something
             else if (e.tagName().equals("div")) {
-                for (Element e2 : e.children()) {
-
-                    //Paragraph
-                    if (e2.tagName().equals("p") && e2.className().equals("Normal")) {
-                        bodyContent += e2.select("p.Normal").text() + "\n";
-                    }
-
-                    //Image
-                    else if (e2.tagName().equals("figure")) {
-                        bodyContent += "Link image: " + e2.selectFirst("meta").attr("content") + "\n";
-
-                        bodyContent += "Caption: " + e2.selectFirst("p.Image").text() + "\n";
-                    }
-                }
+                bodyVNExpress(e);
             }
 
             //Image or Video
@@ -540,12 +566,8 @@ public class Article {
                 if (e.attr("itemprop").equals("associatedMedia image")) {
                     bodyContent += "Link image: " + e.select("meta").first().attr("content") + "\n";
 
-                    //Image
-                    if (e.attr("itemprop").equals("associatedMedia image")) {
-                        bodyContent += "Link image: " + e.select("meta").first().attr("content") + "\n";
-                        if ( !e.select("p.Image").isEmpty() ) {
-                            bodyContent += "Caption: " + e.select("p.Image").first().text() + "\n";
-                        }
+                    if ( !e.select("p.Image").isEmpty() ) {
+                        bodyContent += "Caption: " + e.select("p.Image").first().text() + "\n";
                     }
                 }
 
@@ -559,19 +581,19 @@ public class Article {
 
             //Data Table
             else if (e.tagName().equals("table")) {
-                bodyContent += "\t [ There is a data tabe. Function hasn't dont yet ]" + "\n";
+                bodyContent += "\t [ There is a data table. Function hasn't dont yet ]" + "\n";
             }
 
             //List
             else if (e.tagName().equals("ul")) {
                 //Each Item
-                for (Element item : e.select("li")) {
+                /*for (Element item : e.select("li")) {
                     System.out.println("Related Article: ");
 
                     System.out.println("Link: " + item.select("a").attr("href"));
 
                     System.out.println("Title: " + item.select("a").attr("title") + "\n");
-                }
+                }*/
             }
         }
     }
@@ -676,7 +698,8 @@ public class Article {
             //Normal Paragraph
             if (e.tagName().equals("p")) {
                 bodyContent += e.text() + "\n";
-            } else if (e.tagName().equals("div") && e.className().equals("light-img")) {
+            }
+            else if (e.tagName().equals("div") && e.className().equals("light-img")) {
                 bodyContent += "Link image: " + e.select("img").attr("src") + "\n";
 
                 if (e.selectFirst("figure").childrenSize() > 1) {

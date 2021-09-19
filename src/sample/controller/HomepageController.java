@@ -14,6 +14,9 @@
 
 package sample.controller;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -32,6 +35,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import sample.controller.ArticleController;
 import sample.model.Article;
 import sample.model.Category;
 
@@ -51,25 +56,32 @@ public class HomepageController implements Initializable {
     private ArrayList<Article> articles;
     private int index = 0;
     private int article_index;
+    private Category temp_cate;
+    // Create a Category object
+    Category cate = new Category();
 
     //--------------------------------------------FXML components------------------------------------------------
 
-    //--Loading pie--
-    @FXML
+    private Scene scene;
+    private Parent root;
+    private Stage stage;
     ProgressIndicator myProgressIndicator = new ProgressIndicator(0);
 
     @FXML
     ProgressIndicator loadingPie = new ProgressIndicator(0);
 
     //--Pane initialisation--
-    //TilePane to store the progress bar
-    private TilePane tilePane;
+    @FXML
+    private Pane myPane;
+
+    //TilePane to store the proogress bar
+    private VBox tilePane;
 
     @FXML
     private GridPane myGridPane;
 
-    // Add ScrollPane to store the newspaper content when finish loading
     @FXML
+    //add ScrollPane to store the newspaper content when finish loading
     private ScrollPane myScrollPane;
 
     @FXML
@@ -83,7 +95,6 @@ public class HomepageController implements Initializable {
 
     @FXML
     private StackPane myStackPane;
-
     //--Page number buttons--
     @FXML
     private Button page1;
@@ -272,19 +283,20 @@ public class HomepageController implements Initializable {
      * @param category: category user clicked
      */
     private void loadArticles(String category) {
-        // Create Category instance and set the category
-        Category cate = new Category();
+
         try {
-            cate.setCate(category);
+            cate.setCate(category); // Set the category
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         // Sort the scraped articles in ascending order based upon their published time
+        cate.sort(category);
 
+        // Copy the sorted category for further using shuffle in "Others" category
+        temp_cate = cate;
 
         cate.getNum();
-        cate.sort(category);
         // Get the list of sorted articles
         articles = cate.getList(category);
 
@@ -292,7 +304,7 @@ public class HomepageController implements Initializable {
         image1.fitWidthProperty().bind(splitPane.widthProperty());
         image1.fitHeightProperty().bind(splitPane.heightProperty().subtract(80));
 
-        // Loading first page articles as default at the time the application open
+        // Loading first page articles as default at the time the application open or after switching category
         defaultPage();
 
         // Referencing action when click page number
@@ -599,26 +611,33 @@ public class HomepageController implements Initializable {
     }
 
     /**
-     * Creating pane to with Blur Screen to store the loading pie
+     * Create a tile pane to store a loading pie
      * @param name:
      */
-    protected void setTilePane(String name) {
-        loadingArticles task = new loadingArticles();
-        loadingPie.progressProperty().bind(task.progressProperty());
-        new Thread(task).start();
+    public void setTilePane(String name) {
 
-        myProgressIndicator = new ProgressIndicator(0);
-        Button test = new Button("Increase");
+//
+        loadingPie = new ProgressIndicator();
 
-        // Check if user click article link then do switch scene or otherwise do change page number
-        if(name.equals("Link")) {
-            test.setOnAction(linkClick);
-        } else {
-            test.setOnAction(pageClick);
-        }
-        tilePane = new TilePane();
+        Button changeSceneButton = new Button("Click to continue");
+        changeSceneButton.setOnAction(linkClick);
+
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(loadingPie.progressProperty(), 0)),
+                new KeyFrame(Duration.minutes(0.1), e-> {
+                    // do anything you need here on completion...
+                    tilePane.getChildren().addAll(changeSceneButton);
+                }, new KeyValue(loadingPie.progressProperty(), 1))
+        );
+
+        timeline.play();
+
+        System.out.println(123);
+
+        tilePane = new VBox();
+        tilePane.setSpacing(20);
         tilePane.setAlignment(Pos.CENTER);
-        tilePane.getChildren().addAll(myProgressIndicator, loadingPie, test);
+        tilePane.getChildren().addAll( loadingPie);
     }
 
     @FXML
@@ -666,32 +685,26 @@ public class HomepageController implements Initializable {
         myStackPane.getChildren().add(tilePane);
     }
 
+
     @FXML
     EventHandler<ActionEvent> linkClick = new EventHandler<ActionEvent>() {
-        double ii = 0;
         public void handle(ActionEvent event) {
-            ii += 0.1;
-
-            myProgressIndicator.setProgress(ii);
-
-            if(ii > 1.1){
-                //Change to article scene
-                Parent root = null;
-                try {
-                    ArticleController c2 = new ArticleController(articles.get(article_index));
-                    FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("sample/view/article.fxml")));
-                    loader.setController(c2);
-                    root = loader.load();
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-                //Progress Indicator function
-                //------------FXML Attributes------------
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                assert root != null;
-                stage.setScene(new Scene(root));
-                stage.show();
+            //Change to article scene
+            Parent root = null;
+            try {
+                ArticleController c2 = new ArticleController(articles.get(article_index));
+                FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("sample/view/article.fxml")));
+                loader.setController(c2);
+                root = loader.load();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
+            //Progress Indicator function
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            assert root != null;
+            stage.setScene(new Scene(root));
+            stage.show();
+
         }
     };
 
@@ -770,9 +783,9 @@ public class HomepageController implements Initializable {
     protected Text setDateTime(Text dateTime, String URL){
         // Allow the JavaFX system to run the code on the JavaFX application thread
         Platform.runLater(new Runnable() {
-          @Override public void run() {
-              dateTime.setText(URL);
-          }
+            @Override public void run() {
+                dateTime.setText(URL);
+            }
         });
         return dateTime;
     }
@@ -797,18 +810,4 @@ public class HomepageController implements Initializable {
         return image;
     }
 }
-
-class loadingArticles extends Task<Void> {
-    @Override
-    protected Void call() throws Exception {
-        for (int i = 0; i < 10; i++) {
-            updateProgress(i+1, 10);
-            updateMessage("The application is loading article.");
-            Thread.sleep(500);
-        }
-        updateMessage("Done!");
-        return null;
-    }
-}
-
 
