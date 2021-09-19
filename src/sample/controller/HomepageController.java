@@ -65,10 +65,12 @@ public class HomepageController implements Initializable {
     private Scene scene;
     private Parent root;
     private Stage stage;
-    ProgressIndicator myProgressIndicator = new ProgressIndicator(0);
 
     @FXML
-    ProgressIndicator loadingPie = new ProgressIndicator(0);
+    private ProgressIndicator myProgressIndicator = new ProgressIndicator(0);
+
+    @FXML
+    private ProgressIndicator loadingPie = new ProgressIndicator(0);
 
     //--Pane initialisation--
     @FXML

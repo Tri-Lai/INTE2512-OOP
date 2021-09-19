@@ -66,9 +66,6 @@ public class ArticleController implements Initializable {
     private VBox tilePane;
 
     @FXML
-    private ProgressIndicator myProgressIndicator;
-
-    @FXML
     private StackPane myStackPane;
 
     @FXML
@@ -176,13 +173,12 @@ public class ArticleController implements Initializable {
      * Create a tile pane to store a loading pie
      */
     @FXML
-    ProgressIndicator loadingPie = new ProgressIndicator(0);
+    private ProgressIndicator loadingPie = new ProgressIndicator(0);
     /*
      * Create a tile pane to store a loading pie
      */
     public void setTilePane(String name) {
-
-//
+        // Create Loading pie
         loadingPie = new ProgressIndicator();
 
         Button changeSceneButton = new Button("Click to continue");
@@ -224,7 +220,6 @@ public class ArticleController implements Initializable {
         }
     };
 
-
     //Blurscreen and pop up the progress indicator when the button is clicked then move on a new screen
     @FXML
     protected void articleClicked(){
@@ -234,8 +229,6 @@ public class ArticleController implements Initializable {
         setTilePane("Link");
         myStackPane.getChildren().add(tilePane);
     }
-
-
 
     //-------------------------------------------------------------------------------------------------------------
     //Function to add content to the newspaper (Vbox)
