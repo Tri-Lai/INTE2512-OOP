@@ -190,15 +190,13 @@ public class ArticleController implements Initializable {
 
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.ZERO, new KeyValue(loadingPie.progressProperty(), 0)),
-                new KeyFrame(Duration.minutes(0.1), e-> {
+                new KeyFrame(Duration.minutes(0.05), e-> {
                     // do anything you need here on completion...
                     tilePane.getChildren().addAll(changeSceneButton);
                 }, new KeyValue(loadingPie.progressProperty(), 1))
         );
 
         timeline.play();
-
-        System.out.println(123);
 
         tilePane = new VBox();
         tilePane.setSpacing(20);
