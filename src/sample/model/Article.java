@@ -308,7 +308,7 @@ public class Article {
         String name = "";
 
         //VNExpress
-        if (id == 1) {
+        if (id == 1 && doc.select(author[id]).isEmpty() ) {
             name += doc.select("p[style*=text-align:right;]").text();
         }
 
@@ -443,7 +443,7 @@ public class Article {
                         }
                     }
 
-                    //Related article
+                    //Related article - future feature
                 /*else if (e.className().equals("article")) {
                     System.out.println("Related article: ");
 
@@ -470,14 +470,14 @@ public class Article {
 
                 //Widget and LiveScore
                 case "div":
-                    //Corona Widget
-                    if (e.className().equals("z-widget-corona")) {
+                    //Corona Widget - future feature
+                    /*if (e.className().equals("z-widget-corona")) {
                         Element widget = e.select("div.z-widget-corona").first().select("div.z-corona-header").first().select(" a").first();
                         bodyContent += "Link to widget: " + widget.attr("href") + "\n";
-                    }
+                    }*/
 
                     //Live Score - Match Events
-                    else if (e.attr("id").contains("livestream")) {
+                    if (e.attr("id").contains("livestream")) {
                         bodyContent += "Match'events: " + "\n";
 
                         List<Element> events = e.select("li");
@@ -513,7 +513,7 @@ public class Article {
                             }
 
                             if (event.className().equals("video")) {
-                                bodyContent += "Background Image: " + event.select("video").first().attr("poster") + "\n";
+                                bodyContent += "Background image: " + event.select("video").first().attr("poster") + "\n";
 
                                 bodyContent += "Link video: " + event.select("video").first().attr("src") + "\n";
                             }
@@ -571,7 +571,7 @@ public class Article {
                     }
                 }
 
-                //Video
+                //Video for future when .w3u8 is handled
                 else if (e.className().equals("item_slide_show clearfix")) {
                     //out += "Link video: " + e.selectFirst("video").attr("src") + "\n";
 
@@ -579,12 +579,12 @@ public class Article {
                 }
             }
 
-            //Data Table
+            //Data Table - GUI teams dont have time to handle table
             else if (e.tagName().equals("table")) {
-                bodyContent += "\t [ There is a data table. Function hasn't dont yet ]" + "\n";
+                //bodyContent += "\t [ There is a data table. Function hasn't dont yet ]" + "\n";
             }
 
-            //List
+            //List of related articles - future feature
             else if (e.tagName().equals("ul")) {
                 //Each Item
                 /*for (Element item : e.select("li")) {
